@@ -34,9 +34,8 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team *before* you start
 coding!
 
-- Jordan Kelsey #1: [GitHub](https://github.com/ProgramStuff) / [LinkedIn](https://www.linkedin.com/in/jordan~kelsey)
-- Zuzu Ali (Scrum Master) #2: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
-- Frederic Brüning #3: [GitHub](https://github.com/brueningf) / [LinkedIn](https://linkedin.com/in/frederic-bruening)
-
-   ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Jordan Kelsey: [GitHub](https://github.com/ProgramStuff) / [LinkedIn](https://www.linkedin.com/in/jordan~kelsey)
+- Zuzu Ali (Scrum Master): [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
+- Frederic Brüning: [GitHub](https://github.com/brueningf) / [LinkedIn](https://linkedin.com/in/frederic-bruening)
+- Sunny Master (Developer): [GitHub](https://github.com/Sunny-Master) / [LinkedIn](https://www.linkedin.com/in/sunnymaster/) / [Email](master.codeworks@gmail.com)
+- Joseph Kotvas : [GitHub](https://github.com/joekotvas) / [LinkedIn](https://linkedin.com/in/joekotvas) / [Email](mailto:joseph@jokma.com)
