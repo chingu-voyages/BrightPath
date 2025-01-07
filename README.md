@@ -36,7 +36,7 @@ coding!
 
 - Jordan Kelsey #1: [GitHub](https://github.com/ProgramStuff) / [LinkedIn](https://www.linkedin.com/in/jordan~kelsey)
 - Zuzu Ali (Scrum Master) #2: [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
-- Teammate name #3: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
-
+- Sunny Master (Developer): [GitHub](https://github.com/Sunny-Master) / [LinkedIn](https://www.linkedin.com/in/sunnymaster/) / [Email](master.codeworks@gmail.com)
+- Teammate name #5: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
