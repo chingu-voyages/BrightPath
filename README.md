@@ -34,7 +34,7 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team *before* you start
 coding!
 
-- Jordan Kelsey: [GitHub](https://github.com/ProgramStuff) / [LinkedIn](https://www.linkedin.com/in/jordan~kelsey)
+- Jordan Kelsey: [GitHub](https://github.com/ProgramStuff) / [LinkedIn](https://www.linkedin.com/in/jordan~kelsey)([Email](jordan-kelsey@outlook.com)
 - Zuzu Ali (Scrum Master): [Github](https://github.com/zuweeali) / [LinkedIn](https://www.linkedin.com/in/zuwaira-aliyu-mohammed/) / [Email](zuweeali@gmail.com)
 - Frederic Brüning: [GitHub](https://github.com/brueningf) / [LinkedIn](https://linkedin.com/in/frederic-bruening)
 - Sunny Master (Developer): [GitHub](https://github.com/Sunny-Master) / [LinkedIn](https://www.linkedin.com/in/sunnymaster/) / [Email](master.codeworks@gmail.com)
