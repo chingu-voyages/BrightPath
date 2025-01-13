@@ -2,18 +2,26 @@ name: Backend CI
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches:
+      - main
+
   pull_request:
-    branches: [ $default-branch, staging ]
+    branches: 
+      - main 
+      - staging
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x]
+
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
     - uses: actions/checkout@v4
