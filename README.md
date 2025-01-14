@@ -1,3 +1,5 @@
+![Backend](https://github.com/chingu-voyages/V53-tier3-team-35/actions/workflows/backend-tests.yml/badge.svg)
+
 # voyage-tasks
 
 Your project's `readme` is as important to success as your code. For 
