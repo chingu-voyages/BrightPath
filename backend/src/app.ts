@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("API is working!");
+    res.send("API is working!");
 });
 
 export default app;

@@ -3,12 +3,12 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type { Config } from 'jest';
-import { createDefaultPreset, type JestConfigWithTsJest } from 'ts-jest'
+import type { Config } from "jest";
+import { createDefaultPreset, type JestConfigWithTsJest } from "ts-jest";
 
 const presetConfig = createDefaultPreset({
-    tsconfig: 'tsconfig.json',
-})
+    tsconfig: "tsconfig.json",
+});
 
 const config: Config = {
     ...presetConfig,
