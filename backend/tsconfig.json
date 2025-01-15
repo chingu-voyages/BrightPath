@@ -1,11 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "esModuleInterop": true,
-    "strict": true
-  },
-  "exclude": ["node_modules", "tests", "jest.config.ts"]
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "esModuleInterop": true,
+        "strict": true
+    },
+    "exclude": ["node_modules", "tests", "jest.config.ts"]
 }
