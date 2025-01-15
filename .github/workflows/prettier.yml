@@ -1,0 +1,38 @@
+name: Prettier
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+            - staging
+
+jobs:
+    format:
+        runs-on: ubuntu-latest
+    
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Install frontend dependencies
+              run: |
+                cd frontend
+                npm install
+
+            - name: Install backend dependencies
+              run: |
+                cd backend
+                npm install
+
+            - name: Check frontend code
+              run: |
+                cd frontend
+                npx prettier --check .
+
+            - name: Check backend code
+              run: |
+                cd backend
+                npx prettier --check .
