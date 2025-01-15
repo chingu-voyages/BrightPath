@@ -10,18 +10,18 @@ Before starting, ensure you have the following installed on your system:
 
 1. **Node.js** (v18.x or later) and npm:
 
-   - Install Node.js from [nodejs.org](https://nodejs.org/).
-   - Confirm installation:
-     ```bash
-     node -v
-     npm -v
-     ```
+    - Install Node.js from [nodejs.org](https://nodejs.org/).
+    - Confirm installation:
+        ```bash
+        node -v
+        npm -v
+        ```
 
 2. **PostgreSQL** (v13.x or later):
-   - Install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/).
-   - Set up a user and database.
-   - For convenience, you can use a Docker container
-     TODO: add docker command
+    - Install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/).
+    - Set up a user and database.
+    - For convenience, you can use a Docker container
+      TODO: add docker command
 
 ---
 
@@ -75,14 +75,14 @@ Replace `<username>`, `<password>`, and `<database>` with your PostgreSQL creden
 
 1. Generate the Prisma client:
 
-   ```bash
-   npx prisma generate
-   ```
+    ```bash
+    npx prisma generate
+    ```
 
 2. Run the database migrations:
-   ```bash
-   npx prisma migrate dev --name init
-   ```
+    ```bash
+    npx prisma migrate dev --name init
+    ```
 
 ### 5. Start the Development Server
 
@@ -101,9 +101,9 @@ The server should now be running at `http://localhost:3000`.
 To run the test suite:
 
 1. Run the tests:
-   ```bash
-   npm run test
-   ```
+    ```bash
+    npm run test
+    ```
 
 ---
 
@@ -113,13 +113,13 @@ To run the test suite:
 
 1. **Database Connection Error:**
 
-   - Ensure PostgreSQL is running and the `DATABASE_URL` is correctly configured in `.env`.
+    - Ensure PostgreSQL is running and the `DATABASE_URL` is correctly configured in `.env`.
 
 2. **Prisma Client Not Generated:**
 
-   - Run `npx prisma generate` to regenerate the Prisma client.
+    - Run `npx prisma generate` to regenerate the Prisma client.
 
 3. **Application Port Conflict:**
-   - Change the `PORT` value in `.env` if `3000` is already in use.
+    - Change the `PORT` value in `.env` if `3000` is already in use.
 
 ---
