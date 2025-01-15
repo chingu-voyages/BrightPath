@@ -4,16 +4,16 @@ import prisma from "../src/prisma";
 
 describe("App Endpoints", () => {
   // beforeAll(async () => {
-    // Seed test data or use a test database
-    // seed users
-    // seed courses
+  // Seed test data or use a test database
+  // seed users
+  // seed courses
   // });
 
   // afterAll(async () => {
-    // Cleanup
-    //await prisma.course.deleteMany();
-    //await prisma.user.deleteMany();
-    // await prisma.$disconnect();
+  // Cleanup
+  //await prisma.course.deleteMany();
+  //await prisma.user.deleteMany();
+  // await prisma.$disconnect();
   // });
 
   it("should return a welcome message", async () => {
@@ -22,4 +22,3 @@ describe("App Endpoints", () => {
     expect(res.text).toBe("API is working!");
   });
 });
-
