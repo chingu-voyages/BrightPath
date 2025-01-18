@@ -21,8 +21,9 @@ Before starting, ensure you have the following installed on your system:
    - Install PostgreSQL from [postgresql.org](https://www.postgresql.org/download/).
    - Set up a user and database.
    - For convenience, you can use a Docker container
+     
      ```bash
-     docker run --name myPostgresDb -p 5432:5432 -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mydb -d postgres
+     npm run docker:up
      ```
 ---
 
