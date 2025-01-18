@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,17 +10,112 @@ datasource db {
 model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
-  username  String  @unique
-  firstName String
-  lastName  String
-  role     String
+  username String?  @unique
+  name     String?
+  image    String?
+  role     Role
+  accounts Account[]
+  enrollments Enrollment[] // if student link to enrolled courses
+}
+
+model Account {
+  id                Int    @id @default(autoincrement())
+  provider          String
+  providerAccountId String
+  userId            Int
+  user              User   @relation(fields: [userId], references: [id])
+  @@unique([provider, providerAccountId])
 }
 
 model Course {
-  id          Int     @id @default(autoincrement())
+  id             Int        @id @default(autoincrement())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  published      Boolean    @default(false)
+  title          String
+  shortDescription String
+  description    Text   // Long description or could be rich text
+  duration       String
+  difficulty     String
+  thumbnail      String
+  units          Unit[]
+  timedAssessment Assignment?
+  instructor     User        @relation(fields: [instructorId], references: [id])
+  instructorId   Int
+  enrollments    Enrollment[] // Link to enrolled students
+  tags           CourseTag[]  // Tags associated with the course
+}
+
+model Unit {
+  id        Int      @id @default(autoincrement())
+  title      String
+  courseId   Int
+  course     Course   @relation(fields: [courseId], references: [id])
+  lessons    Lesson[]
+}
+
+model Lesson {
+  id         Int         @id @default(autoincrement())
   title       String
   description String
-  instructor  User     @relation(fields: [instructorId], references: [id])
-  instructorId Int
+  unitId      Int
+  unit        Unit        @relation(fields: [unitId], references: [id])
+  assignments Assignment[]
+}
+
+model Assignment {
+  id         Int         @id @default(autoincrement())
+  title       String
+  type        AssignmentType
+  content     String     // todo: Content depends on the type
+  lessonId    Int
+  lesson      Lesson      @relation(fields: [lessonId], references: [id])
+}
+
+model Enrollment {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  courseId    Int
+  course      Course    @relation(fields: [courseId], references: [id])
+  status      EnrollmentStatus
+  progress    Float     @default(0) // Progress of whole course
+  // here we could add progress per lesson or unit in json
+  @@unique([userId, courseId]) // a user can only enroll in a course once
+}
+
+model Tag {
+  id    Int          @id @default(autoincrement())
+  name  String       @unique
+  courses CourseTag[]
+}
+
+model CourseTag {
+  courseId Int
+  tagId    Int
+  course   Course   @relation(fields: [courseId], references: [id])
+  tag      Tag      @relation(fields: [tagId], references: [id])
+  @@id([courseId, tagId]) // composite primary key to prevent duplicates
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  INSTRUCTOR
+}
+
+enum AssignmentType {
+  READING
+  VIDEO
+  INTERACTIVE
+  QUIZ
+  TIMED_ASSESSMENT
+}
+
+enum EnrollmentStatus {
+  ACTIVE      
+  COMPLETED   
 }
 
