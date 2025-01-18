@@ -40,7 +40,7 @@ describe("GET /courses", () => {
                     difficulty: Difficulty.BEGINNER,
                     thumbnail: "thumbnail1.png",
                     published: true,
-                    instructorId: instructor.id
+                    instructorId: instructor.id,
                 },
                 {
                     title: "Course 2",
@@ -51,7 +51,7 @@ describe("GET /courses", () => {
                     difficulty: Difficulty.INTERMEDIATE,
                     thumbnail: "thumbnail2.png",
                     published: true,
-                    instructorId: instructor.id
+                    instructorId: instructor.id,
                 },
             ],
         });
@@ -65,4 +65,3 @@ describe("GET /courses", () => {
         expect(course2.title).toBe("Course 2");
     });
 });
-

@@ -7,14 +7,13 @@ const ctx = createContext();
 
 // GET /courses
 router.get("/", async (req, res) => {
-  try {
-    const courses = await getAllCourses(ctx);
-    res.status(200).json(courses);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch courses." });
-  }
+    try {
+        const courses = await getAllCourses(ctx);
+        res.status(200).json(courses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch courses." });
+    }
 });
 
 export default router;
-
