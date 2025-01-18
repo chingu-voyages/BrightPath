@@ -1,6 +1,5 @@
 import request from "supertest";
 import app from "../src/app";
-import prisma from "../src/prisma";
 
 describe("App Endpoints", () => {
     // beforeAll(async () => {
