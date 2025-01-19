@@ -11,13 +11,10 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
-        "@auth/unstorage-adapter": "^2.7.4",
-        "@simplewebauthn/server": "^9.0.3",
         "next": "15.1.4",
         "next-auth": "^5.0.0-beta.25",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-        "unstorage": "^1.14.4"
+        "react-dom": "^19.0.0"
     },
     "devDependencies": {
         "@testing-library/dom": "^10.4.0",
