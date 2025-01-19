@@ -15,15 +15,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log("signIn", { user, account, profile, email, credentials });
+            console.log("signIn", {
+                user,
+                account,
+                profile,
+                email,
+                credentials,
+            });
             // attempt sign in to the backend
             // await fetch("/api/signin") with jwt
             // if successful, return true
             // if unsuccessful, try to sign up
             // store the user data in the database
 
-            return true
-        }, 
+            return true;
+        },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
             if (pathname === "/middleware-example") return !!auth;

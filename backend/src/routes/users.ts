@@ -9,7 +9,7 @@ router.post("/signin", async (req, res) => {
     try {
         // cors block requests from unauthorized domains
         // receive user data from the request body
-        // attempt to sign in 
+        // attempt to sign in
         // await ctx.prisma.user.findUniqueOrThrow
         // if successful, return true
         // if unsuccessful
