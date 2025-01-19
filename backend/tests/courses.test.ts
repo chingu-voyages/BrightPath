@@ -6,7 +6,7 @@ import { createCourses } from "./utils";
 const prisma = createContext().prisma;
 
 describe("GET /courses", () => {
-    afterEach(async () => {
+    beforeEach(async () => {
         await prisma.course.deleteMany();
         await prisma.user.deleteMany();
     });
