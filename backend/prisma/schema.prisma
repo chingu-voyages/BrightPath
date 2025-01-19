@@ -17,7 +17,7 @@ model User {
   role        Role          @default(STUDENT)
   accounts    Account[]
   enrollments Enrollment[]
-  course      Course[]
+  courses     Course[]
   certificate Certificate[]
 }
 
