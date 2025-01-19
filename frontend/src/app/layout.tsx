@@ -42,9 +42,9 @@ export default function RootLayout({
                 </main> 
                 */}
 
-                    {children}
+                {children}
                 <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
-                    {/* footer*/} 
+                    {/* footer*/}
                 </footer>
             </body>
         </html>
