@@ -18,7 +18,7 @@ model User {
   accounts    Account[]
   enrollments Enrollment[]
   courses     Course[]
-  certificate Certificate[]
+  certificates Certificate[]
 }
 
 model Account {
