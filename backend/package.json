@@ -9,6 +9,7 @@
         "docker:down": "docker compose down",
         "migration:generate": "npx prisma migrate dev --name init",
         "prettier": "prettier --write .",
+        "dummy": "npx ts-node scripts/dummy-data.ts",
         "test": "npm run docker:up && npx prisma migrate deploy && jest -i"
     },
     "keywords": [],
