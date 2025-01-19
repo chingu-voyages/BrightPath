@@ -14,7 +14,7 @@ const Navbar = () => {
       <ul className='flex gap-6 justify-center font-semibold text-lg md:text-xl'>
         <Link href={"/"} className='hidden sm:block'>Home</Link>
         <Link href={"/courses"} className='hidden sm:block'>Courses</Link>
-        <Link href={user ? `/settings/${user?.id}`:'/login'}>
+        <Link href={user ? `/settings/${user}`:'/login'}>
           O
         </Link>
       </ul>
