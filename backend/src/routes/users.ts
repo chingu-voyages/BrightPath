@@ -6,19 +6,27 @@ const ctx = createContext();
 
 // POST /signin
 router.post("/signin", async (req, res) => {
+    const { email, name, image } = req.body;
     try {
-        // cors block requests from unauthorized domains
-        // receive user data from the request body
-        // attempt to sign in
-        // await ctx.prisma.user.findUniqueOrThrow
-        // if successful, return true
-        // if unsuccessful
-        // await ctx.prisma.user.create
 
-        res.status(200).json();
+        let user = await ctx.prisma.user.findUnique({
+            where: { email: email },
+        });
+
+        if (!user) {
+            user = await ctx.prisma.user.create({
+                data: {
+                    email,
+                    name,
+                    image,
+                    role: "STUDENT"
+                }
+            })
+        }
+        res.status(200).json("Sign in successful");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch courses." });
+        res.status(500).json({ error: "Failed to sign in." });
     }
 });
 
