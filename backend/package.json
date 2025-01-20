@@ -7,10 +7,12 @@
         "dev": "nodemon src/server.ts",
         "docker:up": "docker compose up -d",
         "docker:down": "docker compose down",
-        "migration:generate": "npx prisma migrate dev --name init",
-        "prettier": "prettier --write .",
-        "dummy": "npx ts-node scripts/dummy-data.ts",
-        "test": "npm run docker:up && npx prisma migrate deploy && jest -i"
+        "prisma:migration": "npx prisma migrate dev --name init",
+        "prisma:generate": "npx prisma generate && cp -r ./node_modules/.prisma ../frontend/node_modules/.prisma",
+        "generate:dummy": "npx ts-node scripts/dummy-data.ts",
+        "generate:mock": "npx ts-node scripts/generate-mock-data.ts && cp -f ./mockData.json ../frontend/tests/mocks/data.json",
+        "test": "npm run docker:up && npx prisma migrate deploy && jest -i",
+        "prettier": "prettier --write ."
     },
     "keywords": [],
     "author": "",
