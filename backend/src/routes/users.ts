@@ -8,7 +8,6 @@ const ctx = createContext();
 router.post("/signin", async (req, res) => {
     const { email, name, image } = req.body;
     try {
-
         let user = await ctx.prisma.user.findUnique({
             where: { email: email },
         });
@@ -19,9 +18,9 @@ router.post("/signin", async (req, res) => {
                     email,
                     name,
                     image,
-                    role: "STUDENT"
-                }
-            })
+                    role: "STUDENT",
+                },
+            });
         }
         res.status(200).json("Sign in successful");
     } catch (error) {
