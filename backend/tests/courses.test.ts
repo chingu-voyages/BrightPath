@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../src/app";
-import { createContext } from "../src/context";
+import { createContext } from "./context";
 import { createCourses } from "./utils";
 
 const prisma = createContext().prisma;

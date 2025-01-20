@@ -3,18 +3,9 @@ import "next-auth/jwt";
 
 import GoogleProvider from "next-auth/providers/google";
 
-import { createStorage } from "unstorage";
-import memoryDriver from "unstorage/drivers/memory";
-import { UnstorageAdapter } from "@auth/unstorage-adapter";
-
-const storage = createStorage({
-    driver: memoryDriver(),
-});
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
     basePath: "/auth",
-    adapter: UnstorageAdapter(storage),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -23,6 +14,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ],
     session: { strategy: "jwt" },
     callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            console.log("signIn", {
+                user,
+                account,
+                profile,
+                email,
+                credentials,
+            });
+            // attempt sign in to the backend
+            // await fetch("/api/signin") with jwt
+            // if successful, return true
+            // if unsuccessful, try to sign up
+            // store the user data in the database
+
+            return true;
+        },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
             if (pathname === "/middleware-example") return !!auth;
@@ -41,7 +48,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
-    experimental: { enableWebAuthn: true },
 });
 
 declare module "next-auth" {

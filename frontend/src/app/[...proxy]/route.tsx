@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { NextRequest } from "next/server";
 
-// Review if we need this, and why
 function stripContentEncoding(result: Response) {
     const responseHeaders = new Headers(result.headers);
     responseHeaders.delete("content-encoding");
