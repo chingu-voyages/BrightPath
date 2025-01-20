@@ -1,6 +1,6 @@
 // courseController.test.ts
 import { getAllCourses } from "../src/courseController";
-import { MockContext, Context, createMockContext } from "../src/context";
+import { MockContext, Context, createMockContext } from "./context";
 import { createCourses } from "./utils";
 
 let mockCtx: MockContext;
