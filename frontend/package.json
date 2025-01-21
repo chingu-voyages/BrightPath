@@ -12,6 +12,8 @@
         "prettier": "npx prettier --write ."
     },
     "dependencies": {
+        "@ant-design/nextjs-registry": "^1.0.2",
+        "antd": "^5.23.2",
         "next": "15.1.4",
         "next-auth": "^5.0.0-beta.25",
         "react": "^19.0.0",
