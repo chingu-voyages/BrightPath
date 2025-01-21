@@ -27,9 +27,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <Providers>
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-100 dark:bg-slate-900 lg:h-svh`}
             >
+
                 <header className="w-full">
                     {/* nav bar ... (top) */}
                     <Navbar />
@@ -42,12 +44,14 @@ export default function RootLayout({
                     <Sidebar /> 
                 </main> 
                 */}
-
-                <Providers>{children}</Providers>
+                    
+                    {children}
+                    
                 <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                     {/* footer*/}
                 </footer>
-            </body>
+                </body>
+                </Providers>
         </html>
     );
 }
