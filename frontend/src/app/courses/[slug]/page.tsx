@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 type Course = Prisma.CourseGetPayload<{
-    include: { instructor: true };
+    include: { instructor: true; units: true };
 }>;
 
 type Unit = Prisma.UnitGetPayload<{}>;
@@ -11,9 +11,9 @@ export const dynamic = "force-dynamic";
 export default async function Courses({
     params,
 }: {
-    params: Promise<{ slug: string }>
+    params: Promise<{ slug: string }>;
 }) {
-    const slug = (await params).slug
+    const slug = (await params).slug;
 
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
@@ -25,18 +25,14 @@ export default async function Courses({
             data-testid="course"
         >
             <h2 className="text-lg font-semibold">{course.title}</h2>
-            <p className="text-gray-500">
-                {course.shortDescription}
-            </p>
+            <p className="text-gray-500">{course.shortDescription}</p>
 
             <div className="flex justify-between">
                 <span className="text-sm text-gray-500">
                     {course.difficulty}
                 </span>
 
-                <span className="text-sm text-gray-500">
-                    {course.duration}
-                </span>
+                <span className="text-sm text-gray-500">{course.duration}</span>
             </div>
             <div className="flex justify-between mt-4">
                 <video controls width={200} height={200}>
@@ -48,17 +44,13 @@ export default async function Courses({
                 </span>
             </div>
 
-            <p className="text-sm text-gray-500">
-                {course.description}
-            </p>
+            <p className="text-sm text-gray-500">{course.description}</p>
 
             <div className="mt-4">
                 <h3 className="text-lg font-semibold">Course Outline</h3>
                 <ul>
                     {course.units?.map((unit: Unit) => (
-                        <li key={unit.id}>
-                            {unit.title}
-                        </li>
+                        <li key={unit.id}>{unit.title}</li>
                     ))}
                 </ul>
             </div>
