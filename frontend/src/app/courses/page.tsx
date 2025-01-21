@@ -1,4 +1,8 @@
-import { type Course } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+type Course = Prisma.CourseGetPayload<{
+    include: { instructor: true };
+}>;
 
 export default async function Courses() {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses");

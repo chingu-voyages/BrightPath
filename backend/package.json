@@ -8,7 +8,7 @@
         "docker:up": "docker compose up -d",
         "docker:down": "docker compose down",
         "prisma:migration": "npx prisma migrate dev --name init",
-        "prisma:generate": "npx prisma generate && cp -r ./node_modules/.prisma ../frontend/node_modules/.prisma",
+        "prisma:generate": "npx prisma generate",
         "generate:dummy": "npx ts-node scripts/dummy-data.ts",
         "generate:mock": "npx ts-node scripts/generate-mock-data.ts && cp -f ./mockData.json ../frontend/tests/mocks/data.json",
         "test": "npm run docker:up && npx prisma migrate deploy && jest -i",
