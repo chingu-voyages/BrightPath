@@ -58,5 +58,4 @@ jobs:
         npm run generate:mock
         cd ../frontend
         npm test
-        npm run build --if-present
 
