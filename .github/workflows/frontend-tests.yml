@@ -49,13 +49,14 @@ jobs:
     - name: CI
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+        BACKEND_API_URL: http://localhost:5000
       run: |
         cd backend
         npm install
         npx prisma migrate dev --name init
-        npx prisma generate
         npm run prisma:generate
         npm run generate:mock
         cd ../frontend
         npm test
+        npm run build --if-present
 
