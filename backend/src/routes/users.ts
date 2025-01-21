@@ -22,7 +22,7 @@ router.post("/signin", async (req, res) => {
                 },
             });
         }
-        res.status(200).json("Sign in successful");
+        res.status(200).json(user);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to sign in." });
