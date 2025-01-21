@@ -1,35 +1,37 @@
-import { createContext } from "../src/context";
-import { Role } from "@prisma/client";
-import { userFactory, courseFactory } from "../factories/factory";
+import { Context } from "./context";
+import { Course, Role } from "@prisma/client";
+import { userFactory, userCreateInputFactory } from "../factories/user";
+import { courseFactory, courseCreateInputFactory } from "../factories/course";
 
-const prisma = createContext().prisma;
+export const createPersistentCourse = async (ctx: Context, amount: number) => {
+    const instructor = await ctx.prisma.user.create({
+        data: userCreateInputFactory(Role.INSTRUCTOR),
+    });
+
+    const courses: Course[] = [];
+
+    for (let i = 0; i < amount; i++) {
+        const course = await ctx.prisma.course.create({
+            data: courseCreateInputFactory(instructor.id),
+        });
+        courses.push(course);
+    }
+
+    return courses;
+};
 
 export const createInstructor = async () => {
-    const userData = userFactory(Role.INSTRUCTOR);
-    const user = await prisma.user.create({ data: userData });
-    return user;
+    return userFactory(Role.INSTRUCTOR);
 };
 
 export const createStudent = async (amount: number = 1) => {
-    const students = await Promise.all(
-        Array.from({ length: amount }, async () => {
-            const student = userFactory(Role.STUDENT);
-            return await prisma.user.create({ data: student });
-        }),
-    );
-
-    return students;
+    return Array.from({ length: amount }, () => {
+        return userFactory(Role.STUDENT);
+    })
 };
 
 export const createCourses = async (amount: number = 1) => {
-    const instructor = await createInstructor();
-
-    const courses = await Promise.all(
-        Array.from({ length: amount }, async () => {
-            const courseData = courseFactory(instructor.id);
-            return await prisma.course.create({ data: courseData });
-        }),
-    );
-
-    return courses;
+    return Array.from({ length: amount }, () => {
+        return courseFactory();
+    })
 };
