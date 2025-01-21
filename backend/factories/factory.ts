@@ -17,9 +17,10 @@ export const courseFactory = (
     instructorId: number,
     difficulty: Difficulty = Difficulty.BEGINNER,
 ): Prisma.CourseCreateInput => {
+    const title = faker.book.title();
     return {
-        title: faker.lorem.words(3),
-        slug: faker.helpers.slugify(faker.lorem.words(3)),
+        title: title,
+        slug: faker.helpers.slugify(title),
         shortDescription: faker.lorem.sentence(),
         description: faker.lorem.paragraphs(2),
         duration: `${faker.number.int({ min: 1, max: 20 })}h`,
