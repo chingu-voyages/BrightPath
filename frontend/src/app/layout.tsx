@@ -28,30 +28,29 @@ export default function RootLayout({
     return (
         <html lang="en">
             <Providers>
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-100 dark:bg-slate-900 lg:h-svh`}
-            >
+                <body
+                    className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-100 dark:bg-slate-900 lg:h-svh`}
+                >
+                    <header className="w-full">
+                        {/* nav bar ... (top) */}
+                        <Navbar />
+                    </header>
 
-                <header className="w-full">
-                    {/* nav bar ... (top) */}
-                    <Navbar />
-                </header>
-
-                {/* ?? only on course page */}
-                {/*
+                    {/* ?? only on course page */}
+                    {/*
                  <main className="flex-1 flex flex-row py-2 md:py-6 ">
                     ?? side bar is auth props: !!
                     <Sidebar /> 
                 </main> 
                 */}
-                    
+
                     {children}
-                    
-                <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
-                    {/* footer*/}
-                </footer>
+
+                    <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                        {/* footer*/}
+                    </footer>
                 </body>
-                </Providers>
+            </Providers>
         </html>
     );
 }
