@@ -4,6 +4,8 @@ type Course = Prisma.CourseGetPayload<{
     include: { instructor: true };
 }>;
 
+export const dynamic = "force-dynamic";
+
 export default async function Courses() {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses");
     const courses: Course[] = await res.json();
