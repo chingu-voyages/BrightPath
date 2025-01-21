@@ -1,7 +1,7 @@
 import { Context } from "./context";
 import { Course, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
-import { courseFactory, courseCreateInputFactory } from "../factories/course";
+import { courseFactory, courseCreateInputFactory, unitCreateInputFactory } from "../factories/course";
 
 export const createPersistentCourse = async (ctx: Context, amount: number) => {
     const instructor = await ctx.prisma.user.create({
@@ -15,6 +15,16 @@ export const createPersistentCourse = async (ctx: Context, amount: number) => {
             data: courseCreateInputFactory(instructor.id),
         });
         courses.push(course);
+    }
+
+    for (const course of courses) {
+        // random number of units
+        const unitAmount = Math.floor(Math.random() * 10) + 1;
+        for (let i = 0; i < unitAmount; i++) {
+            await ctx.prisma.unit.create({
+                data: unitCreateInputFactory(course.id),
+            });
+        }
     }
 
     return courses;
