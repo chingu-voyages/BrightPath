@@ -7,5 +7,11 @@
         "esModuleInterop": true,
         "strict": true
     },
-    "exclude": ["node_modules", "tests", "jest.config.ts", "scripts"]
+    "exclude": [
+        "node_modules",
+        "tests",
+        "jest.config.ts",
+        "scripts",
+        "factories"
+    ]
 }
