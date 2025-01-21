@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Providers from "@/components/Providers";
 import Navbar from "@/components/primitives/Navbar";
 import Sidebar from "@/components/primitives/Sidebar";
 
@@ -42,7 +43,7 @@ export default function RootLayout({
                 </main> 
                 */}
 
-                {children}
+                <Providers>{children}</Providers>
                 <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                     {/* footer*/}
                 </footer>
