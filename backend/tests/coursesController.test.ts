@@ -45,6 +45,20 @@ describe("getCourseBySlug", () => {
         await expect(getCourseBySlug(ctx, "sample-course")).resolves.toEqual(course);
     });
 
+
+    test("should fetch a course with all its units", async () => {
+        const courses = await createCourses(1);
+        const course = courses[0];
+
+        mockCtx.prisma.course.findUnique.mockResolvedValue(course);
+
+        await expect(getCourseBySlug(ctx, "sample-course")).resolves.toEqual(course);
+        expect(mockCtx.prisma.course.findUnique).toHaveBeenCalledWith({
+            where: { slug: "sample-course" },
+            include: { instructor: true, units: true },
+        });
+    });
+
     test("should return null if no course is found with the given slug", async () => {
         mockCtx.prisma.course.findUnique.mockResolvedValue(null);
 
