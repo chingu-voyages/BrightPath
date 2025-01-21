@@ -1,11 +1,9 @@
 import { Prisma, Role, Difficulty } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
-type User = Prisma.UserGetPayload<{}>
+type User = Prisma.UserGetPayload<{}>;
 
-export const userFactory = (
-    role: Role = Role.STUDENT,
-): User => {
+export const userFactory = (role: Role = Role.STUDENT): User => {
     return {
         id: faker.number.int(),
         email: faker.internet.email(),
@@ -17,10 +15,9 @@ export const userFactory = (
     };
 };
 
-
 export const userCreateInputFactory = (
     role: Role = Role.STUDENT,
-): Prisma.UserCreateInput=> {
+): Prisma.UserCreateInput => {
     return {
         email: faker.internet.email(),
         username: faker.internet.username(),

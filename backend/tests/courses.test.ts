@@ -23,9 +23,7 @@ describe("GET /courses", () => {
         courses = await createPersistentCourse(ctx, 2);
     });
 
-
     it("should return a list of courses", async () => {
-
         const response = await request(app).get("/courses");
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(2);
@@ -57,5 +55,3 @@ describe("GET /courses/:slug", () => {
         expect(response.status).toBe(404);
     });
 });
-
-

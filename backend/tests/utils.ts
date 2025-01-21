@@ -1,7 +1,11 @@
 import { Context } from "./context";
 import { Course, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
-import { courseFactory, courseCreateInputFactory, unitCreateInputFactory } from "../factories/course";
+import {
+    courseFactory,
+    courseCreateInputFactory,
+    unitCreateInputFactory,
+} from "../factories/course";
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteUnits = ctx.prisma.unit.deleteMany();
@@ -9,7 +13,7 @@ export const cleanDatabase = async (ctx: Context) => {
     const deleteUsers = ctx.prisma.user.deleteMany();
 
     await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteUsers]);
-}
+};
 
 export const createPersistentCourse = async (ctx: Context, amount: number) => {
     const instructor = await ctx.prisma.user.create({
@@ -47,11 +51,11 @@ export const createInstructor = async () => {
 export const createStudent = async (amount: number = 1) => {
     return Array.from({ length: amount }, () => {
         return userFactory(Role.STUDENT);
-    })
+    });
 };
 
 export const createCourses = async (amount: number = 1) => {
     return Array.from({ length: amount }, () => {
         return courseFactory();
-    })
+    });
 };

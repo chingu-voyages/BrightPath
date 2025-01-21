@@ -6,10 +6,7 @@ const router = Router();
 const ctx = createContext();
 
 // GET /courses
-router.get("/", async (
-    req: Request,
-    res: Response
-) => {
+router.get("/", async (req: Request, res: Response) => {
     try {
         const courses = await getAllCourses(ctx);
         res.status(200).json(courses);
@@ -20,10 +17,7 @@ router.get("/", async (
 });
 
 // GET /courses/:slug
-router.get("/:slug", async (
-    req: Request<{ slug: string }>,
-    res: Response
-) => {
+router.get("/:slug", async (req: Request<{ slug: string }>, res: Response) => {
     try {
         const course = await getCourseBySlug(ctx, req.params.slug);
 

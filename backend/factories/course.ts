@@ -3,10 +3,10 @@ import { faker } from "@faker-js/faker";
 import { userFactory } from "./user";
 
 type Course = Prisma.CourseGetPayload<{
-    include: { instructor: true, units: true };
-}>
+    include: { instructor: true; units: true };
+}>;
 
-type Unit = Prisma.UnitGetPayload<{}>
+type Unit = Prisma.UnitGetPayload<{}>;
 
 export const courseFactory = (
     difficulty: Difficulty = Difficulty.BEGINNER,
@@ -14,7 +14,10 @@ export const courseFactory = (
     const instructor = userFactory(Role.INSTRUCTOR);
     const title = faker.book.title();
     // random number of units
-    const units = Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () => unitFactory());
+    const units = Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        () => unitFactory(),
+    );
 
     return {
         id: faker.number.int(),
@@ -34,7 +37,7 @@ export const courseFactory = (
         assignmentId: null,
         units: units,
     };
-}
+};
 
 export const courseCreateInputFactory = (
     instructorId: number,
@@ -66,7 +69,7 @@ export const unitFactory = (): Unit => {
         title: title,
         courseId: faker.number.int(),
     };
-}
+};
 
 export const unitCreateInputFactory = (
     courseId: number,
@@ -79,4 +82,4 @@ export const unitCreateInputFactory = (
             connect: { id: courseId },
         },
     };
-}
+};
