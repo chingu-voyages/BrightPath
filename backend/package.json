@@ -12,6 +12,7 @@
         "generate:dummy": "npx ts-node scripts/dummy-data.ts",
         "generate:mock": "npx ts-node scripts/generate-mock-data.ts && cp -f ./mockData.json ../frontend/tests/mocks/data.json",
         "test": "npm run docker:up && npx prisma migrate deploy && jest -i",
+        "test:watch": "npm run docker:up && npx prisma migrate deploy && jest --watch",
         "prettier": "prettier --write ."
     },
     "keywords": [],
