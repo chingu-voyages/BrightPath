@@ -1,11 +1,10 @@
 import { createContext } from "../src/context";
-import { createPersistentCourse  } from "../tests/utils";
+import { createPersistentCourse, cleanDatabase  } from "../tests/utils";
 
 const ctx = createContext();
 
 (async () => {
-    await ctx.prisma.course.deleteMany();
-    await ctx.prisma.user.deleteMany();
+    await cleanDatabase(ctx);
 
     await createPersistentCourse(ctx, 10);
 })();

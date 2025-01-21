@@ -67,7 +67,7 @@ model Unit {
   id       Int      @id @default(autoincrement())
   title    String
   courseId Int
-  course   Course   @relation(fields: [courseId], references: [id])
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons  Lesson[]
 }
 

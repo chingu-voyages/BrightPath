@@ -1,14 +1,14 @@
 import request from "supertest";
 import app from "../src/app";
 import { createContext } from "./context";
-import { createInstructor } from "./utils";
+import { createInstructor, cleanDatabase } from "./utils";
 
-const prisma = createContext().prisma;
+const ctx = createContext();
+const prisma = ctx.prisma;
 
 describe("POST /user/signin", () => {
     beforeEach(async () => {
-        await prisma.course.deleteMany();
-        await prisma.user.deleteMany();
+        await cleanDatabase(ctx);
     });
 
     it("should create a new user if one doesn't exist", async () => {

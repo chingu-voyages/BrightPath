@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../src/app";
 import { createContext } from "./context";
-import { createPersistentCourse } from "./utils";
+import { createPersistentCourse, cleanDatabase } from "./utils";
 import { Course } from "@prisma/client";
 
 const ctx = createContext();
@@ -18,8 +18,7 @@ describe("GET /courses", () => {
     let courses: Course[];
 
     beforeEach(async () => {
-        await ctx.prisma.course.deleteMany();
-        await ctx.prisma.user.deleteMany();
+        await cleanDatabase(ctx);
 
         courses = await createPersistentCourse(ctx, 2);
     });
@@ -38,14 +37,14 @@ describe("GET /courses", () => {
 });
 
 describe("GET /courses/:slug", () => {
+    let course: Course;
     beforeEach(async () => {
-        await ctx.prisma.course.deleteMany();
-        await ctx.prisma.user.deleteMany();
+        await cleanDatabase(ctx);
+
+        [course] = await createPersistentCourse(ctx, 1);
     });
 
     it("should return a course by slug", async () => {
-        const [course] = await createPersistentCourse(ctx, 1);
-
         const response = await request(app).get(`/courses/${course.slug}`);
         expect(response.status).toBe(200);
 

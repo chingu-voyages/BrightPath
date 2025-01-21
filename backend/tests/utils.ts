@@ -3,6 +3,14 @@ import { Course, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
 import { courseFactory, courseCreateInputFactory, unitCreateInputFactory } from "../factories/course";
 
+export const cleanDatabase = async (ctx: Context) => {
+    const deleteUnits = ctx.prisma.unit.deleteMany();
+    const deleteCourses = ctx.prisma.course.deleteMany();
+    const deleteUsers = ctx.prisma.user.deleteMany();
+
+    await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteUsers]);
+}
+
 export const createPersistentCourse = async (ctx: Context, amount: number) => {
     const instructor = await ctx.prisma.user.create({
         data: userCreateInputFactory(Role.INSTRUCTOR),
@@ -21,9 +29,11 @@ export const createPersistentCourse = async (ctx: Context, amount: number) => {
         // random number of units
         const unitAmount = Math.floor(Math.random() * 10) + 1;
         for (let i = 0; i < unitAmount; i++) {
-            await ctx.prisma.unit.create({
-                data: unitCreateInputFactory(course.id),
-            });
+            if (course.id === undefined) {
+                await ctx.prisma.unit.create({
+                    data: unitCreateInputFactory(course.id),
+                });
+            }
         }
     }
 
