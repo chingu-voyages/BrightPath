@@ -34,7 +34,7 @@ export default function RootLayout({
                     <Layout
                         className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
                     >
-                        <Header className="flex justify-between text-2xl items-center w-full p-6 md:p-12  rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                        <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12  rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             <div>Logo</div>
                             <nav className="flex justify-center items-center gap-4   ">
                                 <Link
