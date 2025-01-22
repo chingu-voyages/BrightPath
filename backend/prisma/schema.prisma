@@ -32,7 +32,7 @@ model Account {
   provider          String
   providerAccountId String
   userId            Int
-  user              User   @relation(fields: [userId], references: [id])
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -52,9 +52,9 @@ model Course {
   thumbnail        String
 
   assignmentId     Int?
-  timedAssessment  Assignment?   @relation(fields: [assignmentId], references: [id])
+  timedAssessment  Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   instructorId     Int
-  instructor       User          @relation(fields: [instructorId], references: [id])
+  instructor       User          @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   units            Unit[]
   enrollments      Enrollment[]
   tags             CourseTag[]
@@ -67,7 +67,7 @@ model Unit {
   id       Int      @id @default(autoincrement())
   title    String
   courseId Int
-  course   Course   @relation(fields: [courseId], references: [id])
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons  Lesson[]
 }
 
