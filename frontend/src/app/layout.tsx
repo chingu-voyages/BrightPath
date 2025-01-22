@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Providers from "@/components/Providers";
-import Navbar from "@/components/primitives/Navbar";
-import Sidebar from "@/components/primitives/Sidebar";
+import { Layout, Menu } from "antd";
+import { Footer, Header } from "antd/es/layout/layout";
+import Link from "next/link";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,30 +29,45 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <Providers>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-100 dark:bg-slate-900 lg:h-svh`}
-                >
-                    <header className="w-full">
-                        {/* nav bar ... (top) */}
-                        <Navbar />
-                    </header>
+            <body>
+                <Providers>
+                    <Layout
+                        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
+                    >
+                        <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                            <div>BrightPath</div>
+                            <nav className="flex justify-center items-center gap-4   ">
+                                <Link
+                                    href={"/"}
+                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                                >
+                                    Home
+                                </Link>
+                                <Link
+                                    href={"/courses"}
+                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                                >
+                                    Courses
+                                </Link>
+                                <Link
+                                    href={"/profile"}
+                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
+                                >
+                                    <div>
+                                        <AccountCircleOutlinedIcon fontSize="large" />
+                                    </div>
+                                </Link>
+                            </nav>
+                        </Header>
+                        {/* main contents */}
+                        <main className="flex-1">{children}</main>
 
-                    {/* ?? only on course page */}
-                    {/*
-                 <main className="flex-1 flex flex-row py-2 md:py-6 ">
-                    ?? side bar is auth props: !!
-                    <Sidebar /> 
-                </main> 
-                */}
-
-                    {children}
-
-                    <footer className="w-full min-h-24 p-6 md:px-12  rounded-xl shadow-sm shadow-inherit  border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
-                        {/* footer*/}
-                    </footer>
-                </body>
-            </Providers>
+                        <Footer className="flex  w-full p-6 md:px-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                            {/* footer*/}
+                        </Footer>
+                    </Layout>
+                </Providers>
+            </body>
         </html>
     );
 }
