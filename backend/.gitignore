@@ -3,4 +3,4 @@ dist
 # Keep environment variables out of version control
 .env
 mockData.json
-./prisma/migrations/
+# ./prisma/migrations/
