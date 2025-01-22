@@ -1,6 +1,10 @@
-import { createCourses } from "../tests/utils";
+import { createContext } from "../src/context";
+import { createPersistentCourse, cleanDatabase } from "../tests/utils";
+
+const ctx = createContext();
 
 (async () => {
-    const courses = await createCourses(5);
-    console.log(courses);
+    await cleanDatabase(ctx);
+
+    await createPersistentCourse(ctx, 10);
 })();

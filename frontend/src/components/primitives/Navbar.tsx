@@ -1,25 +1,22 @@
 import Link from "next/link";
 import React from "react";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 const Navbar = () => {
     const user = {};
     return (
-        <nav className="flex justify-between items-center p-6 md:px-12  rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
-            <Link href={"/"} className="">
-                Logo
+        <nav className="flex gap-6 justify-center font-semibold text-lg md:text-xl">
+            <Link href={"/"} className="hidden sm:block">
+                Home
             </Link>
-
-            {/* links */}
-
-            <section className="flex gap-6 justify-center font-semibold text-lg md:text-xl">
-                <Link href={"/"} className="hidden sm:block">
-                    Home
-                </Link>
-                <Link href={"/courses"} className="hidden sm:block">
-                    Courses
-                </Link>
-                <Link href={"/"}>O</Link>
-            </section>
+            <Link href={"/courses"} className="hidden sm:block">
+                Courses
+            </Link>
+            <Link href={"/"}>
+                <div>
+                    <AccountCircleOutlinedIcon />
+                </div>
+            </Link>
         </nav>
     );
 };
