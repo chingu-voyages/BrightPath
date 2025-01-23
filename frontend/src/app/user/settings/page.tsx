@@ -1,9 +1,8 @@
-'use client'
+"use client";
 import React from "react";
 import { Form, Input, Button, Upload, message } from "antd";
 import { Upload as UploadIcon } from "@mui/icons-material";
 import { UploadChangeParam } from "antd/es/upload";
-
 
 export const dynamic = "force-dynamic";
 
@@ -62,9 +61,8 @@ export default function UserSettings() {
 
     return (
         <div className="flex items-center flex-col w-full p-0">
-            <h1 className="mt-4" >Settings</h1>
+            <h1 className="mt-4">Settings</h1>
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-4 mb-4 w-auto max-w-lg">
-                
                 <Form
                     form={form}
                     layout="vertical"
@@ -90,17 +88,22 @@ export default function UserSettings() {
                     </Form.Item>
 
                     <Form.Item name="bio" label="Bio">
-                        <Input.TextArea placeholder="Enter a short bio" rows={4} />
+                        <Input.TextArea
+                            placeholder="Enter a short bio"
+                            rows={4}
+                        />
                     </Form.Item>
 
                     <Form.Item name="image" label="Profile Image">
                         <Upload
                             name="file"
-                            action="/api/upload" 
+                            action="/api/upload"
                             listType="picture"
                             onChange={handleUpload}
                         >
-                            <Button icon={<UploadIcon />}>Click to Upload</Button>
+                            <Button icon={<UploadIcon />}>
+                                Click to Upload
+                            </Button>
                         </Upload>
                     </Form.Item>
 
