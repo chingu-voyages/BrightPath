@@ -32,7 +32,7 @@ export default function RootLayout({
             <body>
                 <Providers>
                     <Layout
-                        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 md:px-20 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
+                        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
                     >
                         <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             <div>BrightPath</div>
@@ -50,7 +50,7 @@ export default function RootLayout({
                                     Courses
                                 </Link>
                                 <Link
-                                    href={"/profile"}
+                                    href={"/user/profile"}
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
                                 >
                                     <div>
@@ -60,7 +60,7 @@ export default function RootLayout({
                             </nav>
                         </Header>
                         {/* main contents */}
-                        <main className="flex-1">{children}</main>
+                        <main className="flex-1 w-screen">{children}</main>
 
                         <Footer className="flex  w-full p-6 md:px-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             {/* footer*/}
