@@ -8,9 +8,9 @@ import { UploadChangeParam } from "antd/es/upload";
 export const dynamic = "force-dynamic";
 
 interface UserData {
-    name: string;
-    username: string;
-    email: string;
+    name?: string;
+    username?: string;
+    email?: string;
     image?: string;
     bio?: string;
 }
