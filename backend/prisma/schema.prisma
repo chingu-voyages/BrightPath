@@ -1,12 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
+
+generator frontend {
+  provider = "prisma-client-js"
+  output   = "../../frontend/node_modules/.prisma/client"
+}
+
 
 datasource db {
   provider = "postgresql"
@@ -14,19 +14,183 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  username  String  @unique
-  firstName String
-  lastName  String
-  role     String
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  username    String?       @unique
+  name        String?
+  image       String?
+  bio         String?
+  role        Role          @default(STUDENT)
+  accounts    Account[]
+  enrollments Enrollment[]
+  courses     Course[]
+  certificates Certificate[]
+}
+
+model Account {
+  id                Int    @id @default(autoincrement())
+  provider          String
+  providerAccountId String
+  userId            Int
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Course {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String
-  instructor  User     @relation(fields: [instructorId], references: [id])
-  instructorId Int
+  introVideoUrl    String
+  id               Int           @id @default(autoincrement())
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  published        Boolean       @default(false)
+  title            String        @unique
+  slug             String        @unique
+  shortDescription String
+  description      String
+  duration         String
+  difficulty       Difficulty
+  thumbnail        String
+
+  assignmentId     Int?
+  timedAssessment  Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  instructorId     Int
+  instructor       User          @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  units            Unit[]
+  enrollments      Enrollment[]
+  tags             CourseTag[]
+  certificate      Certificate[]
+
+  @@index([title])
 }
 
+model Unit {
+  id       Int      @id @default(autoincrement())
+  title    String
+  courseId Int
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons  Lesson[]
+}
+
+model Lesson {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  unitId      Int
+  unit        Unit         @relation(fields: [unitId], references: [id])
+  assignments Assignment[]
+}
+
+model Certificate {
+  id       Int      @id @default(autoincrement())
+  courseId Int
+  userId   Int
+  issuedAt DateTime @default(now())
+  url      String
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+}
+
+model Assignment {
+  id                    Int                    @id @default(autoincrement())
+  title                 String
+  type                  AssignmentType // Enum for the base assignment type
+  lessonId              Int
+  lesson                Lesson                 @relation(fields: [lessonId], references: [id])
+  course                Course[]
+  ReadingAssignment     ReadingAssignment?
+  QuizAssignment        QuizAssignment?
+  InteractiveAssignment InteractiveAssignment?
+  VideoAssignment       VideoAssignment?
+}
+
+model ReadingAssignment {
+  id           Int        @id @default(autoincrement())
+  assignmentId Int        @unique
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  content      String
+}
+
+model QuizAssignment {
+  id           Int        @id @default(autoincrement())
+  assignmentId Int        @unique
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  questions    Json // Array of questions
+  timeLimit    Int? // Time limit in minutes or null if no time limit
+}
+
+model InteractiveAssignment {
+  id           Int        @id @default(autoincrement())
+  assignmentId Int        @unique
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+
+  codeSnippet  String
+  language     String // Programming language
+  testCases    Json // List of test cases to validate input/output
+  maxAttempts  Int?
+  constraints  Json? // Optional: Rules, such as memory limits or input length
+  instructions String?
+}
+
+model VideoAssignment {
+  id           Int        @id @default(autoincrement())
+  assignmentId Int        @unique
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  videoUrl     String
+  transcript   String?
+}
+
+model Enrollment {
+  id               Int              @id @default(autoincrement())
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  userId           Int
+  user             User             @relation(fields: [userId], references: [id])
+  courseId         Int
+  course           Course           @relation(fields: [courseId], references: [id])
+  status           EnrollmentStatus
+  progress         Float            @default(0) // Progress of whole course
+  granularProgress Json             @default("{}") // Progress of each unit/lesson
+
+  @@unique([userId, courseId]) // a user can only enroll in a course once
+}
+
+model Tag {
+  id      Int         @id @default(autoincrement())
+  name    String      @unique
+  courses CourseTag[]
+}
+
+model CourseTag {
+  courseId Int
+  tagId    Int
+  course   Course @relation(fields: [courseId], references: [id])
+  tag      Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([courseId, tagId]) // composite primary key to prevent duplicates
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  INSTRUCTOR
+}
+
+enum AssignmentType {
+  READING
+  VIDEO
+  INTERACTIVE
+  QUIZ
+  TIMED_ASSESSMENT
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}

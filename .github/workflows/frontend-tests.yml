@@ -1,0 +1,61 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches: 
+      - main 
+      - staging
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Setup frontend
+      working-directory: ./frontend
+      run: |
+        npm install
+
+    - name: CI
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+        BACKEND_API_URL: http://localhost:5000
+      run: |
+        cd backend
+        npm install
+        npx prisma migrate dev --name init
+        npm run prisma:generate
+        npm run generate:mock
+        cd ../frontend
+        npm test
+

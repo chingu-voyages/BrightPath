@@ -12,12 +12,27 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x]
+
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v4
@@ -27,9 +42,19 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Setup Prisma
+      working-directory: ./backend
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+      run: |
+        npx prisma generate
+        npx prisma migrate dev --name init --schema=./prisma/schema.prisma
+
     - name: CI
       working-directory: ./backend
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
       run: |
         npm install
         npm run build --if-present
-        npm test
+        npx jest
