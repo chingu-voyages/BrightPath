@@ -15,20 +15,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            console.log("signIn", {
-                user,
-                account,
-                profile,
-                email,
-                credentials,
-            });
-            // attempt sign in to the backend
-            // await fetch("/api/signin") with jwt
-            // if successful, return true
-            // if unsuccessful, try to sign up
-            // store the user data in the database
+            if (account?.provider === "google") {
+                if (!profile?.email_verified) {
+                    console.error("Google email is not verified");
+                    return false;
+                }
+                console.log("Email verified");
+            }
 
-            return true;
+            try {
+                const token = account?.access_token;
+                const response = await fetch(
+                    `http://localhost:3080/user/signin`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            email: user.email,
+                            name: user.name,
+                            image: user.image,
+                        }),
+                    },
+                );
+                if (response.ok) {
+                    console.log("User signed in");
+                    return true;
+                } else {
+                    console.log("Sign in failed");
+                    return false;
+                }
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
