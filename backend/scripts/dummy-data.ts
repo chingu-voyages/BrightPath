@@ -1,5 +1,9 @@
 import { createContext } from "../src/context";
-import { createPersistentCourse, cleanDatabase } from "../tests/utils";
+import {
+    createPersistentCourse,
+    cleanDatabase,
+    createPersistentStudent,
+} from "../tests/utils";
 
 const ctx = createContext();
 
@@ -7,4 +11,7 @@ const ctx = createContext();
     await cleanDatabase(ctx);
 
     await createPersistentCourse(ctx, 10);
+    await createPersistentCourse(ctx, 10);
+
+    await createPersistentStudent(ctx, 10);
 })();
