@@ -1,10 +1,10 @@
 import { Context } from "./context";
-import { Course, Role } from "@prisma/client";
+import { PrismaPromise, Course, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
 import {
     courseFactory,
-    courseCreateInputFactory,
-    unitCreateInputFactory,
+    unitCreateInputWithoutCourseFactory,
+    courseCreateInputWithoutInstructorFactory,
 } from "../factories/course";
 
 export const cleanDatabase = async (ctx: Context) => {
@@ -15,33 +15,58 @@ export const cleanDatabase = async (ctx: Context) => {
     await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteUsers]);
 };
 
-export const createPersistentCourse = async (ctx: Context, amount: number) => {
-    const instructor = await ctx.prisma.user.create({
-        data: userCreateInputFactory(Role.INSTRUCTOR),
+export const createPersistentCourse = async (
+    ctx: Context,
+    amount: number = 1,
+) => {
+    const instructors = await ctx.prisma.user.createManyAndReturn({
+        data: Array.from({ length: 3 }, () => {
+            return userCreateInputFactory(Role.INSTRUCTOR);
+        }),
     });
 
-    const courses: Course[] = [];
+    const instructor =
+        instructors[Math.floor(Math.random() * instructors.length)];
 
-    for (let i = 0; i < amount; i++) {
-        const course = await ctx.prisma.course.create({
-            data: courseCreateInputFactory(instructor.id),
-        });
-        courses.push(course);
-    }
+    const courses = await ctx.prisma.course.createManyAndReturn({
+        data: Array.from({ length: amount }, () => {
+            return {
+                ...courseCreateInputWithoutInstructorFactory(),
+                instructorId: instructor.id,
+            };
+        }),
+        include: {
+            instructor: true,
+        },
+        skipDuplicates: true,
+    });
 
     for (const course of courses) {
-        // random number of units
-        const unitAmount = Math.floor(Math.random() * 10) + 1;
-        for (let i = 0; i < unitAmount; i++) {
-            if (course.id === undefined) {
-                await ctx.prisma.unit.create({
-                    data: unitCreateInputFactory(course.id),
-                });
-            }
-        }
+        await ctx.prisma.unit.createMany({
+            data: Array.from(
+                { length: Math.floor(Math.random() * 10) + 1 },
+                () => {
+                    return {
+                        ...unitCreateInputWithoutCourseFactory(),
+                        courseId: course.id,
+                    };
+                },
+            ),
+        });
     }
 
     return courses;
+};
+
+export const createPersistentStudent = async (
+    ctx: Context,
+    amount: number = 1,
+) => {
+    return ctx.prisma.user.createManyAndReturn({
+        data: Array.from({ length: amount }, () => {
+            return userCreateInputFactory(Role.STUDENT);
+        }),
+    });
 };
 
 export const createInstructor = async () => {
