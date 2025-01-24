@@ -29,14 +29,14 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await auth()
+    const session = await auth();
 
-    const protectedRoutes = ["/user/profile", "/dashboard"]
+    const protectedRoutes = ["/user/profile", "/dashboard"];
 
-    if (typeof window !== 'undefined') {
-        const currentPath = window.location.pathname
+    if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
         if (protectedRoutes.includes(currentPath) && !session?.user) {
-            return redirect('/auth/signin')
+            return redirect("/auth/signin");
         }
     }
 
@@ -63,7 +63,11 @@ export default async function RootLayout({
                                     Courses
                                 </Link>
                                 <Link
-                                    href={session?.user ? "/user/profile" : "/auth/signin"}
+                                    href={
+                                        session?.user
+                                            ? "/user/profile"
+                                            : "/auth/signin"
+                                    }
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
                                 >
                                     <div>

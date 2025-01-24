@@ -3,10 +3,10 @@ import React from "react";
 import { Form, Input, Button, Upload, message } from "antd";
 import { Upload as UploadIcon } from "@mui/icons-material";
 import { UploadChangeParam } from "antd/es/upload";
-import { Prisma } from '@prisma/client';
+import { Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 
-type UserData = Prisma.UserGetPayload<{}>
+type UserData = Prisma.UserGetPayload<{}>;
 
 export const dynamic = "force-dynamic";
 
@@ -28,13 +28,16 @@ export default function UserSettings() {
 
     const onFinish = async (values: UserData) => {
         try {
-            const response = await fetch(process.env.BACKEND_API_URL + "/user", {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(
+                process.env.BACKEND_API_URL + "/user",
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(values),
                 },
-                body: JSON.stringify(values),
-            });
+            );
             if (!response.ok) {
                 throw new Error("Failed to update user information");
             }
