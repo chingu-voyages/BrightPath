@@ -2,7 +2,9 @@ import { Context } from "./context";
 import { EnrollmentStatus } from "@prisma/client";
 
 export async function getAllEnrollments(ctx: Context) {
-    return await ctx.prisma.enrollment.findMany({ include: { course: true, user: true } });
+    return await ctx.prisma.enrollment.findMany({
+        include: { course: true, user: true },
+    });
 }
 
 export async function getEnrollmentsByUserId(ctx: Context, userId: number) {
@@ -12,7 +14,11 @@ export async function getEnrollmentsByUserId(ctx: Context, userId: number) {
     });
 }
 
-export async function createEnrollment(ctx: Context, courseId: number, userId: number) {
+export async function createEnrollment(
+    ctx: Context,
+    courseId: number,
+    userId: number,
+) {
     return await ctx.prisma.enrollment.create({
         data: {
             courseId,
@@ -22,10 +28,14 @@ export async function createEnrollment(ctx: Context, courseId: number, userId: n
     });
 }
 
-export async function updateEnrollment(ctx: Context, id: number, status: EnrollmentStatus) {
+export async function updateEnrollment(
+    ctx: Context,
+    id: number,
+    status: EnrollmentStatus,
+) {
     return await ctx.prisma.enrollment.update({
         where: { id: id },
-        data: { status }
+        data: { status },
     });
 }
 

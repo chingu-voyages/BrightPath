@@ -25,7 +25,6 @@ export default async function Courses({
             data-testid="course"
         >
             <div className="flex justify-between items-center mb-4">
-
                 <div>
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                         {course.title}
@@ -36,9 +35,7 @@ export default async function Courses({
                     </p>
                 </div>
 
-                <button
-                    className="bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                >
+                <button className="bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
                     Enroll
                 </button>
             </div>
@@ -89,7 +86,6 @@ export default async function Courses({
                     ))}
                 </ul>
             </div>
-
         </div>
     );
 }

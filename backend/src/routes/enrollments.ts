@@ -1,7 +1,12 @@
 import { Router, Request, Response } from "express";
 import { createContext } from "../context";
-import { createEnrollment, deleteEnrollment, getAllEnrollments, getEnrollmentsByUserId, updateEnrollment } from "../enrollmentController";
-
+import {
+    createEnrollment,
+    deleteEnrollment,
+    getAllEnrollments,
+    getEnrollmentsByUserId,
+    updateEnrollment,
+} from "../enrollmentController";
 
 const router = Router();
 const ctx = createContext();

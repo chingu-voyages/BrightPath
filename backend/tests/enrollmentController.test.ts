@@ -1,7 +1,13 @@
 import { Enrollment, EnrollmentStatus } from "@prisma/client";
 import { enrollmentFactory } from "../factories/enrollment";
 import { MockContext, Context, createMockContext } from "./context";
-import { getAllEnrollments, getEnrollmentsByUserId, createEnrollment, updateEnrollment, deleteEnrollment } from "../src/enrollmentController";
+import {
+    getAllEnrollments,
+    getEnrollmentsByUserId,
+    createEnrollment,
+    updateEnrollment,
+    deleteEnrollment,
+} from "../src/enrollmentController";
 
 let mockCtx: MockContext;
 let ctx: Context;
@@ -38,7 +44,10 @@ describe("getAllEnrollments", () => {
 
 describe("getEnrollmentsByUserId", () => {
     test("should fetch enrollments by user id", async () => {
-        const enrollments = [enrollmentFactory(undefined, 1), enrollmentFactory(undefined, 2)];
+        const enrollments = [
+            enrollmentFactory(undefined, 1),
+            enrollmentFactory(undefined, 2),
+        ];
 
         mockCtx.prisma.enrollment.findMany.mockResolvedValue(enrollments);
 
@@ -70,7 +79,13 @@ describe("createEnrollment", () => {
 
         mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
 
-        expect(await createEnrollment(ctx, newEnrollment.courseId, newEnrollment.userId)).toEqual(newEnrollment);
+        expect(
+            await createEnrollment(
+                ctx,
+                newEnrollment.courseId,
+                newEnrollment.userId,
+            ),
+        ).toEqual(newEnrollment);
     });
 
     test("should handle errors during creation", async () => {
@@ -81,18 +96,29 @@ describe("createEnrollment", () => {
             new Error(errorMessage),
         );
 
-        await expect(createEnrollment(ctx, newEnrollment.courseId, newEnrollment.userId)).rejects.toThrow(errorMessage);
+        await expect(
+            createEnrollment(ctx, newEnrollment.courseId, newEnrollment.userId),
+        ).rejects.toThrow(errorMessage);
     });
 });
 
 describe("updateEnrollment", () => {
     test("should update an enrollment", async () => {
         const enrollment = enrollmentFactory();
-        const updatedEnrollment = { ...enrollment, status: "COMPLETED" } as unknown as Enrollment;
+        const updatedEnrollment = {
+            ...enrollment,
+            status: "COMPLETED",
+        } as unknown as Enrollment;
 
         mockCtx.prisma.enrollment.update.mockResolvedValue(updatedEnrollment);
 
-        expect(await updateEnrollment(ctx, enrollment.id, EnrollmentStatus.COMPLETED)).toEqual(updatedEnrollment);
+        expect(
+            await updateEnrollment(
+                ctx,
+                enrollment.id,
+                EnrollmentStatus.COMPLETED,
+            ),
+        ).toEqual(updatedEnrollment);
     });
 });
 
@@ -103,6 +129,8 @@ describe("deleteEnrollment", () => {
 
         mockCtx.prisma.enrollment.delete.mockResolvedValue(enrollmentData);
 
-        expect(await deleteEnrollment(ctx, enrollment.id)).toEqual({ id: enrollment.id });
+        expect(await deleteEnrollment(ctx, enrollment.id)).toEqual({
+            id: enrollment.id,
+        });
     });
 });

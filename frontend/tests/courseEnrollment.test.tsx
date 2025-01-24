@@ -12,8 +12,6 @@ describe("Course Enrollment", () => {
 
         expect(render(Page).getByText("Enroll")).toBeTruthy();
     });
-    
-    it("should render the course enrollment success message", () => {
-    });
-    
-})
+
+    it("should render the course enrollment success message", () => {});
+});

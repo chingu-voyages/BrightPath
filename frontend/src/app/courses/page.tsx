@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
-import { Circle } from "@mui/icons-material"
+import { Circle } from "@mui/icons-material";
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true };

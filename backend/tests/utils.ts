@@ -7,7 +7,6 @@ import {
 } from "../factories/course";
 import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
 
-
 export const cleanDatabase = async (ctx: Context) => {
     const deleteUnits = ctx.prisma.unit.deleteMany();
     const deleteCourses = ctx.prisma.course.deleteMany();

@@ -4,10 +4,13 @@ import { courseFactory } from "./course";
 import { userFactory } from "./user";
 
 type Enrollment = Prisma.EnrollmentGetPayload<{
-    include: { course: true, user: true };
+    include: { course: true; user: true };
 }>;
 
-export const enrollmentFactory = (status: EnrollmentStatus = EnrollmentStatus.ACTIVE, userId: number|undefined = undefined): Enrollment => {
+export const enrollmentFactory = (
+    status: EnrollmentStatus = EnrollmentStatus.ACTIVE,
+    userId: number | undefined = undefined,
+): Enrollment => {
     let student;
     const course = courseFactory();
 
@@ -29,4 +32,4 @@ export const enrollmentFactory = (status: EnrollmentStatus = EnrollmentStatus.AC
         userId: student.id,
         user: student,
     };
-}
+};

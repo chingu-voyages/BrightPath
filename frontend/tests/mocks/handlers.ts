@@ -10,7 +10,7 @@ export const handlers = [
         const slug = req.params.slug;
         const course = courses.find((c) => c.slug === slug);
         if (!course) {
-            return HttpResponse.json({ message: "Course not found" })
+            return HttpResponse.json({ message: "Course not found" });
         }
         return HttpResponse.json(course);
     }),
