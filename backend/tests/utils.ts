@@ -1,11 +1,12 @@
 import { Context } from "./context";
-import { PrismaPromise, Course, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
 import {
     courseFactory,
-    unitCreateInputWithoutCourseFactory,
     courseCreateInputWithoutInstructorFactory,
 } from "../factories/course";
+import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
+
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteUnits = ctx.prisma.unit.deleteMany();
