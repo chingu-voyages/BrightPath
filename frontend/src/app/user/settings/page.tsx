@@ -3,28 +3,24 @@ import React from "react";
 import { Form, Input, Button, Upload, message } from "antd";
 import { Upload as UploadIcon } from "@mui/icons-material";
 import { UploadChangeParam } from "antd/es/upload";
+import { Prisma } from '@prisma/client';
+import { auth } from "@/auth";
+
+type UserData = Prisma.UserGetPayload<{}>
 
 export const dynamic = "force-dynamic";
-
-interface UserData {
-    name?: string;
-    username?: string;
-    email?: string;
-    image?: string;
-    bio?: string;
-}
 
 export default function UserSettings() {
     const [form] = Form.useForm<UserData>();
 
     (async () => {
         try {
-            const response = await fetch("/api/user");
-            if (!response.ok) {
-                throw new Error("Failed to fetch user data");
+            const session = await auth();
+            if (!session?.user) {
+                throw new Error("User not authenticated");
             }
-            const data: UserData = await response.json();
-            form.setFieldsValue(data);
+            const userData: UserData = session.user;
+            form.setFieldsValue(userData);
         } catch (error) {
             console.log("Failed to load user data.");
         }
@@ -32,7 +28,7 @@ export default function UserSettings() {
 
     const onFinish = async (values: UserData) => {
         try {
-            const response = await fetch("/api/user", {
+            const response = await fetch(process.env.BACKEND_API_URL + "/user", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
