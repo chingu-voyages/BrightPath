@@ -1,5 +1,4 @@
 import { writeFileSync } from "fs";
-import { createContext } from "../src/context";
 import { createStudent, createCourses } from "../tests/utils";
 
 (async () => {
@@ -15,9 +14,3 @@ import { createStudent, createCourses } from "../tests/utils";
 })();
 
 console.log("Mock data generated successfully!");
-console.log("Cleaning up...");
-
-const prisma = createContext().prisma;
-
-prisma.user.deleteMany();
-prisma.course.deleteMany();
