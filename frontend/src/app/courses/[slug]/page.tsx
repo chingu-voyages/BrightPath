@@ -66,9 +66,9 @@ export default async function Courses({
                 </video>
                 <div className="flex flex-col items-center border p-6 rounded-lg">
                     <img
-                        src={course.instructor?.image || '/avatar.png'}
+                        src={course.instructor?.image || "/avatar.png"}
                         alt={`${course.instructor?.name} Profile`}
-                className="w-16 h-16 rounded-full shadow"
+                        className="w-16 h-16 rounded-full shadow"
                     />
                     <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                         {course.instructor?.name}
