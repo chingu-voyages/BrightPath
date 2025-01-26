@@ -16,13 +16,13 @@ export default async function Courses({
     params: Promise<{ slug: string }>;
 }) {
     const slug = (await params).slug;
-    const session = await auth();
-    const user = session?.user;
+    //const session = await auth();
+    //const user = session?.user;
 
-    if (user) {
+    //if (user) {
         // fetch enrollments to check if user is already enrolled
         // const enrollments = await fetch(process.env.BACKEND_API_URL + "/users/" + user.id + "/enrollments")
-    }
+    //}
 
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
