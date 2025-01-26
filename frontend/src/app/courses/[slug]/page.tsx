@@ -20,8 +20,8 @@ export default async function Courses({
     //const user = session?.user;
 
     //if (user) {
-        // fetch enrollments to check if user is already enrolled
-        // const enrollments = await fetch(process.env.BACKEND_API_URL + "/users/" + user.id + "/enrollments")
+    // fetch enrollments to check if user is already enrolled
+    // const enrollments = await fetch(process.env.BACKEND_API_URL + "/users/" + user.id + "/enrollments")
     //}
 
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
