@@ -1,4 +1,6 @@
 import { Prisma } from "@prisma/client";
+import EnrollButton from "./EnrollButton";
+import { auth } from "@/auth";
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: true };
@@ -14,6 +16,13 @@ export default async function Courses({
     params: Promise<{ slug: string }>;
 }) {
     const slug = (await params).slug;
+    const session = await auth();
+    const user = session?.user;
+
+    if (user) {
+        // fetch enrollments to check if user is already enrolled
+        // const enrollments = await fetch(process.env.BACKEND_API_URL + "/users/" + user.id + "/enrollments")
+    }
 
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
@@ -35,9 +44,7 @@ export default async function Courses({
                     </p>
                 </div>
 
-                <button className="bg-blue-600 text-white font-semibold text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                    Enroll
-                </button>
+                <EnrollButton userId={user?.id} slug={slug} />
             </div>
 
             <div className="flex justify-start items-center mb-4">
@@ -59,9 +66,9 @@ export default async function Courses({
                 </video>
                 <div className="flex flex-col items-center border p-6 rounded-lg">
                     <img
-                        src={course.instructor?.image}
+                        src={course.instructor?.image || '/avatar.png'}
                         alt={`${course.instructor?.name} Profile`}
-                        className="w-16 h-16 rounded-full shadow"
+                className="w-16 h-16 rounded-full shadow"
                     />
                     <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                         {course.instructor?.name}
@@ -81,7 +88,7 @@ export default async function Courses({
                     Course Outline
                 </h3>
                 <ul className="list-disc list-inside text-sm text-gray-500 dark:text-gray-400 space-y-1">
-                    {course.units?.map((unit) => (
+                    {course.units?.map((unit: Unit) => (
                         <li key={unit.id}>{unit.title}</li>
                     ))}
                 </ul>
