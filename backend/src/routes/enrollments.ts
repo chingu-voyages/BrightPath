@@ -4,7 +4,6 @@ import {
     createEnrollment,
     deleteEnrollment,
     getAllEnrollments,
-    getEnrollmentsByUserId,
     updateEnrollment,
 } from "../enrollmentController";
 
@@ -15,18 +14,6 @@ const ctx = createContext();
 router.get("/", async (req: Request, res: Response) => {
     try {
         res.status(200).json(await getAllEnrollments(ctx));
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to fetch courses." });
-    }
-});
-
-// GET /enrollments/:userId
-router.get("/:userId", async (req: Request, res: Response) => {
-    try {
-        const userId = parseInt(req.params.userId);
-
-        res.status(200).json(await getEnrollmentsByUserId(ctx, userId));
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch courses." });
