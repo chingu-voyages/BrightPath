@@ -18,6 +18,7 @@ export default async function Courses({
     const slug = (await params).slug;
     //const session = await auth();
     //const user = session?.user;
+    const user = { id: undefined };
 
     //if (user) {
     // fetch enrollments to check if user is already enrolled
