@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Providers from "@/components/Providers";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
+import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -48,7 +48,9 @@ export default async function RootLayout({
                         className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
                     >
                         <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
-                            <div>BrightPath</div>
+                            <Link href={"/"} className="font-semibold">
+                                BrightPath
+                            </Link>
                             <nav className="flex justify-center items-center gap-4   ">
                                 <Link
                                     href={"/"}
@@ -70,9 +72,7 @@ export default async function RootLayout({
                                     }
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
                                 >
-                                    <div>
-                                        <AccountCircleOutlinedIcon fontSize="large" />
-                                    </div>
+                                    <UserOutlined className="p-2 text-center rounded-full border shadow-sm" />
                                 </Link>
                             </nav>
                         </Header>
