@@ -1,18 +1,17 @@
 import { Prisma, Role, Difficulty } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { userFactory } from "./user";
+import { unitFactory } from "./unit";
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: true };
 }>;
 
-type Unit = Prisma.UnitGetPayload<{}>;
-
 export const courseFactory = (
     difficulty: Difficulty = Difficulty.BEGINNER,
 ): Course => {
     const instructor = userFactory(Role.INSTRUCTOR);
-    // random number of units
+
     const units = Array.from(
         { length: faker.number.int({ min: 1, max: 10 }) },
         () => unitFactory(),
@@ -57,32 +56,5 @@ export const courseCreateInputWithoutInstructorFactory = (
         thumbnail: faker.image.url(),
         published: faker.datatype.boolean(),
         introVideoUrl: faker.internet.url(),
-    };
-};
-
-export const unitFactory = (): Unit => {
-    return {
-        id: faker.number.int(),
-        ...unitCreateInputWithoutCourseFactory(),
-        courseId: faker.number.int(),
-    };
-};
-
-export const unitCreateInputFactory = (
-    courseId: number,
-): Prisma.UnitCreateInput => {
-    return {
-        ...unitCreateInputWithoutCourseFactory(),
-        course: {
-            connect: { id: courseId },
-        },
-    };
-};
-
-export const unitCreateInputWithoutCourseFactory = () => {
-    const title = faker.word.noun(4);
-
-    return {
-        title: title,
     };
 };
