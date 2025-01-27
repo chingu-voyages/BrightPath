@@ -76,7 +76,7 @@ model Lesson {
   title       String
   description String
   unitId      Int
-  unit        Unit         @relation(fields: [unitId], references: [id])
+  unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
   assignments Assignment[]
 }
 
@@ -96,7 +96,7 @@ model Assignment {
   title                 String
   type                  AssignmentType // Enum for the base assignment type
   lessonId              Int
-  lesson                Lesson                 @relation(fields: [lessonId], references: [id])
+  lesson                Lesson                 @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   course                Course[]
   ReadingAssignment     ReadingAssignment?
   QuizAssignment        QuizAssignment?
@@ -144,13 +144,14 @@ model Enrollment {
   id               Int              @id @default(autoincrement())
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-  userId           Int
-  user             User             @relation(fields: [userId], references: [id])
-  courseId         Int
-  course           Course           @relation(fields: [courseId], references: [id])
-  status           EnrollmentStatus
+  status           EnrollmentStatus @default(ACTIVE)
   progress         Float            @default(0) // Progress of whole course
   granularProgress Json             @default("{}") // Progress of each unit/lesson
+
+  userId           Int
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId         Int
+  course           Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId]) // a user can only enroll in a course once
 }

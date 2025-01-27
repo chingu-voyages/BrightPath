@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import NextAuth from "next-auth";
 import "next-auth/jwt";
 
@@ -75,6 +76,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 declare module "next-auth" {
     interface Session {
         accessToken?: string;
+        user?: Prisma.UserGetPayload<{}>;
     }
 }
 

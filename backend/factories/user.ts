@@ -3,9 +3,12 @@ import { faker } from "@faker-js/faker";
 
 type User = Prisma.UserGetPayload<{}>;
 
-export const userFactory = (role: Role = Role.STUDENT): User => {
+export const userFactory = (
+    role: Role = Role.STUDENT,
+    id: number = faker.number.int(),
+): User => {
     return {
-        id: faker.number.int(),
+        id: id,
         email: faker.internet.email(),
         username: faker.internet.username(),
         name: faker.person.fullName(),
