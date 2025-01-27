@@ -1,14 +1,12 @@
 import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import "next-auth/jwt";
-import type { Provider } from "next-auth/providers";
 import { ZodError } from "zod";
 // import bcrypt from "bcrypt";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { object, string } from "zod";
 
 import GoogleProvider from "next-auth/providers/google";
-import { json } from "stream/consumers";
 
 const prisma = new PrismaClient();
 
@@ -55,13 +53,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     //         throw new Error("Invalid credentials.");
                     //       }
                     // }
-                    return {
-                        id: String(user.id),
-                        name: user.name,
-                        email: user.email,
-                        image: user.image,
-                        role: user.role,
-                    } as User;
+                    console.log(user);
+                    return user as unknown as User;
                 } catch (error) {
                     if (error instanceof ZodError) {
                         return null;
@@ -126,23 +119,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 }
                 return true;
             }
-
+            if (credentials) {
+                return true;
+            }
             return false;
+        },
+        async redirect({ url, baseUrl }) {
+            return baseUrl + "/user/profile"; // Change '/dashboard' to your desired path
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
             if (pathname === "/middleware-example") return !!auth;
             return true;
         },
-        jwt({ token, trigger, session, account }) {
+        jwt({ token, trigger, session, account, user }) {
             if (account) {
-                //token.accessToken = account.access_token
+                token.accessToken = account.access_token;
+                if (user) {
+                    token.id = user.id;
+                    token.email = user.email;
+                    token.name = user.name;
+                }
             }
             return token;
         },
         async session({ session, token }) {
             if (token?.accessToken) session.accessToken = token.accessToken;
-
+            session.user.id = token.id as string;
+            session.user.email = token.email as string;
+            session.user.name = token.name as string;
             return session;
         },
     },
