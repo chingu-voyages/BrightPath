@@ -2,23 +2,9 @@ import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import "next-auth/jwt";
 import { ZodError } from "zod";
+import { signInSchema } from "./zodHelper";
 // import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-import { object, string } from "zod";
-
 import GoogleProvider from "next-auth/providers/google";
-
-const prisma = new PrismaClient();
-
-const signInSchema = object({
-    email: string({ required_error: "Email is required" })
-        .min(1, "Email is required")
-        .email("Invalid email"),
-    password: string({ required_error: "Password is required" })
-        .min(1, "Password is required")
-        .min(8, "Password must be more than 8 characters")
-        .max(32, "Password must be less than 32 characters"),
-});
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
@@ -27,6 +13,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            profile: (profile) => {
+                return {
+                    email: profile.email,
+                    name: profile.name,
+                    image: profile.image,
+                    emailVerified: profile.email_verified,
+                    role: profile.role ?? "USER",
+                };
+            },
+            authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code",
+                },
+            },
         }),
         Credentials({
             credentials: {
@@ -38,23 +40,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 request: Request,
             ) => {
                 try {
-                    const email = credentials.email as string;
-                    const password = credentials.password as string;
-                    const user = await prisma.user.findUnique({
-                        where: { email: email },
-                    });
-                    if (!user) {
-                        throw new Error("Invalid credentials.");
-                    }
+                    const { email, password } = signInSchema.parse(credentials);
 
-                    // if(user.password){
+                    // Encrypt password
                     //     const vaildPassword = await bcrypt.compare(password, user.password);
                     //     if (!vaildPassword) {
                     //         throw new Error("Invalid credentials.");
                     //       }
                     // }
-                    console.log(user);
-                    return user as unknown as User;
+                    try {
+                        const response = await fetch(
+                            `${process.env.BACKEND_API_URL}/user/signin`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    email: email,
+                                    password: password,
+                                }),
+                            },
+                        );
+                        if (!response.ok) {
+                            return null;
+                        } else {
+                            return response.body as User;
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        return null;
+                    }
                 } catch (error) {
                     if (error instanceof ZodError) {
                         return null;
@@ -71,51 +87,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 if (!profile?.email_verified) {
                     return false;
                 }
-                const userAccount = await prisma.account.findFirst({
-                    where: {
-                        providerAccountId: account.providerAccountId,
-                    },
-                });
-                if (!userAccount) {
-                    try {
-                        const response = await fetch(
-                            `${process.env.BACKEND_API_URL}/user/signin`,
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    email: user.email,
-                                    name: user.name,
-                                    image: user.image,
-                                }),
+                try {
+                    const response = await fetch(
+                        `${process.env.BACKEND_API_URL}/user/signin`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
                             },
-                        );
-                        if (response.ok) {
-                            const newUser = await prisma.user.findUnique({
-                                where: {
-                                    email: String(profile.email),
-                                },
-                            });
-                            if (newUser) {
-                                const newAccount = await prisma.account.create({
-                                    data: {
-                                        provider: account.provider,
-                                        providerAccountId:
-                                            account.providerAccountId,
-                                        userId: newUser?.id as number,
-                                    },
-                                });
-                                return true;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } catch (error) {
-                        console.error(error);
+                            body: JSON.stringify({
+                                email: user.email,
+                                name: user.name,
+                                image: user.image,
+                                password: null,
+                                account: account,
+                            }),
+                        },
+                    );
+                    if (!response.ok) {
                         return false;
                     }
+                } catch (error) {
+                    console.error(error);
+                    return false;
                 }
                 return true;
             }
@@ -125,7 +119,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return false;
         },
         async redirect({ url, baseUrl }) {
-            return baseUrl + "/user/profile"; // Change '/dashboard' to your desired path
+            if (url == baseUrl + "/courses") {
+                return baseUrl + "/courses";
+            }
+            return baseUrl + "/user/profile";
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
@@ -137,8 +134,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token.accessToken = account.access_token;
                 if (user) {
                     token.id = user.id;
-                    token.email = user.email;
-                    token.name = user.name;
+                    token.email = user.email as string;
+                    token.name = user.name as string;
                 }
             }
             return token;
@@ -157,11 +154,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 declare module "next-auth" {
     interface Session {
         accessToken?: string;
+        id?: string;
+        email?: string;
+        name?: string;
     }
 }
 
 declare module "next-auth/jwt" {
     interface JWT {
         accessToken?: string;
+        id?: string;
+        email?: string;
+        name?: string;
     }
 }
