@@ -28,7 +28,7 @@ const upload = multer({ storage });
 router.post("/upload", upload.single("file"), (req: Request, res: Response) => {
     if (!req.file) {
         res.status(400).json({ error: "No file uploaded." });
-        return; 
+        return;
     }
 
     const filePath = `/uploads/${req.file.filename}`;
@@ -62,8 +62,8 @@ router.post("/signin", async (req: Request, res: Response) => {
 });
 
 // PATCH /:userId
-router.patch("/:userId", async(req: Request, res: Response) => {
-    const userId = parseInt(req.params.userId); 
+router.patch("/:userId", async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId);
     const { name, username, email, image, bio } = req.body;
 
     try {
