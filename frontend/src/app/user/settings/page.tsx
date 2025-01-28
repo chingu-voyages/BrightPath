@@ -53,7 +53,7 @@ export default function UserSettings() {
     };
 
     const handleUpload = (info: UploadChangeParam) => {
-        console.log(info)
+        console.log(info);
         if (info.file.status === "done") {
             // Assuming the server responds with the uploaded image URL
             const imageUrl = info.file.response.url;
