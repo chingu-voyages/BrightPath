@@ -26,12 +26,16 @@ export default function UserSettings() {
         }
     })();
 
-    const onFinish = async (values: UserData) => {
+    const onFinish = async (values: Partial<UserData>) => {
         try {
+            const session = await auth();
+            if (!session?.user?.id) {
+                throw new Error("User not authenticated");
+            }
             const response = await fetch(
-                process.env.BACKEND_API_URL + "/user",
+                process.env.BACKEND_API_URL + `/user/${session.user.id}`,
                 {
-                    method: "PUT",
+                    method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -44,10 +48,12 @@ export default function UserSettings() {
             message.success("User information updated successfully!");
         } catch (error) {
             message.error("Failed to update user information.");
+            console.error("Error updating user:", error);
         }
     };
 
     const handleUpload = (info: UploadChangeParam) => {
+        console.log(info);
         if (info.file.status === "done") {
             // Assuming the server responds with the uploaded image URL
             const imageUrl = info.file.response.url;
@@ -96,7 +102,7 @@ export default function UserSettings() {
                     <Form.Item name="image" label="Profile Image">
                         <Upload
                             name="file"
-                            action="/api/upload"
+                            action={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/upload`}
                             listType="picture"
                             onChange={handleUpload}
                         >
