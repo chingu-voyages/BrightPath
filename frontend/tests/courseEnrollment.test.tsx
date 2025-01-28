@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { expect, describe, it } from "vitest"
+import { expect, describe, it } from "vitest";
 import Course from "@/app/courses/[slug]/page";
 
 import { courses } from "./mocks/data.json";
