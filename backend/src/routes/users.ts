@@ -2,9 +2,40 @@ import { Router, Request, Response } from "express";
 import { createContext } from "../context";
 import bcrypt from "bcrypt";
 import { getEnrollmentsByUserId } from "../enrollmentController";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 
 const router = Router();
 const ctx = createContext();
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = path.join(__dirname, "../uploads");
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir); // Ensure directory exists
+        }
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        cb(null, `${uniqueSuffix}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
+
+// POST /user/upload
+router.post("/upload", upload.single("file"), (req: Request, res: Response) => {
+    if (!req.file) {
+        res.status(400).json({ error: "No file uploaded." });
+        return;
+    }
+
+    const filePath = `/uploads/${req.file.filename}`;
+    const fileUrl = `${process.env.BACKEND_API_URL}${filePath}`; // Construct file URL
+    res.status(200).json({ url: fileUrl });
+});
 
 // POST /signin
 router.post("/signin", async (req: Request, res: Response) => {
@@ -57,6 +88,30 @@ router.post("/signin", async (req: Request, res: Response) => {
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ error: "Failed to sign in." });
+    }
+});
+
+// PATCH /:userId
+router.patch("/:userId", async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.userId);
+    const { name, username, email, image, bio } = req.body;
+
+    try {
+        const updatedUser = await ctx.prisma.user.update({
+            where: { id: userId },
+            data: {
+                ...(name && { name }),
+                ...(username && { username }),
+                ...(email && { email }),
+                ...(image && { image }),
+                ...(bio && { bio }),
+            },
+        });
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ error: "Failed to update user." });
     }
 });
 

@@ -1,6 +1,5 @@
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
-import { expect, describe, it } from "@jest/globals";
+import { expect, describe, it } from "vitest";
 import Home from "@/app/page";
 
 describe("Home", () => {
