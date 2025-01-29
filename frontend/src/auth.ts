@@ -3,83 +3,96 @@ import Credentials from "next-auth/providers/credentials";
 import "next-auth/jwt";
 import { ZodError } from "zod";
 import { signInSchema } from "./zodHelper";
-// import bcrypt from "bcrypt";
+import type { Provider } from "next-auth/providers";
 import GoogleProvider from "next-auth/providers/google";
+
+const providers: Provider[] = [
+    GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        profile: (profile) => {
+            return {
+                email: profile.email,
+                name: profile.name,
+                image: profile.image,
+                emailVerified: profile.email_verified,
+                role: profile.role ?? "USER",
+            };
+        },
+        authorization: {
+            params: {
+                prompt: "consent",
+                access_type: "offline",
+                response_type: "code",
+            },
+        },
+    }),
+    Credentials({
+        credentials: {
+            name: { required: true, default: undefined },
+            email: { required: true },
+            password: { required: true },
+        },
+        authorize: async (
+            credentials: Partial<
+                Record<"name" | "email" | "password", unknown>
+            >,
+            request: Request,
+        ) => {
+            try {
+                const { email, password } = signInSchema.parse(credentials);
+                try {
+                    const response = await fetch(
+                        `${process.env.BACKEND_API_URL}/user/signin`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                email: email,
+                                password: password,
+                                name: credentials.name,
+                            }),
+                        },
+                    );
+                    if (!response.ok) {
+                        return null;
+                    } else {
+                        return (await response.json()) as User;
+                    }
+                } catch (error) {
+                    console.error(error);
+                    return null;
+                }
+            } catch (error) {
+                if (error instanceof ZodError) {
+                    return null;
+                }
+                return null;
+            }
+        },
+    }),
+];
+
+export const providerMap = providers
+    .map((provider) => {
+        if (typeof provider === "function") {
+            const providerData = provider();
+            return { id: providerData.id, name: providerData.name };
+        } else {
+            return { id: provider.id, name: provider.name };
+        }
+    })
+    .filter((provider) => provider.id !== "credentials");
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
     basePath: "/auth",
-    providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            profile: (profile) => {
-                return {
-                    email: profile.email,
-                    name: profile.name,
-                    image: profile.image,
-                    emailVerified: profile.email_verified,
-                    role: profile.role ?? "USER",
-                };
-            },
-            authorization: {
-                params: {
-                    prompt: "consent",
-                    access_type: "offline",
-                    response_type: "code",
-                },
-            },
-        }),
-        Credentials({
-            credentials: {
-                email: {},
-                password: {},
-            },
-            authorize: async (
-                credentials: Partial<Record<"email" | "password", unknown>>,
-                request: Request,
-            ) => {
-                try {
-                    const { email, password } = signInSchema.parse(credentials);
-
-                    // Encrypt password
-                    //     const vaildPassword = await bcrypt.compare(password, user.password);
-                    //     if (!vaildPassword) {
-                    //         throw new Error("Invalid credentials.");
-                    //       }
-                    // }
-                    try {
-                        const response = await fetch(
-                            `${process.env.BACKEND_API_URL}/user/signin`,
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    email: email,
-                                    password: password,
-                                }),
-                            },
-                        );
-                        if (!response.ok) {
-                            return null;
-                        } else {
-                            return (await response.json()) as User;
-                        }
-                    } catch (error) {
-                        console.error(error);
-                        return null;
-                    }
-                } catch (error) {
-                    if (error instanceof ZodError) {
-                        return null;
-                    }
-                    return null;
-                }
-            },
-        }),
-    ],
+    providers,
+    pages: {
+        signIn: "/signin",
+    },
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {

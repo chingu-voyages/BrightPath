@@ -65,7 +65,7 @@ export default async function RootLayout({
                                     Courses
                                 </Link>
                                 {session?.user ? (
-                                    <Link href={"auth/signout"}>Signout</Link>
+                                    <Link href={"/auth/signout"}>Signout</Link>
                                 ) : null}
                                 <Link
                                     href={

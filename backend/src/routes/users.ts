@@ -1,30 +1,47 @@
 import { Router, Request, Response } from "express";
 import { createContext } from "../context";
+import bcrypt from "bcrypt";
 import { getEnrollmentsByUserId } from "../enrollmentController";
 
 const router = Router();
 const ctx = createContext();
 
 // POST /signin
-router.post("/signin", async (req, res) => {
-    const { email, name, image, password, account } = req.body;
+router.post("/signin", async (req: Request, res: Response) => {
+    const {
+        email: email,
+        name: name,
+        image: image,
+        password: password = undefined,
+        account: account,
+    } = req.body;
     try {
         let user = await ctx.prisma.user.findUnique({
             where: { email: email },
         });
 
-        if (!user) {
+        if (user && password) {
+            const vaildPassword = await bcrypt.compare(
+                password,
+                user.password as string,
+            );
+            if (!vaildPassword) {
+                res.status(500).json({ error: "Incorrect credentials" });
+            }
+        }
+
+        if (!user && name) {
+            const hashedPass = await bcrypt.hash(password, 10);
             user = await ctx.prisma.user.create({
                 data: {
                     email,
-                    password,
+                    password: hashedPass,
                     name,
                     image,
                     role: "STUDENT",
                 },
             });
-
-            if (account) {
+            if (account && user) {
                 await ctx.prisma.account.create({
                     data: {
                         provider: account.provider,
@@ -32,11 +49,6 @@ router.post("/signin", async (req, res) => {
                         userId: user.id,
                     },
                 });
-            }
-        }
-        if (user && password) {
-            if (password !== user.password) {
-                res.status(500).json({ error: "Incorrect credentials" });
             }
         }
         res.status(200).json(user);
