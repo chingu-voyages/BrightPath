@@ -42,19 +42,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Setup Prisma
-      working-directory: ./backend
-      env:
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
-      run: |
-        npx prisma generate
-        npx prisma migrate dev --name init --schema=./prisma/schema.prisma
-
     - name: CI
       working-directory: ./backend
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
       run: |
         npm install
+        npx prisma generate
+        npx prisma migrate dev --name init --schema=./prisma/schema.prisma
         npm run build --if-present
         npx jest
