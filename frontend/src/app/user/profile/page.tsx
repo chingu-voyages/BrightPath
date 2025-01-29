@@ -1,32 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { useEffect, useState } from "react";
+import { auth } from "@/auth";
 
-export default function Profile() {
-    const [name, setName] = useState("");
-
-    useEffect(() => {
-        const fetchSession = async () => {
-            const response = await fetch("/auth/session");
-            if (response.ok) {
-                const session = await response.json();
-                setName(session.user.name);
-            } else {
-                setName("");
-            }
-        };
-
-        fetchSession();
-    }, []);
+export default async function Profile() {
+    const session = await auth();
+    const name = session?.user?.name;
     return (
         <div>
-            {name ? (
-                <h2>Welcome, {name}!</h2> // Display the username
-            ) : (
-                <h2>Please sign in</h2>
-            )}
+            {name && <h2>Welcome, {name}!</h2>}
 
             <Link
                 href={"/user/settings"}

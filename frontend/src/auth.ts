@@ -65,7 +65,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         if (!response.ok) {
                             return null;
                         } else {
-                            return response.body as User;
+                            return (await response.json()) as User;
                         }
                     } catch (error) {
                         console.error(error);
@@ -132,11 +132,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         jwt({ token, trigger, session, account, user }) {
             if (account) {
                 token.accessToken = account.access_token;
-                if (user) {
-                    token.id = user.id;
-                    token.email = user.email as string;
-                    token.name = user.name as string;
-                }
+                token.id = user.id;
+                token.email = user.email as string;
+                token.name = user.name as string;
             }
             return token;
         },
