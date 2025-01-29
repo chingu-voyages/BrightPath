@@ -27,11 +27,14 @@ router.post("/signin", async (req: Request, res: Response) => {
             );
             if (!vaildPassword) {
                 res.status(500).json({ error: "Incorrect credentials" });
+                return;
             }
         }
 
-        if (!user && name) {
-            const hashedPass = await bcrypt.hash(password, 10);
+        if (!user && name != undefined) {
+            const hashedPass = password
+                ? await bcrypt.hash(password, 10)
+                : null;
             user = await ctx.prisma.user.create({
                 data: {
                     email,
@@ -53,7 +56,6 @@ router.post("/signin", async (req: Request, res: Response) => {
         }
         res.status(200).json(user);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: "Failed to sign in." });
     }
 });
