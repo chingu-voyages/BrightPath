@@ -29,7 +29,6 @@ const providers: Provider[] = [
     }),
     Credentials({
         credentials: {
-            name: { required: true, default: undefined },
             email: { required: true },
             password: { required: true },
         },
@@ -90,9 +89,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
     basePath: "/auth",
     providers,
-    pages: {
-        signIn: "/signin",
-    },
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {

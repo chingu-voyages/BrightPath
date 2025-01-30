@@ -58,11 +58,10 @@ router.post("/signin", async (req: Request, res: Response) => {
             );
             if (!vaildPassword) {
                 res.status(500).json({ error: "Incorrect credentials" });
-                return;
             }
         }
 
-        if (!user && name != undefined) {
+        if (!user) {
             const hashedPass = password
                 ? await bcrypt.hash(password, 10)
                 : null;
