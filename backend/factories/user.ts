@@ -11,6 +11,7 @@ export const userFactory = (
         id: id,
         email: faker.internet.email(),
         username: faker.internet.username(),
+        password: faker.internet.password(),
         name: faker.person.fullName(),
         bio: faker.lorem.paragraph(),
         image: faker.image.avatar(),
@@ -24,6 +25,7 @@ export const userCreateInputFactory = (
     return {
         email: faker.internet.email(),
         username: faker.internet.username(),
+        password: faker.internet.password(),
         name: faker.person.fullName(),
         bio: faker.lorem.paragraph(),
         image: faker.image.avatar(),
