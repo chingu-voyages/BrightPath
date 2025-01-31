@@ -23,6 +23,7 @@ export async function createEnrollment(
         data: {
             courseId,
             userId,
+            status: "ACTIVE",
         },
         include: { course: true, user: true },
     });
