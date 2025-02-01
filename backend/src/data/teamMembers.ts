@@ -19,6 +19,16 @@ const teamMembers = [
         github: "https://github.com/Sunny-Master",
         personalWebsite: "https://sunnymaster.dev",
     },
+    {
+        id: 3,
+        name: "Frederic Brüning",
+        role: "Software Developer",
+        profilePicture: "https://i.imgur.com/MGRIUio.png",
+        bio: "A self-taught artisan and engineer, Frederick is driven by curiosity and creativity. Growing up in his father’s workshop, he developed a deep passion for technology, exploring circuit boards and computers from an early age. He thrives on solving complex challenges and bringing innovative, business-driven applications to life.",
+        linkedin: "https://www.linkedin.com/in/frederic-bruening/",
+        github: "https://github.com/brueningf/",
+        personalWebsite: "https://fredesk.com/",
+    },
 ];
 
 export default teamMembers;
