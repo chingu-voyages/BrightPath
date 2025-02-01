@@ -1,4 +1,4 @@
-import NextAuth, { User } from "next-auth";
+import NextAuth, { type User, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import "next-auth/jwt";
 import { ZodError } from "zod";
@@ -6,26 +6,111 @@ import { signInSchema } from "./zodHelper";
 import type { Provider } from "next-auth/providers";
 import GoogleProvider from "next-auth/providers/google";
 
+import type { Adapter } from "next-auth/adapters"
+
+function Adapter(): Adapter {
+    return {
+        async createUser(profile) {
+            const user = await fetch(`${process.env.BACKEND_API_URL}/user/signup`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: profile.email,
+                    name: profile.name,
+                    image: profile.image,
+                }),
+            });
+
+            return user.json();
+        }, 
+
+        async linkAccount(account) {
+            const user = await fetch(`${process.env.BACKEND_API_URL}/user/account`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...account,
+                }),
+            });
+
+            return user.json();
+        },
+
+        async getUser(id) {
+            console.log("Getting user");
+            const res = await fetch(`${process.env.BACKEND_API_URL}/user/${id}`);
+            
+            if (res.ok) {
+                return res.json();
+            }
+            
+            return null;
+        },
+        
+        async updateUser(profile) {
+            const res = await fetch(`${process.env.BACKEND_API_URL}/user/${profile.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(profile),
+            });
+
+            if (res.ok) {
+                return res.json();
+            }
+
+            return null;
+        },
+
+        async getUserByAccount(provider) {
+            const res = await fetch(`${process.env.BACKEND_API_URL}/user/account/${provider.providerAccountId}`);
+
+            if (res.ok) {
+                return res.json();
+            }
+
+            return null;
+        },
+
+        async getUserByEmail(email) {
+            const res = await fetch(`${process.env.BACKEND_API_URL}/user/signin`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                }),
+            });
+
+            if (res.ok) {
+                return res.json();
+            }
+
+            return null;
+        },
+    }
+}
+
 const providers: Provider[] = [
     GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         profile: (profile) => {
             return {
+                id: profile.sub,
                 email: profile.email,
                 name: profile.name,
-                image: profile.image,
+                image: profile.picture,
                 emailVerified: profile.email_verified,
                 role: profile.role ?? "USER",
             };
-        },
-        authorization: {
-            params: {
-                prompt: "consent",
-                access_type: "offline",
-                response_type: "code",
-            },
-        },
+        }
     }),
     Credentials({
         credentials: {
@@ -89,43 +174,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
     basePath: "/auth",
     providers,
+    adapter: Adapter(),
     session: { strategy: "jwt" },
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-            if (account?.provider === "google") {
-                if (!profile?.email_verified) {
-                    return false;
-                }
-                try {
-                    const response = await fetch(
-                        `${process.env.BACKEND_API_URL}/user/signin`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                email: user.email,
-                                name: user.name,
-                                image: user.image,
-                                password: null,
-                                account: account,
-                            }),
-                        },
-                    );
-                    if (!response.ok) {
-                        return false;
-                    }
-                } catch (error) {
-                    console.error(error);
-                    return false;
-                }
-                return true;
-            }
-            if (credentials) {
-                return true;
-            }
-            return false;
+            return true;
         },
         async redirect({ url, baseUrl }) {
             if (url == baseUrl + "/courses") {
@@ -143,7 +196,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 token.accessToken = account.access_token;
                 token.id = user.id;
                 token.email = user.email as string;
+                token.username = user.username as string;
                 token.name = user.name as string;
+                token.image = user.image as string;
+                token.role = user.role as string;
+                token.bio = user.bio as string;
             }
             return token;
         },
@@ -151,7 +208,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             if (token?.accessToken) session.accessToken = token.accessToken;
             session.user.id = token.id as string;
             session.user.email = token.email as string;
+            session.user.username = token.username as string;
             session.user.name = token.name as string;
+            session.user.image = token.image as string;
+            session.user.role = token.role as string;
+            session.user.bio = token.bio as string;
             return session;
         },
     },
@@ -159,12 +220,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 
 declare module "next-auth" {
+    type AppUser = {
+        username: string;
+        role: string;
+        bio: string;
+    };
+
+    interface User extends AppUser {}
+
     interface Session {
         accessToken?: string;
-
-        id?: string;
-        email?: string;
-        name?: string;
     }
 }
 
@@ -174,5 +239,8 @@ declare module "next-auth/jwt" {
         id?: string;
         email?: string;
         name?: string;
+        image?: string;
+        role?: string;
+        bio?: string;
     }
 }
