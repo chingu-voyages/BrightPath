@@ -13,7 +13,12 @@ export const cleanDatabase = async (ctx: Context) => {
     const deleteAccounts = ctx.prisma.account.deleteMany();
     const deleteUsers = ctx.prisma.user.deleteMany();
 
-    await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteAccounts, deleteUsers]);
+    await ctx.prisma.$transaction([
+        deleteUnits,
+        deleteCourses,
+        deleteAccounts,
+        deleteUsers,
+    ]);
 };
 
 export const createPersistentCourse = async (
@@ -63,9 +68,20 @@ export const createPersistentStudent = async (
     ctx: Context,
     amount: number = 1,
 ) => {
-    return ctx.prisma.user.createManyAndReturn({
+    return await ctx.prisma.user.createManyAndReturn({
         data: Array.from({ length: amount }, () => {
             return userCreateInputFactory(Role.STUDENT);
+        }),
+    });
+};
+
+export const createPersistentInstructor = async (
+    ctx: Context,
+    amount: number = 1,
+) => {
+    return await ctx.prisma.user.createManyAndReturn({
+        data: Array.from({ length: amount }, () => {
+            return userCreateInputFactory(Role.INSTRUCTOR);
         }),
     });
 };

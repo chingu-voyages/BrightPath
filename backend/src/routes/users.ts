@@ -25,6 +25,31 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// GET /
+// Get user by email
+router.get("/", async (req: Request, res: Response) => {
+    const email = req.query.email as string | undefined;
+    try {
+        if (!email || typeof email !== "string") {
+            res.status(400).json({ error: "Invalid email." });
+            return;
+        }
+
+        const user = await ctx.prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (!user) {
+            res.status(404).json({ error: "User not found." });
+            return;
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch user." });
+    }
+});
+
 // POST /signup
 router.post("/signup", async (req: Request, res: Response) => {
     const { email, name, image } = req.body;
@@ -45,10 +70,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 
 // POST /signin
 router.post("/signin", async (req: Request, res: Response) => {
-    const {
-        email: email,
-        password: password = undefined,
-    } = req.body;
+    const { email: email, password: password = undefined } = req.body;
     try {
         let user = await ctx.prisma.user.findUnique({
             where: { email: email },
@@ -59,23 +81,29 @@ router.post("/signin", async (req: Request, res: Response) => {
             return;
         }
 
-        if (user && password) {
-            const vaildPassword = await bcrypt.compare(
-                password,
-                user.password as string,
-            );
-            if (!vaildPassword) {
-                res.status(500).json({ error: "Incorrect credentials" });
-            }
+        if (!password || !user.password) {
+            res.status(400).json({ error: "Missing password." });
+            return;
+        }
+
+        const validPassword = await bcrypt.compare(
+            password,
+            user.password as string,
+        );
+
+        if (!validPassword) {
+            res.status(401).json({ error: "Invalid password." });
+            return;
         }
 
         res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ error: "Failed to sign in." });
+        res.status(500).json({ error: error });
     }
 });
 
 // GET /account/:accountId
+// Get user by account ID
 router.get("/account/:accountId", async (req: Request, res: Response) => {
     const accountId = req.params.accountId;
 
@@ -100,7 +128,15 @@ router.get("/account/:accountId", async (req: Request, res: Response) => {
 // POST /account
 // Link account to user
 router.post("/account", async (req: Request, res: Response) => {
-    const { userId, provider, providerAccountId, type, refresh_token, expires_at, access_token } = req.body;
+    const {
+        userId,
+        provider,
+        providerAccountId,
+        type,
+        refresh_token,
+        expires_at,
+        access_token,
+    } = req.body;
 
     try {
         const account = await ctx.prisma.account.create({
@@ -155,28 +191,6 @@ router.get("/:userId/enrollments", async (req: Request, res: Response) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch courses." });
-    }
-});
-
-// GET /:userId
-// Get user by ID
-router.get("/:userId", async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-
-    try {
-        const user = await ctx.prisma.user.findUnique({
-            where: { id: userId },
-        });
-
-        if (!user) {
-            res.status(404).json({ error: "User not found." });
-            return;
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        console.error("Error fetching user:", error);
-        res.status(500).json({ error: "Failed to fetch user." });
     }
 });
 

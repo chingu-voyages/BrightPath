@@ -1,12 +1,12 @@
 import request from "supertest";
 import app from "../src/app";
 import { createContext } from "./context";
-import { createInstructor, cleanDatabase } from "./utils";
+import { cleanDatabase, createPersistentInstructor } from "./utils";
 
 const ctx = createContext();
 const prisma = ctx.prisma;
 
-describe("POST /user/signin", () => {
+describe("users can signup, and signin", () => {
     beforeEach(async () => {
         await cleanDatabase(ctx);
     });
@@ -19,7 +19,7 @@ describe("POST /user/signin", () => {
             role: "STUDENT",
         };
 
-        const response = await request(app).post("/user/signin").send(student);
+        const response = await request(app).post("/user/signup").send(student);
 
         expect(response.status).toBe(200);
 
@@ -28,11 +28,11 @@ describe("POST /user/signin", () => {
     });
 
     it("should return an existing user if already registered", async () => {
-        const existingInstructor = await createInstructor();
+        const existingInstructor = (await createPersistentInstructor(ctx))[0];
 
-        const response = await request(app)
-            .post("/user/signin")
-            .send(existingInstructor);
+        const response = await request(app).get(
+            "/user/?email=" + existingInstructor.email,
+        );
 
         expect(response.status).toBe(200);
 
