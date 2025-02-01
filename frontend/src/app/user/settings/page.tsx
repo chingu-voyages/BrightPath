@@ -33,7 +33,8 @@ export default function UserSettings() {
                 throw new Error("User not authenticated");
             }
             const response = await fetch(
-                process.env.BACKEND_API_URL + `/user/${session.user.id}`,
+                process.env.NEXT_PUBLIC_BACKEND_API_URL +
+                    `/user/${session.user.id}`,
                 {
                     method: "PATCH",
                     headers: {
