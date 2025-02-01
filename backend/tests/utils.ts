@@ -10,9 +10,10 @@ import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
 export const cleanDatabase = async (ctx: Context) => {
     const deleteUnits = ctx.prisma.unit.deleteMany();
     const deleteCourses = ctx.prisma.course.deleteMany();
+    const deleteAccounts = ctx.prisma.account.deleteMany();
     const deleteUsers = ctx.prisma.user.deleteMany();
 
-    await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteUsers]);
+    await ctx.prisma.$transaction([deleteUnits, deleteCourses, deleteAccounts, deleteUsers]);
 };
 
 export const createPersistentCourse = async (

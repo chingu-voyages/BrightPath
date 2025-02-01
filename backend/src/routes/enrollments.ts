@@ -23,9 +23,9 @@ router.get("/", async (req: Request, res: Response) => {
 // POST /enrollments
 router.post("/", async (req: Request, res: Response) => {
     try {
-        const { courseId, userId } = req.body;
+        const { courseSlug, userId } = req.body;
 
-        res.status(201).json(await createEnrollment(ctx, courseId, userId));
+        res.status(201).json(await createEnrollment(ctx, courseSlug, userId));
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to create enrollment." });
