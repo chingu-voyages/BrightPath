@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
-import EnrollButton from "./EnrollButton";
 import { auth } from "@/auth";
+import Link from "next/link";
+import EnrollButton from "./EnrollButton";
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: true };
@@ -16,17 +17,43 @@ export default async function Courses({
     params: Promise<{ slug: string }>;
 }) {
     const slug = (await params).slug;
-    //const session = await auth();
-    //const user = session?.user;
-    const user = { id: undefined };
-
-    //if (user) {
-    // fetch enrollments to check if user is already enrolled
-    // const enrollments = await fetch(process.env.BACKEND_API_URL + "/users/" + user.id + "/enrollments")
-    //}
 
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
+
+    const session = await auth();
+    const user = session?.user;
+    let isEnrolled = false;
+
+    if (user) {
+        const res = await fetch(
+            `${process.env.BACKEND_API_URL}/user/${user.id}/enrollments`,
+        );
+        const enrollments = await res.json();
+        const enrollment = enrollments.find(
+            (enrollment: any) => enrollment.courseId === course.id,
+        );
+        isEnrolled = !!enrollment;
+    }
+
+    const DynamicEnrollButton = () => {
+        if (isEnrolled) {
+            return (
+                <button
+                    disabled
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+                >
+                    Enrolled
+                </button>
+            );
+        }
+
+        if (user && user.id) {
+            return <EnrollButton courseId={course.id} userId={user.id} />;
+        }
+
+        return <Link href="/auth/signin">Enroll</Link>;
+    };
 
     return (
         <div
@@ -45,7 +72,7 @@ export default async function Courses({
                     </p>
                 </div>
 
-                <EnrollButton userId={user?.id} slug={slug} />
+                <DynamicEnrollButton />
             </div>
 
             <div className="flex justify-start items-center mb-4">
@@ -57,11 +84,8 @@ export default async function Courses({
                 </span>
             </div>
 
-            <div className="flex items-start justify-between mb-4 gap-4">
-                <video
-                    controls
-                    className="rounded-lg shadow-sm max-h-40 max-w-[50%]"
-                >
+            <div className="md:flex items-start justify-between mb-4 gap-4">
+                <video controls className="rounded-lg shadow-sm max-h-40">
                     <source src={course.introVideoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
