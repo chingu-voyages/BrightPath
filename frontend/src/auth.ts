@@ -1,74 +1,55 @@
 import NextAuth, { type User, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import type { Provider } from "next-auth/providers";
+import type { Adapter } from "next-auth/adapters";
 import "next-auth/jwt";
+
 import { ZodError } from "zod";
 import { signInSchema } from "./zodHelper";
-import type { Provider } from "next-auth/providers";
-import GoogleProvider from "next-auth/providers/google";
-
-import type { Adapter } from "next-auth/adapters"
 
 function Adapter(): Adapter {
     return {
         async createUser(profile) {
-            const user = await fetch(`${process.env.BACKEND_API_URL}/user/signup`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const user = await fetch(
+                `${process.env.BACKEND_API_URL}/user/signup`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: profile.email,
+                        name: profile.name,
+                        image: profile.image,
+                    }),
                 },
-                body: JSON.stringify({
-                    email: profile.email,
-                    name: profile.name,
-                    image: profile.image,
-                }),
-            });
+            );
 
             return user.json();
-        }, 
+        },
 
         async linkAccount(account) {
-            const user = await fetch(`${process.env.BACKEND_API_URL}/user/account`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const user = await fetch(
+                `${process.env.BACKEND_API_URL}/user/account`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        ...account,
+                    }),
                 },
-                body: JSON.stringify({
-                    ...account,
-                }),
-            });
+            );
 
             return user.json();
-        },
-
-        async getUser(id) {
-            console.log("Getting user");
-            const res = await fetch(`${process.env.BACKEND_API_URL}/user/${id}`);
-            
-            if (res.ok) {
-                return res.json();
-            }
-            
-            return null;
-        },
-        
-        async updateUser(profile) {
-            const res = await fetch(`${process.env.BACKEND_API_URL}/user/${profile.id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(profile),
-            });
-
-            if (res.ok) {
-                return res.json();
-            }
-
-            return null;
         },
 
         async getUserByAccount(provider) {
-            const res = await fetch(`${process.env.BACKEND_API_URL}/user/account/${provider.providerAccountId}`);
+            const res = await fetch(
+                `${process.env.BACKEND_API_URL}/user/account/${provider.providerAccountId}`,
+            );
 
             if (res.ok) {
                 return res.json();
@@ -78,15 +59,9 @@ function Adapter(): Adapter {
         },
 
         async getUserByEmail(email) {
-            const res = await fetch(`${process.env.BACKEND_API_URL}/user/signin`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                }),
-            });
+            const res = await fetch(
+                `${process.env.BACKEND_API_URL}/user/?email=${email}`,
+            );
 
             if (res.ok) {
                 return res.json();
@@ -94,7 +69,7 @@ function Adapter(): Adapter {
 
             return null;
         },
-    }
+    };
 }
 
 const providers: Provider[] = [
@@ -108,9 +83,11 @@ const providers: Provider[] = [
                 name: profile.name,
                 image: profile.picture,
                 emailVerified: profile.email_verified,
-                role: profile.role ?? "USER",
+                role: "STUDENT",
+                username: undefined,
+                bio: undefined,
             };
-        }
+        },
     }),
     Credentials({
         credentials: {
@@ -125,30 +102,25 @@ const providers: Provider[] = [
         ) => {
             try {
                 const { email, password } = signInSchema.parse(credentials);
-                try {
-                    const response = await fetch(
-                        `${process.env.BACKEND_API_URL}/user/signin`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                email: email,
-                                password: password,
-                                name: credentials.name,
-                            }),
+
+                const response = await fetch(
+                    `${process.env.BACKEND_API_URL}/user/signin`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
                         },
-                    );
-                    if (!response.ok) {
-                        return null;
-                    } else {
-                        return (await response.json()) as User;
-                    }
-                } catch (error) {
-                    console.error(error);
+                        body: JSON.stringify({
+                            email: email,
+                            password: password,
+                        }),
+                    },
+                );
+                if (!response.ok) {
                     return null;
                 }
+
+                return (await response.json()) as User;
             } catch (error) {
                 if (error instanceof ZodError) {
                     return null;
@@ -177,9 +149,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: Adapter(),
     session: { strategy: "jwt" },
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
-            return true;
-        },
         async redirect({ url, baseUrl }) {
             if (url == baseUrl + "/courses") {
                 return baseUrl + "/courses";
@@ -219,18 +188,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     secret: process.env.NEXTAUTH_SECRET,
 });
 
+type AppUser = {
+    username: string | undefined;
+    role: string;
+    bio: string | undefined;
+};
+
 declare module "next-auth" {
-    type AppUser = {
-        username: string;
-        role: string;
-        bio: string;
-    };
-
     interface User extends AppUser {}
-
     interface Session {
         accessToken?: string;
     }
+}
+
+declare module "next-auth/adapters" {
+    interface AdapterUser extends AppUser {}
 }
 
 declare module "next-auth/jwt" {
