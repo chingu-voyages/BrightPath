@@ -6,6 +6,7 @@ import {
     courseCreateInputWithoutInstructorFactory,
 } from "../factories/course";
 import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
+import { lessonCreateInputWithoutUnitFactory } from "../factories/lesson";
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteUnits = ctx.prisma.unit.deleteMany();
@@ -47,14 +48,30 @@ export const createPersistentCourse = async (
         skipDuplicates: true,
     });
 
+    let units;
+
     for (const course of courses) {
-        await ctx.prisma.unit.createMany({
+        units = await ctx.prisma.unit.createManyAndReturn({
             data: Array.from(
                 { length: Math.floor(Math.random() * 10) + 1 },
                 () => {
                     return {
                         ...unitCreateInputWithoutCourseFactory(),
                         courseId: course.id,
+                    };
+                },
+            ),
+        });
+    }
+
+    for (const unit of units) {
+        const lessons = await ctx.prisma.lesson.createManyAndReturn({
+            data: Array.from(
+                { length: Math.floor(Math.random() * 10) + 1 },
+                () => {
+                    return {
+                        ...lessonCreateInputWithoutUnitFactory(),
+                        unitId: unit.id,
                     };
                 },
             ),
