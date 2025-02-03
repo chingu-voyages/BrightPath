@@ -76,6 +76,7 @@ export const assignmentCreateInputWithoutUnitFactory = (type: AssignmentType = A
     return {
         title: title,
         type: type,
+        duration: getRandomTime(),
     };
 }
 
@@ -91,3 +92,10 @@ export const videoAssignmentCreateInputFactory = () => {
         transcript: faker.lorem.paragraph(),
     };
 }
+
+function getRandomTime() {
+    const date = faker.date.between({ from: new Date(0), to: new Date(24 * 60 * 60 * 1000) });
+    date.setFullYear(1970, 0, 1); // Normalize to a fixed date (Unix epoch)
+    return date;
+}
+
