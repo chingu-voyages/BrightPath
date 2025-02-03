@@ -1,4 +1,4 @@
-import { Enrollment, EnrollmentStatus } from "@prisma/client";
+import { Enrollment, EnrollmentStatus, Prisma } from "@prisma/client";
 import { enrollmentFactory } from "../factories/enrollment";
 import { MockContext, Context, createMockContext } from "./context";
 import {
@@ -7,7 +7,13 @@ import {
     createEnrollment,
     updateEnrollment,
     deleteEnrollment,
+    createGranularProgressObject,
 } from "../src/enrollmentController";
+import { courseFactory } from "../factories/course";
+
+type Unit = Prisma.UnitGetPayload<{
+    include: { lessons: true };
+}>;
 
 let mockCtx: MockContext;
 let ctx: Context;
@@ -76,8 +82,10 @@ describe("getEnrollmentsByUserId", () => {
 
 describe("createEnrollment", () => {
     test("should create a new enrollment", async () => {
-        const newEnrollment = enrollmentFactory();
+        const course = courseFactory();
+        const newEnrollment = enrollmentFactory(undefined, undefined, course.id);
 
+        mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
         mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
 
         expect(
@@ -89,8 +97,30 @@ describe("createEnrollment", () => {
         ).toEqual(newEnrollment);
     });
 
+    test("should set default granular progress according to the course", async () => {
+        const course = courseFactory();
+        const newEnrollment = enrollmentFactory(undefined, undefined, course.id);
+
+        mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
+        mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
+
+        const units = course.units as Unit[];
+
+        const granularProgress = createGranularProgressObject(units);
+        newEnrollment.granularProgress = granularProgress;
+
+        // needs to be refactored
+        expect(
+            await createEnrollment(
+                ctx,
+                newEnrollment.courseId,
+                newEnrollment.userId,
+            ),
+        ).toEqual(newEnrollment);
+    });
+
     test("should handle errors during creation", async () => {
-        const errorMessage = "Failed to create enrollment";
+        const errorMessage = "Course not found";
         const newEnrollment = enrollmentFactory();
 
         mockCtx.prisma.enrollment.create.mockRejectedValue(
