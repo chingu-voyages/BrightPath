@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Enrollment, Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
@@ -24,13 +24,14 @@ export default async function Courses({
     const session = await auth();
     const user = session?.user;
     let isEnrolled = false;
+    let enrollment: Enrollment
 
     if (user) {
         const res = await fetch(
             `${process.env.BACKEND_API_URL}/user/${user.id}/enrollments`,
         );
         const enrollments = await res.json();
-        const enrollment = enrollments.find(
+        enrollment = enrollments.find(
             (enrollment: any) => enrollment.courseId === course.id,
         );
         isEnrolled = !!enrollment;
@@ -54,6 +55,27 @@ export default async function Courses({
 
         return <Link href="/auth/signin">Enroll</Link>;
     };
+
+    const Progress = () => {
+        // progress is a float variable in enrollment
+        // we can use it to show progress bar
+
+        if (!isEnrolled) {
+            return null;
+        }
+
+        const percentage = enrollment.progress * 100;
+
+        return (
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-lg shadow-inner">
+                <div
+                    className="h-2 bg-blue-500 rounded-lg"
+                    style={{ width: `${percentage}%` }}
+                />
+            </div>
+        );
+    }
+
 
     return (
         <div
@@ -103,6 +125,8 @@ export default async function Courses({
                     </span>
                 </div>
             </div>
+
+            <Progress />    
 
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
                 {course.description}
