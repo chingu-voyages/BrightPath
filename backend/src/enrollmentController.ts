@@ -1,8 +1,8 @@
 import { Context } from "./context";
-import { EnrollmentStatus, Prisma, Lesson } from "@prisma/client";
+import { EnrollmentStatus, Prisma } from "@prisma/client";
 
 type Unit = Prisma.UnitGetPayload<{
-    include: { lessons: true };
+    include: { assignments: true };
 }>;
 
 export async function getAllEnrollments(ctx: Context) {
@@ -27,7 +27,7 @@ export async function createEnrollment(
     try {
         const course = await ctx.prisma.course.findUniqueOrThrow({
             where: { id: courseId },
-            include: { units: { include: { lessons: true } } },
+            include: { units: { include: { assignments: true } } },
         });
 
         granularProgress = createGranularProgressObject(course.units);
@@ -71,8 +71,8 @@ export function createGranularProgressObject(units: Unit[]) {
     for (const unit of units) {
         granularProgress[unit.id] = {};
 
-        for (const lesson of unit.lessons) {
-            granularProgress[unit.id][lesson.id] = 0;
+        for (const assignment of unit.assignments) {
+            granularProgress[unit.id][assignment.id] = 0;
         }
     }
 
