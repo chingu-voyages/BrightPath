@@ -1,20 +1,28 @@
 import { Context } from "./context";
-import { Role } from "@prisma/client";
+import { AssignmentType, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
 import {
     courseFactory,
     courseCreateInputWithoutInstructorFactory,
 } from "../factories/course";
 import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
-import { lessonCreateInputWithoutUnitFactory } from "../factories/lesson";
+import { assignmentCreateInputWithoutUnitFactory, readingAssignmentCreateInputFactory, videoAssignmentCreateInputFactory } from "../factories/assignment";
 
 export const cleanDatabase = async (ctx: Context) => {
+    const deleteQuizzes = ctx.prisma.quizAssignment.deleteMany();
+    const deleteVideoAssignments = ctx.prisma.videoAssignment.deleteMany();
+    const deleteReadingAssignments = ctx.prisma.readingAssignment.deleteMany();
+    const deleteAssignments = ctx.prisma.assignment.deleteMany();
     const deleteUnits = ctx.prisma.unit.deleteMany();
     const deleteCourses = ctx.prisma.course.deleteMany();
     const deleteAccounts = ctx.prisma.account.deleteMany();
     const deleteUsers = ctx.prisma.user.deleteMany();
 
     await ctx.prisma.$transaction([
+        deleteQuizzes,
+        deleteVideoAssignments,
+        deleteReadingAssignments,
+        deleteAssignments,
         deleteUnits,
         deleteCourses,
         deleteAccounts,
@@ -48,10 +56,10 @@ export const createPersistentCourse = async (
         skipDuplicates: true,
     });
 
-    let units;
+    const assignmentTypes = Object.values(AssignmentType);
 
     for (const course of courses) {
-        units = await ctx.prisma.unit.createManyAndReturn({
+        const units = await ctx.prisma.unit.createManyAndReturn({
             data: Array.from(
                 { length: Math.floor(Math.random() * 10) + 1 },
                 () => {
@@ -62,20 +70,38 @@ export const createPersistentCourse = async (
                 },
             ),
         });
-    }
 
-    for (const unit of units) {
-        const lessons = await ctx.prisma.lesson.createManyAndReturn({
-            data: Array.from(
-                { length: Math.floor(Math.random() * 10) + 1 },
-                () => {
+        for (const unit of units) {
+            const assignments = await ctx.prisma.assignment.createManyAndReturn({
+                data: Array.from({ length: Math.floor(Math.random() * 5) + 1 }, () => {
+                    const type = assignmentTypes[Math.floor(Math.random() * assignmentTypes.length)];
                     return {
-                        ...lessonCreateInputWithoutUnitFactory(),
+                        ...assignmentCreateInputWithoutUnitFactory(type),
                         unitId: unit.id,
                     };
-                },
-            ),
-        });
+                }),
+            });
+
+            for (const assignment of assignments) {
+                if (assignment.type === AssignmentType.READING) {
+                    await ctx.prisma.readingAssignment.create({
+                        data: {
+                            assignmentId: assignment.id,
+                            ...readingAssignmentCreateInputFactory(),
+                        },
+                    });
+                }
+
+                if (assignment.type === AssignmentType.VIDEO) {
+                    await ctx.prisma.videoAssignment.create({
+                        data: {
+                            assignmentId: assignment.id,
+                            ...videoAssignmentCreateInputFactory(),
+                        },
+                    });
+                }
+            }
+        }
     }
 
     return courses;

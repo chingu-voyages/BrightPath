@@ -12,7 +12,7 @@ import {
 import { courseFactory } from "../factories/course";
 
 type Unit = Prisma.UnitGetPayload<{
-    include: { lessons: true };
+    include: { assignments: true };
 }>;
 
 let mockCtx: MockContext;
