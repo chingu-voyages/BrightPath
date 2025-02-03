@@ -7,7 +7,6 @@ type Unit = Prisma.UnitGetPayload<{
 }>;
 
 export const unitFactory = (courseId = faker.number.int()): Unit => {
-
     const id = faker.number.int();
     const assignments = Array.from(
         { length: faker.number.int({ min: 1, max: 10 }) },

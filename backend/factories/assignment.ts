@@ -15,7 +15,9 @@ type QuizAssignment = Prisma.AssignmentGetPayload<{
     include: { QuizAssignment: true };
 }>;
 
-export const readingAssignmentFactory = (unitId = faker.number.int()): ReadingAssignment => {
+export const readingAssignmentFactory = (
+    unitId = faker.number.int(),
+): ReadingAssignment => {
     const id = faker.number.int();
     return {
         id: id,
@@ -27,9 +29,11 @@ export const readingAssignmentFactory = (unitId = faker.number.int()): ReadingAs
         },
         unitId: unitId,
     };
-}
+};
 
-export const videoAssignmentFactory = (unitId = faker.number.int()): VideoAssignment => {
+export const videoAssignmentFactory = (
+    unitId = faker.number.int(),
+): VideoAssignment => {
     const id = faker.number.int();
     return {
         id: id,
@@ -41,9 +45,12 @@ export const videoAssignmentFactory = (unitId = faker.number.int()): VideoAssign
         },
         unitId: unitId,
     };
-}
+};
 
-export const assignmentFactory = (lessonId = faker.number.int(), type = AssignmentType.READING): Assignment => {
+export const assignmentFactory = (
+    lessonId = faker.number.int(),
+    type = AssignmentType.READING,
+): Assignment => {
     if (type === AssignmentType.READING) {
         return readingAssignmentFactory(lessonId);
     }
@@ -70,7 +77,9 @@ export const assignmentCreateInputFactory = (
     };
 };
 
-export const assignmentCreateInputWithoutUnitFactory = (type: AssignmentType = AssignmentType.READING) => {
+export const assignmentCreateInputWithoutUnitFactory = (
+    type: AssignmentType = AssignmentType.READING,
+) => {
     const title = faker.word.noun(4);
 
     return {
@@ -78,24 +87,26 @@ export const assignmentCreateInputWithoutUnitFactory = (type: AssignmentType = A
         type: type,
         duration: getRandomTime(),
     };
-}
+};
 
 export const readingAssignmentCreateInputFactory = () => {
     return {
         content: faker.lorem.paragraph(),
     };
-}
+};
 
 export const videoAssignmentCreateInputFactory = () => {
     return {
         videoUrl: faker.internet.url(),
         transcript: faker.lorem.paragraph(),
     };
-}
+};
 
 function getRandomTime() {
-    const date = faker.date.between({ from: new Date(0), to: new Date(24 * 60 * 60 * 1000) });
+    const date = faker.date.between({
+        from: new Date(0),
+        to: new Date(24 * 60 * 60 * 1000),
+    });
     date.setFullYear(1970, 0, 1); // Normalize to a fixed date (Unix epoch)
     return date;
 }
-

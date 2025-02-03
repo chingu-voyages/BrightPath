@@ -31,11 +31,9 @@ export async function createEnrollment(
         });
 
         granularProgress = createGranularProgressObject(course.units);
-
     } catch (error) {
         throw new Error("Course not found");
     }
-
 
     return await ctx.prisma.enrollment.create({
         data: {

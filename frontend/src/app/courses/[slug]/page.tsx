@@ -23,7 +23,7 @@ export default async function Courses({
     const session = await auth();
     const user = session?.user;
     let isEnrolled = false;
-    let enrollment: Enrollment
+    let enrollment: Enrollment;
 
     if (user) {
         const res = await fetch(
@@ -70,8 +70,7 @@ export default async function Courses({
                 />
             </div>
         );
-    }
-
+    };
 
     return (
         <div
@@ -122,7 +121,7 @@ export default async function Courses({
                 </div>
             </div>
 
-            <Progress />    
+            <Progress />
 
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
                 {course.description}

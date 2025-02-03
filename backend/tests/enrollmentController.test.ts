@@ -83,7 +83,11 @@ describe("getEnrollmentsByUserId", () => {
 describe("createEnrollment", () => {
     test("should create a new enrollment", async () => {
         const course = courseFactory();
-        const newEnrollment = enrollmentFactory(undefined, undefined, course.id);
+        const newEnrollment = enrollmentFactory(
+            undefined,
+            undefined,
+            course.id,
+        );
 
         mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
         mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
@@ -99,7 +103,11 @@ describe("createEnrollment", () => {
 
     test("should set default granular progress according to the course", async () => {
         const course = courseFactory();
-        const newEnrollment = enrollmentFactory(undefined, undefined, course.id);
+        const newEnrollment = enrollmentFactory(
+            undefined,
+            undefined,
+            course.id,
+        );
 
         mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
         mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);

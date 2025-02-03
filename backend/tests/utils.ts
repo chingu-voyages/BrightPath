@@ -6,7 +6,11 @@ import {
     courseCreateInputWithoutInstructorFactory,
 } from "../factories/course";
 import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
-import { assignmentCreateInputWithoutUnitFactory, readingAssignmentCreateInputFactory, videoAssignmentCreateInputFactory } from "../factories/assignment";
+import {
+    assignmentCreateInputWithoutUnitFactory,
+    readingAssignmentCreateInputFactory,
+    videoAssignmentCreateInputFactory,
+} from "../factories/assignment";
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteQuizzes = ctx.prisma.quizAssignment.deleteMany();
@@ -72,15 +76,27 @@ export const createPersistentCourse = async (
         });
 
         for (const unit of units) {
-            const assignments = await ctx.prisma.assignment.createManyAndReturn({
-                data: Array.from({ length: Math.floor(Math.random() * 5) + 1 }, () => {
-                    const type = assignmentTypes[Math.floor(Math.random() * assignmentTypes.length)];
-                    return {
-                        ...assignmentCreateInputWithoutUnitFactory(type),
-                        unitId: unit.id,
-                    };
-                }),
-            });
+            const assignments = await ctx.prisma.assignment.createManyAndReturn(
+                {
+                    data: Array.from(
+                        { length: Math.floor(Math.random() * 5) + 1 },
+                        () => {
+                            const type =
+                                assignmentTypes[
+                                    Math.floor(
+                                        Math.random() * assignmentTypes.length,
+                                    )
+                                ];
+                            return {
+                                ...assignmentCreateInputWithoutUnitFactory(
+                                    type,
+                                ),
+                                unitId: unit.id,
+                            };
+                        },
+                    ),
+                },
+            );
 
             for (const assignment of assignments) {
                 if (assignment.type === AssignmentType.READING) {

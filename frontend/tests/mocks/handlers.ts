@@ -15,9 +15,12 @@ export const handlers = [
         return HttpResponse.json(course);
     }),
 
-    http.get(process.env.BACKEND_API_URL + "/user/:id/enrollments", (req, res) => {
-        const id = req.params.id;
+    http.get(
+        process.env.BACKEND_API_URL + "/user/:id/enrollments",
+        (req, res) => {
+            const id = req.params.id;
 
-        return HttpResponse.json([]);
-    }),
+            return HttpResponse.json([]);
+        },
+    ),
 ];
