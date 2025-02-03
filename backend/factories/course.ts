@@ -52,7 +52,6 @@ export const courseCreateInputWithoutInstructorFactory = (
         slug: faker.helpers.slugify(title),
         shortDescription: faker.lorem.sentence(),
         description: faker.lorem.paragraphs(2),
-        duration: `${faker.number.int({ min: 1, max: 20 })}h`,
         difficulty: difficulty,
         thumbnail: faker.image.url(),
         published: faker.datatype.boolean(),

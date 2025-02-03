@@ -76,7 +76,6 @@ export const assignmentCreateInputWithoutUnitFactory = (type: AssignmentType = A
     return {
         title: title,
         type: type,
-        description: faker.lorem.paragraph(),
     };
 }
 

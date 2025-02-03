@@ -38,6 +38,6 @@ export const unitCreateInputWithoutCourseFactory = () => {
 
     return {
         title: title,
-        duration: '1h',
+        description: faker.lorem.paragraphs(2),
     };
 };
