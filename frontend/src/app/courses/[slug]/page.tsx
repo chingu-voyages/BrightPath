@@ -17,7 +17,6 @@ export default async function Courses({
     params: Promise<{ slug: string }>;
 }) {
     const slug = (await params).slug;
-
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
 
@@ -57,9 +56,6 @@ export default async function Courses({
     };
 
     const Progress = () => {
-        // progress is a float variable in enrollment
-        // we can use it to show progress bar
-
         if (!isEnrolled) {
             return null;
         }
