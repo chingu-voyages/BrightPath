@@ -3,38 +3,36 @@
 import { useState } from "react";
 
 type EnrollButtonProps = {
-    userId: string | undefined;
-    slug: string; // Course slug
+    userId: string;
+    courseId: number;
 };
 
-export default function EnrollButton({ userId, slug }: EnrollButtonProps) {
+export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string | null>(null);
-
-    // todo: if the user is not logged in, the button should redirect to the login page
+    const [message, setMessage] = useState<string>("Enroll");
 
     const handleEnroll = async () => {
         setLoading(true);
-        setMessage(null);
+        setMessage("Enrolling...");
 
         try {
-            // todo: change course id to course slug on the backend
-            const response = await fetch(`/courses/${slug}/enroll`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId, courseSlug: slug }),
-            });
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/enrollments`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ courseId, userId }),
+                },
+            );
 
             const data = await response.json();
             if (response.ok) {
-                // this should disable the button, and change its text
-                setMessage(data.message || "Enrollment successful!");
+                setMessage("Enrolled");
             } else {
-                // this should not happen, but if it does, show an error message
-                setMessage(data.message || "Failed to enroll.");
+                setMessage("Failed to enroll");
             }
         } catch (err) {
-            setMessage("An unexpected error occurred.");
+            setMessage("Failed to enroll");
             console.error(err);
         } finally {
             setLoading(false);
@@ -48,9 +46,8 @@ export default function EnrollButton({ userId, slug }: EnrollButtonProps) {
                 disabled={loading}
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
             >
-                {loading ? "Enrolling..." : "Enroll"}
+                {message}
             </button>
-            {message && <p className="mt-2 text-sm text-gray-700">{message}</p>}
         </div>
     );
 }

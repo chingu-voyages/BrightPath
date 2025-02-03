@@ -30,7 +30,7 @@ export const courseFactory = (
 };
 
 export const courseCreateInputFactory = (
-    instructorId: number,
+    instructorId: string,
     difficulty: Difficulty = Difficulty.BEGINNER,
 ): Prisma.CourseCreateInput => {
     return {
