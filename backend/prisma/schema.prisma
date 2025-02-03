@@ -56,7 +56,6 @@ model Course {
   slug             String        @unique
   shortDescription String
   description      String
-  duration         String
   difficulty       Difficulty
   thumbnail        String
 
@@ -75,18 +74,24 @@ model Course {
 model Unit {
   id       Int      @id @default(autoincrement())
   title    String
+  description String?
   courseId Int
   course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  lessons  Lesson[]
+  assignments Assignment[]
 }
 
-model Lesson {
-  id          Int          @id @default(autoincrement())
-  title       String
-  description String
-  unitId      Int
-  unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  assignments Assignment[]
+model Assignment {
+  id                    Int                    @id @default(autoincrement())
+  title                 String
+  type                  AssignmentType // Enum for the base assignment type
+  duration              DateTime    @db.Time(0)
+  unitId                Int
+  unit                  Unit                 @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  course                Course[]
+  ReadingAssignment     ReadingAssignment?
+  QuizAssignment        QuizAssignment?
+  InteractiveAssignment InteractiveAssignment?
+  VideoAssignment       VideoAssignment?
 }
 
 model Certificate {
@@ -98,19 +103,6 @@ model Certificate {
 
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])
-}
-
-model Assignment {
-  id                    Int                    @id @default(autoincrement())
-  title                 String
-  type                  AssignmentType // Enum for the base assignment type
-  lessonId              Int
-  lesson                Lesson                 @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  course                Course[]
-  ReadingAssignment     ReadingAssignment?
-  QuizAssignment        QuizAssignment?
-  InteractiveAssignment InteractiveAssignment?
-  VideoAssignment       VideoAssignment?
 }
 
 model ReadingAssignment {
