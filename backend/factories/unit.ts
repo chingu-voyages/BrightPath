@@ -1,24 +1,24 @@
-import { Prisma, Role, Difficulty } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-import { lessonFactory } from "./lesson";
+import { assignmentFactory } from "./assignment";
 
 type Unit = Prisma.UnitGetPayload<{
-    include: { lessons: true };
+    include: { assignments: true };
 }>;
 
 export const unitFactory = (courseId = faker.number.int()): Unit => {
 
     const id = faker.number.int();
-    const lessons = Array.from(
+    const assignments = Array.from(
         { length: faker.number.int({ min: 1, max: 10 }) },
-        () => lessonFactory(id),
+        () => assignmentFactory(id),
     );
 
     return {
         id: id,
         ...unitCreateInputWithoutCourseFactory(),
         courseId: courseId,
-        lessons: lessons,
+        assignments: assignments,
     };
 };
 
@@ -38,5 +38,6 @@ export const unitCreateInputWithoutCourseFactory = () => {
 
     return {
         title: title,
+        duration: '1h',
     };
 };
