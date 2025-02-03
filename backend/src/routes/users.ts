@@ -190,7 +190,7 @@ router.get("/:userId/enrollments", async (req: Request, res: Response) => {
         res.status(200).json(await getEnrollmentsByUserId(ctx, userId));
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to fetch courses." });
+        res.status(500).json({ error: "Failed to fetch enrollments." });
     }
 });
 
