@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   email       String        @unique
   username    String?       @unique
   password    String?
@@ -22,6 +22,8 @@ model User {
   image       String?
   bio         String?
   role        Role          @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   accounts    Account[]
   enrollments Enrollment[]
   courses     Course[]
@@ -29,13 +31,19 @@ model User {
 }
 
 model Account {
-  id                Int    @id @default(autoincrement())
-  provider          String
-  providerAccountId String
-  userId            Int
-  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, providerAccountId])
 }
 
 model Course {
@@ -48,13 +56,12 @@ model Course {
   slug             String        @unique
   shortDescription String
   description      String
-  duration         String
   difficulty       Difficulty
   thumbnail        String
 
   assignmentId     Int?
   timedAssessment  Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  instructorId     Int
+  instructorId     String
   instructor       User          @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   units            Unit[]
   enrollments      Enrollment[]
@@ -67,42 +74,35 @@ model Course {
 model Unit {
   id       Int      @id @default(autoincrement())
   title    String
+  description String?
   courseId Int
   course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  lessons  Lesson[]
-}
-
-model Lesson {
-  id          Int          @id @default(autoincrement())
-  title       String
-  description String
-  unitId      Int
-  unit        Unit         @relation(fields: [unitId], references: [id], onDelete: Cascade)
   assignments Assignment[]
-}
-
-model Certificate {
-  id       Int      @id @default(autoincrement())
-  courseId Int
-  userId   Int
-  issuedAt DateTime @default(now())
-  url      String
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
 }
 
 model Assignment {
   id                    Int                    @id @default(autoincrement())
   title                 String
   type                  AssignmentType // Enum for the base assignment type
-  lessonId              Int
-  lesson                Lesson                 @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  duration              Int               @default(0)
+  unitId                Int
+  unit                  Unit                 @relation(fields: [unitId], references: [id], onDelete: Cascade)
   course                Course[]
   ReadingAssignment     ReadingAssignment?
   QuizAssignment        QuizAssignment?
   InteractiveAssignment InteractiveAssignment?
   VideoAssignment       VideoAssignment?
+}
+
+model Certificate {
+  id       Int      @id @default(autoincrement())
+  courseId Int
+  userId   String
+  issuedAt DateTime @default(now())
+  url      String
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 }
 
 model ReadingAssignment {
@@ -149,7 +149,7 @@ model Enrollment {
   progress         Float            @default(0) // Progress of whole course
   granularProgress Json             @default("{}") // Progress of each unit/lesson
 
-  userId           Int
+  userId           String
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId         Int
   course           Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)

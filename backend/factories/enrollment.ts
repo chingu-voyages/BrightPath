@@ -9,10 +9,11 @@ type Enrollment = Prisma.EnrollmentGetPayload<{
 
 export const enrollmentFactory = (
     status: EnrollmentStatus = EnrollmentStatus.ACTIVE,
-    userId: number | undefined = undefined,
+    userId: string | undefined = undefined,
+    courseId: number | undefined = undefined,
 ): Enrollment => {
     let student;
-    const course = courseFactory();
+    const course = courseFactory(courseId);
 
     if (userId === undefined) {
         student = userFactory(Role.STUDENT);

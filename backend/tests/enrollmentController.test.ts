@@ -1,4 +1,4 @@
-import { Enrollment, EnrollmentStatus } from "@prisma/client";
+import { Enrollment, EnrollmentStatus, Prisma } from "@prisma/client";
 import { enrollmentFactory } from "../factories/enrollment";
 import { MockContext, Context, createMockContext } from "./context";
 import {
@@ -7,7 +7,13 @@ import {
     createEnrollment,
     updateEnrollment,
     deleteEnrollment,
+    createGranularProgressObject,
 } from "../src/enrollmentController";
+import { courseFactory } from "../factories/course";
+
+type Unit = Prisma.UnitGetPayload<{
+    include: { assignments: true };
+}>;
 
 let mockCtx: MockContext;
 let ctx: Context;
@@ -44,23 +50,24 @@ describe("getAllEnrollments", () => {
 
 describe("getEnrollmentsByUserId", () => {
     test("should fetch enrollments by user id", async () => {
+        const userId = "1";
         const enrollments = [
-            enrollmentFactory(undefined, 1),
-            enrollmentFactory(undefined, 2),
+            enrollmentFactory(undefined, userId),
+            enrollmentFactory(undefined, userId),
         ];
 
         mockCtx.prisma.enrollment.findMany.mockResolvedValue(enrollments);
 
-        expect(await getEnrollmentsByUserId(ctx, 1)).toEqual(enrollments);
+        expect(await getEnrollmentsByUserId(ctx, userId)).toEqual(enrollments);
 
         expect(mockCtx.prisma.enrollment.findMany).toHaveBeenCalledWith({
-            where: { userId: 1 },
+            where: { userId },
             include: { course: true, user: true },
         });
     });
 
     test("should return an empty array when no enrollments are found", async () => {
-        const userId = 1;
+        const userId = "1";
 
         mockCtx.prisma.enrollment.findMany.mockResolvedValue([]);
 
@@ -75,8 +82,14 @@ describe("getEnrollmentsByUserId", () => {
 
 describe("createEnrollment", () => {
     test("should create a new enrollment", async () => {
-        const newEnrollment = enrollmentFactory();
+        const course = courseFactory();
+        const newEnrollment = enrollmentFactory(
+            undefined,
+            undefined,
+            course.id,
+        );
 
+        mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
         mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
 
         expect(
@@ -88,8 +101,34 @@ describe("createEnrollment", () => {
         ).toEqual(newEnrollment);
     });
 
+    test("should set default granular progress according to the course", async () => {
+        const course = courseFactory();
+        const newEnrollment = enrollmentFactory(
+            undefined,
+            undefined,
+            course.id,
+        );
+
+        mockCtx.prisma.course.findUniqueOrThrow.mockResolvedValue(course);
+        mockCtx.prisma.enrollment.create.mockResolvedValue(newEnrollment);
+
+        const units = course.units as Unit[];
+
+        const granularProgress = createGranularProgressObject(units);
+        newEnrollment.granularProgress = granularProgress;
+
+        // needs to be refactored
+        expect(
+            await createEnrollment(
+                ctx,
+                newEnrollment.courseId,
+                newEnrollment.userId,
+            ),
+        ).toEqual(newEnrollment);
+    });
+
     test("should handle errors during creation", async () => {
-        const errorMessage = "Failed to create enrollment";
+        const errorMessage = "Course not found";
         const newEnrollment = enrollmentFactory();
 
         mockCtx.prisma.enrollment.create.mockRejectedValue(

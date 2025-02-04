@@ -8,17 +8,18 @@ type Course = Prisma.CourseGetPayload<{
 }>;
 
 export const courseFactory = (
+    id: number = faker.number.int(),
     difficulty: Difficulty = Difficulty.BEGINNER,
 ): Course => {
     const instructor = userFactory(Role.INSTRUCTOR);
 
     const units = Array.from(
         { length: faker.number.int({ min: 1, max: 10 }) },
-        () => unitFactory(),
+        () => unitFactory(id),
     );
 
     return {
-        id: faker.number.int(),
+        id: id,
         createdAt: faker.date.recent(),
         updatedAt: faker.date.recent(),
         ...courseCreateInputWithoutInstructorFactory(difficulty),
@@ -30,7 +31,7 @@ export const courseFactory = (
 };
 
 export const courseCreateInputFactory = (
-    instructorId: number,
+    instructorId: string,
     difficulty: Difficulty = Difficulty.BEGINNER,
 ): Prisma.CourseCreateInput => {
     return {
@@ -51,7 +52,6 @@ export const courseCreateInputWithoutInstructorFactory = (
         slug: faker.helpers.slugify(title),
         shortDescription: faker.lorem.sentence(),
         description: faker.lorem.paragraphs(2),
-        duration: `${faker.number.int({ min: 1, max: 20 })}h`,
         difficulty: difficulty,
         thumbnail: faker.image.url(),
         published: faker.datatype.boolean(),
