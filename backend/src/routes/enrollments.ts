@@ -54,7 +54,6 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
         const unitId = parseInt(req.body.unitId);
         const status = req.body.status;
 
-
         const enrollment = await ctx.prisma.enrollment.findUnique({
             where: { id: enrollmentId },
         });
@@ -64,7 +63,8 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
             return;
         }
 
-        const granularProgress = enrollment.granularProgress as Prisma.JsonObject;
+        const granularProgress =
+            enrollment.granularProgress as Prisma.JsonObject;
 
         // @ts-ignore
         granularProgress[`${unitId}`][`${assignmentId}`] = status;
@@ -89,7 +89,10 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
 
         const e = await ctx.prisma.enrollment.update({
             where: { id: enrollmentId },
-            data: { granularProgress: granularProgress, progress: overallProgress },
+            data: {
+                granularProgress: granularProgress,
+                progress: overallProgress,
+            },
         });
 
         console.log(e);
