@@ -11,7 +11,6 @@ export const CompleteAssignmentButton = ({
     assignmentId: number;
     enrollment: Enrollment;
     unitId: number;
-    status: boolean;
 }) => {
     const granularProgress = enrollment.granularProgress as Prisma.JsonObject;
 

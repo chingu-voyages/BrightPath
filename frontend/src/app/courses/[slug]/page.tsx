@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Assignment, Enrollment, Prisma } from "@prisma/client";
 import { auth } from "@/auth";
+import { computeCourseDuration } from "@/lib/utils";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
 import AssignmentComponent from "./Assignment";
@@ -12,23 +13,6 @@ type Unit = Prisma.UnitGetPayload<{
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: { include: { assignments: true } } };
 }> & { duration: number; units: Unit[] };
-
-const computeCourseDuration = (course: any) => {
-    let courseDuration = moment.duration();
-
-    for (const unit of course.units) {
-        const unitDuration = moment.duration();
-
-        for (const assignment of unit.assignments) {
-            unitDuration.add(assignment.duration);
-        }
-
-        unit.duration = unitDuration.asMilliseconds();
-        courseDuration.add(unitDuration);
-    }
-
-    course.duration = courseDuration.asMilliseconds();
-};
 
 export const dynamic = "force-dynamic";
 
@@ -155,7 +139,7 @@ export default async function Courses({
                     Course Outline
                 </h3>
                 <ul className="list-disc list-inside text-sm text-black space-y-1">
-                    {course.units?.map((unit: Unit, index) => (
+                    {course.units?.map((unit: Unit, index: number) => (
                         <div key={unit.id} className="mb-4">
                             <div className="flex items-center mb-2">
                                 <p>Unit {index + 1} - </p>
