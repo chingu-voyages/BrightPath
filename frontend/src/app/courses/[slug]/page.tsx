@@ -80,87 +80,98 @@ export default async function Courses({
     };
 
     return (
-        <div
-            key={course.id}
-            className="w-full p-6 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 dark:bg-gray-800 bg-white"
-            data-testid="course"
-        >
-            <div className="flex justify-between items-center mb-4">
+        <div className="w-full grid grid-cols-1 gap-y-4 p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+            {/* Header Section */}
+            <div className="flex justify-between items-start">
                 <div>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                        {course.title}
-                    </h2>
-
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                        {course.shortDescription}
-                    </p>
+                    <h2 className="text-2xl font-bold text-gray-900">{course.title}</h2>
                 </div>
+            </div>
 
+            <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                    <img
+                        src={course.instructor?.image || ''}
+                        alt={course.instructor?.name || ''}
+                        className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-sm text-gray-600 ml-2">
+                        {course.instructor.name}
+                    </span>
+                </div>
+                <div className="flex items-center space-x-4 mb-4">
+                    <span className="text-sm text-gray-600">{course.difficulty}</span>
+                    <span className="text-sm text-gray-600">{moment.duration(course.duration).humanize()}</span>
+                </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-600 mt-2">{course.shortDescription}</p>
                 <DynamicEnrollButton />
             </div>
 
-            <div className="flex justify-start items-center mb-4">
-                <span className="mr-3 text-sm text-gray-500 dark:text-gray-400">
-                    {course.difficulty}
-                </span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {moment.duration(course.duration).humanize()}
-                </span>
-            </div>
-
-            <div className="md:flex items-start justify-between mb-4 gap-4">
-                <video controls className="rounded-lg shadow-sm max-h-40">
+            {/* Video & Description */}
+            <div className="grid grid-cols-2">
+                <video controls className="rounded-lg shadow-sm w-full md:w-2/3">
                     <source src={course.introVideoUrl} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
-                <div className="flex flex-col items-center border p-6 rounded-lg">
-                    <img
-                        src={course.instructor?.image || "/avatar.png"}
-                        alt={`${course.instructor?.name} Profile`}
-                        className="w-16 h-16 rounded-full shadow"
-                    />
-                    <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                        {course.instructor?.name}
-                    </span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                        {course.instructor?.bio}
-                    </span>
-                </div>
+
+                {/* Course Description */}
+                <p className="text-sm text-gray-700 mb-6">{course.description}</p>
             </div>
 
-            <Progress />
 
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-                {course.description}
-            </p>
 
-            <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    Course Outline
-                </h3>
-                <ul className="list-disc list-inside text-sm text-black space-y-1">
-                    {course.units?.map((unit: Unit, index: number) => (
-                        <div key={unit.id} className="mb-4">
-                            <div className="flex items-center mb-2">
-                                <p>Unit {index + 1} - </p>
-                                <p>
-                                    {moment.duration(unit.duration).humanize()}
+            <div className="grid grid-cols-2 text-black">
+
+                {/* Course Outline */}
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Course Outline</h3>
+                    <div className="space-y-4">
+                        {course.units?.map((unit: Unit, index) => (
+                            <div key={unit.id} className="p-4 border rounded-lg bg-gray-50">
+                                <div className="flex justify-between items-center mb-2">
+                                    <h4 className="font-semibold">Unit {index + 1} - {moment.duration(unit.duration).humanize()}</h4>
+                                </div>
+                                <h3 className="text-lg font-semibold mb-2">{unit.title}</h3>
+                                <p className="">{unit.description}</p>
+                                {unit.assignments?.map((assignment: Assignment) => (
+                                    <AssignmentComponent
+                                        key={assignment.id}
+                                        assignment={assignment}
+                                        enrollment={enrollment}
+                                        unitId={unit.id}
+                                    />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+                    <div className="">
+                        {/* Certificate */}
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            Complete this course to earn your verified certificate
+                        </h3>
+
+                        <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+                            <div className="p-4">
+                                <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                                    Certificate of Completion
+                                </h4>
+                                <p className="text-sm text-gray-600">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                                    pellentesque, purus sit amet luctus venenatis, elit erat pretium
+                                    enim, nec ultricies lacus nunc nec nulla. Nullam nec est ut
+                                    sapien.
                                 </p>
                             </div>
-
-                            <h3>{unit.title}</h3>
-                            <p>{unit.description}</p>
-                            {unit.assignments?.map((assignment: Assignment) => (
-                                <AssignmentComponent
-                                    key={assignment.id}
-                                    assignment={assignment}
-                                    enrollment={enrollment}
-                                    unitId={unit.id}
-                                />
-                            ))}
                         </div>
-                    ))}
-                </ul>
+                    </div>
+                    <Progress />
+                </div>
             </div>
         </div>
     );
