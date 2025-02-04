@@ -16,6 +16,18 @@ router.get("/", async (req: Request, res: Response) => {
     }
 });
 
+// GET /courses/popular
+router.get("/popular", async (req: Request, res: Response) => {
+    try {
+        const courses = await getAllCourses(ctx);
+        const popularCourses = courses.slice(0, 3);
+        res.status(200).json(popularCourses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch popular courses." });
+    }
+});
+
 // GET /courses/:slug
 router.get("/:slug", async (req: Request<{ slug: string }>, res: Response) => {
     try {
@@ -30,5 +42,6 @@ router.get("/:slug", async (req: Request<{ slug: string }>, res: Response) => {
         res.status(404).json({ error });
     }
 });
+
 
 export default router;
