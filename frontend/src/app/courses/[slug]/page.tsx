@@ -1,58 +1,33 @@
+import moment from "moment";
 import { Assignment, Enrollment, Prisma } from "@prisma/client";
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { auth } from "@/auth";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime)
+import AssignmentComponent from "./Assignment";
 
 type Unit = Prisma.UnitGetPayload<{
     include: { assignments: true };
-}> & { duration: string };
+}> & { duration: number };
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: { include: { assignments: true } } };
-}> & { duration: string, units: Unit[] };
-
+}> & { duration: number, units: Unit[] };
 
 const computeCourseDuration = (course: any) => {
-    const totalDuration = dayjs.duration(0);
+    let courseDuration = moment.duration();
 
-    course.units.forEach((unit: any) => {
-        const unitDuration = computeDurationForUnit(unit);
-        totalDuration.add(unitDuration);
-    });
+    for (const unit of course.units) {
+        const unitDuration = moment.duration();
 
-    course.duration = totalDuration.humanize();
-};
+        for (const assignment of unit.assignments) {
+            unitDuration.add(assignment.duration);
+        }
 
-const computeDurationForUnit = (unit: Unit) => {
-    let totalDuration = dayjs.duration(0);
-    unit.assignments.forEach((assignment: Assignment) => {
-        const parsedDuration = dayjs(assignment.duration);
-        const duration = dayjs.duration({
-            hours: parsedDuration.hour(),
-            minutes: parsedDuration.minute(),
-        });
+        unit.duration = unitDuration.asMilliseconds(); 
+        courseDuration.add(unitDuration);
+    }
 
-
-        totalDuration = totalDuration.add(duration);
-    });
-
-    unit.duration = totalDuration.humanize();
-
-    return totalDuration
-};
-
-const formatDuration = (duration: string | Date): string => {
-    const d = dayjs(duration, 'HH:mm')
-    const hours = d.hour();
-    const minutes = Math.round(d.minute() / 5) * 5;
-
-    return dayjs().hour(hours).minute(minutes).format('HH:mm');
+    course.duration = courseDuration.asMilliseconds(); 
 };
 
 export const dynamic = "force-dynamic";
@@ -65,6 +40,7 @@ export default async function Courses({
     const slug = (await params).slug;
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
+
     computeCourseDuration(course);
 
     const session = await auth();
@@ -144,7 +120,7 @@ export default async function Courses({
                     {course.difficulty}
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {course.duration}
+                    {moment.duration(course.duration).humanize()}
                 </span>
             </div>
 
@@ -182,26 +158,15 @@ export default async function Courses({
                     {course.units?.map((unit: Unit, index) => (
                         <div key={unit.id} className="mb-4">
                             <div className="flex items-center mb-2">
-                                <p>Unit {index + 1}</p>
-                                <p>{unit.duration}</p>
+                                <p>Unit {index + 1} - </p>
+                                <p>{moment.duration(unit.duration).humanize()}</p>
                             </div>
 
                             <h3>{unit.title}</h3>
                             <p>{unit.description}</p>
-                            {unit.assignments?.map((assignment: Assignment) => (
-                                <div key={assignment.id} className="mb-4 bg-gray-200 rounded-lg p-4">
-                                    <div className="flex items-center mb-2">
-                                        <p>{assignment.type}</p>
-                                        <p>{formatDuration(assignment.duration)}</p>
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                        <h4>{assignment.title}</h4>
-                                        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
+                            {unit.assignments?.map((assignment: Assignment) => 
+                                <AssignmentComponent key={assignment.id} assignment={assignment} enrollment={enrollment} unitId={unit.id} />
+                            )}
                         </div>
                     ))}
                 </ul>
