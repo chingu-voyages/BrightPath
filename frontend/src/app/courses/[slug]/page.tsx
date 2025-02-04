@@ -11,7 +11,7 @@ type Unit = Prisma.UnitGetPayload<{
 
 type Course = Prisma.CourseGetPayload<{
     include: { instructor: true; units: { include: { assignments: true } } };
-}> & { duration: number, units: Unit[] };
+}> & { duration: number; units: Unit[] };
 
 const computeCourseDuration = (course: any) => {
     let courseDuration = moment.duration();
@@ -23,11 +23,11 @@ const computeCourseDuration = (course: any) => {
             unitDuration.add(assignment.duration);
         }
 
-        unit.duration = unitDuration.asMilliseconds(); 
+        unit.duration = unitDuration.asMilliseconds();
         courseDuration.add(unitDuration);
     }
 
-    course.duration = courseDuration.asMilliseconds(); 
+    course.duration = courseDuration.asMilliseconds();
 };
 
 export const dynamic = "force-dynamic";
@@ -159,14 +159,21 @@ export default async function Courses({
                         <div key={unit.id} className="mb-4">
                             <div className="flex items-center mb-2">
                                 <p>Unit {index + 1} - </p>
-                                <p>{moment.duration(unit.duration).humanize()}</p>
+                                <p>
+                                    {moment.duration(unit.duration).humanize()}
+                                </p>
                             </div>
 
                             <h3>{unit.title}</h3>
                             <p>{unit.description}</p>
-                            {unit.assignments?.map((assignment: Assignment) => 
-                                <AssignmentComponent key={assignment.id} assignment={assignment} enrollment={enrollment} unitId={unit.id} />
-                            )}
+                            {unit.assignments?.map((assignment: Assignment) => (
+                                <AssignmentComponent
+                                    key={assignment.id}
+                                    assignment={assignment}
+                                    enrollment={enrollment}
+                                    unitId={unit.id}
+                                />
+                            ))}
                         </div>
                     ))}
                 </ul>

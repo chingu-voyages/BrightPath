@@ -3,9 +3,17 @@
 import { type Prisma, type Enrollment } from "@prisma/client";
 import { useState } from "react";
 
-export const CompleteAssignmentButton = ({ assignmentId, enrollment, unitId }: { assignmentId: number, enrollment: Enrollment, unitId:number, status: boolean }) => {
-
-    const granularProgress = enrollment.granularProgress as Prisma.JsonObject
+export const CompleteAssignmentButton = ({
+    assignmentId,
+    enrollment,
+    unitId,
+}: {
+    assignmentId: number;
+    enrollment: Enrollment;
+    unitId: number;
+    status: boolean;
+}) => {
+    const granularProgress = enrollment.granularProgress as Prisma.JsonObject;
 
     // @ts-ignore
     const granularStatus = granularProgress[unitId][assignmentId] as boolean;
@@ -22,7 +30,11 @@ export const CompleteAssignmentButton = ({ assignmentId, enrollment, unitId }: {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ assignmentId, unitId, status: !status }),
+                    body: JSON.stringify({
+                        assignmentId,
+                        unitId,
+                        status: !status,
+                    }),
                 },
             );
 
@@ -47,4 +59,4 @@ export const CompleteAssignmentButton = ({ assignmentId, enrollment, unitId }: {
             </button>
         </div>
     );
-}
+};
