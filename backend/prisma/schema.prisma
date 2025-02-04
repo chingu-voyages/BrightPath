@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   email       String        @unique
   username    String?       @unique
   password    String?
@@ -22,6 +22,8 @@ model User {
   image       String?
   bio         String?
   role        Role          @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   accounts    Account[]
   enrollments Enrollment[]
   courses     Course[]
@@ -29,13 +31,19 @@ model User {
 }
 
 model Account {
-  id                Int    @id @default(autoincrement())
-  provider          String
-  providerAccountId String
-  userId            Int
-  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, providerAccountId])
 }
 
 model Course {
@@ -54,7 +62,7 @@ model Course {
 
   assignmentId     Int?
   timedAssessment  Assignment?   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
-  instructorId     Int
+  instructorId     String
   instructor       User          @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   units            Unit[]
   enrollments      Enrollment[]
@@ -84,7 +92,7 @@ model Lesson {
 model Certificate {
   id       Int      @id @default(autoincrement())
   courseId Int
-  userId   Int
+  userId   String
   issuedAt DateTime @default(now())
   url      String
 
@@ -149,7 +157,7 @@ model Enrollment {
   progress         Float            @default(0) // Progress of whole course
   granularProgress Json             @default("{}") // Progress of each unit/lesson
 
-  userId           Int
+  userId           String
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId         Int
   course           Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)

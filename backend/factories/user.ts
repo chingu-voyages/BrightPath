@@ -5,7 +5,7 @@ type User = Prisma.UserGetPayload<{}>;
 
 export const userFactory = (
     role: Role = Role.STUDENT,
-    id: number = faker.number.int(),
+    id: string = faker.string.uuid(),
 ): User => {
     return {
         id: id,
@@ -16,6 +16,8 @@ export const userFactory = (
         bio: faker.lorem.paragraph(),
         image: faker.image.avatar(),
         role,
+        createdAt: faker.date.recent(),
+        updatedAt: faker.date.recent(),
     };
 };
 

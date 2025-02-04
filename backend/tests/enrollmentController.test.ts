@@ -44,23 +44,24 @@ describe("getAllEnrollments", () => {
 
 describe("getEnrollmentsByUserId", () => {
     test("should fetch enrollments by user id", async () => {
+        const userId = "1";
         const enrollments = [
-            enrollmentFactory(undefined, 1),
-            enrollmentFactory(undefined, 2),
+            enrollmentFactory(undefined, userId),
+            enrollmentFactory(undefined, userId),
         ];
 
         mockCtx.prisma.enrollment.findMany.mockResolvedValue(enrollments);
 
-        expect(await getEnrollmentsByUserId(ctx, 1)).toEqual(enrollments);
+        expect(await getEnrollmentsByUserId(ctx, userId)).toEqual(enrollments);
 
         expect(mockCtx.prisma.enrollment.findMany).toHaveBeenCalledWith({
-            where: { userId: 1 },
+            where: { userId },
             include: { course: true, user: true },
         });
     });
 
     test("should return an empty array when no enrollments are found", async () => {
-        const userId = 1;
+        const userId = "1";
 
         mockCtx.prisma.enrollment.findMany.mockResolvedValue([]);
 
