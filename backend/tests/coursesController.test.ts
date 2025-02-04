@@ -58,7 +58,10 @@ describe("getCourseBySlug", () => {
         );
         expect(mockCtx.prisma.course.findUnique).toHaveBeenCalledWith({
             where: { slug: "sample-course" },
-            include: { instructor: true, units: true },
+            include: {
+                instructor: true,
+                units: { include: { assignments: true } },
+            },
         });
     });
 

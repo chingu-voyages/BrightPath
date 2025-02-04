@@ -7,6 +7,9 @@ export async function getAllCourses(ctx: Context) {
 export async function getCourseBySlug(ctx: Context, slug: string) {
     return await ctx.prisma.course.findUnique({
         where: { slug },
-        include: { instructor: true, units: true },
+        include: {
+            instructor: true,
+            units: { include: { assignments: true } },
+        },
     });
 }
