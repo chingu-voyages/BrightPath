@@ -65,18 +65,22 @@ export default async function RootLayout({
                                     Courses
                                 </Link>
                                 {session?.user ? (
+                                    <div>
                                     <Link href={"/auth/signout"}>Signout</Link>
-                                ) : null}
-                                <Link
-                                    href={
-                                        session?.user
-                                            ? "/user/profile"
-                                            : "/auth/signin"
-                                    }
-                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
-                                >
-                                    <UserOutlined className="p-2 text-center rounded-full border shadow-sm" />
-                                </Link>
+                                    <Link
+                                        href={"/user/profile"}
+                                        className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
+                                        >
+                                        <UserOutlined className="p-2 text-center rounded-full border shadow-sm" />
+                                 </Link>
+                                        
+                                </div>
+                                ) : (
+                                        <div className="flex justify-center items-center gap-4">
+                                            <Link href={"/auth/signin"}>Sign Up</Link>
+                                            {/* <Link href={"/auth/login"}>Log In</Link> */}
+                                        </div>
+                                )}
                             </nav>
                         </Header>
                         {/* main contents */}
