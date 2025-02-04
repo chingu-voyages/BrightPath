@@ -1,6 +1,6 @@
-import moment from 'moment'
-import Link from 'next/link'
-import { type Course } from '@/types'
+import moment from "moment";
+import Link from "next/link";
+import { type Course } from "@/types";
 
 export default function CourseCard({ course }: { course: Course }) {
     return (
@@ -40,5 +40,5 @@ export default function CourseCard({ course }: { course: Course }) {
                 </span>
             </div>
         </Link>
-    )
+    );
 }

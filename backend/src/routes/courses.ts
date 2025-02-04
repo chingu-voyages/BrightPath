@@ -43,5 +43,4 @@ router.get("/:slug", async (req: Request<{ slug: string }>, res: Response) => {
     }
 });
 
-
 export default router;
