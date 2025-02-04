@@ -21,7 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "BrightPath",
-    description: "BrightPath is a custom platform for online courses covering niche tech topics not currently addressed elsewhere.",
+    description:
+        "BrightPath is a custom platform for online courses covering niche tech topics not currently addressed elsewhere.",
 };
 
 export default async function RootLayout({
