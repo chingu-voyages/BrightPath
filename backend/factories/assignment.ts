@@ -85,7 +85,7 @@ export const assignmentCreateInputWithoutUnitFactory = (
     return {
         title: title,
         type: type,
-        duration: getRandomTime(),
+        duration: getRandomTimeInMs(),
     };
 };
 
@@ -102,11 +102,8 @@ export const videoAssignmentCreateInputFactory = () => {
     };
 };
 
-function getRandomTime() {
-    const date = faker.date.between({
-        from: new Date(0),
-        to: new Date(24 * 60 * 60 * 1000),
-    });
-    date.setFullYear(1970, 0, 1); // Normalize to a fixed date (Unix epoch)
-    return date;
-}
+const getRandomTimeInMs = (): number => {
+    const minMs = 60_000; // 1 minute in ms
+    const maxMs = 7_200_000; // 2 hours in ms
+    return Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+};
