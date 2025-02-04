@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { createContext } from "../context";
+import { Prisma } from "@prisma/client";
 import {
     createEnrollment,
     deleteEnrollment,
@@ -42,6 +43,63 @@ router.patch("/:id", async (req: Request, res: Response) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to update enrollment." });
+    }
+});
+
+// POST /enrollments/:id/assignment/:assignmentId/complete
+router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
+    try {
+        const enrollmentId = parseInt(req.params.id);
+        const assignmentId = parseInt(req.body.assignmentId);
+        const unitId = parseInt(req.body.unitId);
+        const status = req.body.status;
+
+        const enrollment = await ctx.prisma.enrollment.findUnique({
+            where: { id: enrollmentId },
+        });
+
+        if (!enrollment) {
+            res.status(404).json({ error: "Enrollment not found." });
+            return;
+        }
+
+        const granularProgress =
+            enrollment.granularProgress as Prisma.JsonObject;
+
+        // @ts-ignore
+        granularProgress[`${unitId}`][`${assignmentId}`] = status;
+
+        // calculate overall progress
+        // total number of assignments / number of completed assignments
+        let completedAssignments = 0;
+        let totalAssignments = 0;
+
+        for (const unit in granularProgress) {
+            // @ts-ignore
+            for (const assignment in granularProgress[unit]) {
+                totalAssignments++;
+                // @ts-ignore
+                if (granularProgress[unit][assignment]) {
+                    completedAssignments++;
+                }
+            }
+        }
+
+        const overallProgress = completedAssignments / totalAssignments;
+
+        const e = await ctx.prisma.enrollment.update({
+            where: { id: enrollmentId },
+            data: {
+                granularProgress: granularProgress,
+                progress: overallProgress,
+            },
+        });
+
+        console.log(e);
+        res.status(200).json({ message: "Assignment completed." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to complete assignment." });
     }
 });
 

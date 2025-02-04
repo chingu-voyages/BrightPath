@@ -5,16 +5,19 @@ type User = Prisma.UserGetPayload<{}>;
 
 export const userFactory = (
     role: Role = Role.STUDENT,
-    id: number = faker.number.int(),
+    id: string = faker.string.uuid(),
 ): User => {
     return {
         id: id,
         email: faker.internet.email(),
         username: faker.internet.username(),
+        password: faker.internet.password(),
         name: faker.person.fullName(),
         bio: faker.lorem.paragraph(),
         image: faker.image.avatar(),
         role,
+        createdAt: faker.date.recent(),
+        updatedAt: faker.date.recent(),
     };
 };
 
@@ -24,6 +27,7 @@ export const userCreateInputFactory = (
     return {
         email: faker.internet.email(),
         username: faker.internet.username(),
+        password: faker.internet.password(),
         name: faker.person.fullName(),
         bio: faker.lorem.paragraph(),
         image: faker.image.avatar(),

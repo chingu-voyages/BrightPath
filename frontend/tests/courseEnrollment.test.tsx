@@ -1,9 +1,25 @@
-import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
-import { expect, describe, it } from "@jest/globals";
+import { vi, expect, describe, it } from "vitest";
 import Course from "@/app/courses/[slug]/page";
 
 import { courses } from "./mocks/data.json";
+
+// Mock next-auth module
+vi.mock("@/auth", () => ({
+    handlers: {},
+    auth: vi.fn(() =>
+        Promise.resolve({
+            user: {
+                id: "string",
+                name: "Test User",
+                email: "test@example.com",
+            },
+            expires: "9999-12-31T23:59:59.999Z",
+        }),
+    ),
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+}));
 
 // this tests the course enrollment flow
 describe("Course Enrollment", () => {

@@ -64,6 +64,9 @@ export default async function RootLayout({
                                 >
                                     Courses
                                 </Link>
+                                {session?.user ? (
+                                    <Link href={"/auth/signout"}>Signout</Link>
+                                ) : null}
                                 <Link
                                     href={
                                         session?.user
@@ -77,10 +80,18 @@ export default async function RootLayout({
                             </nav>
                         </Header>
                         {/* main contents */}
-                        <main className="flex-1 w-screen">{children}</main>
+                        <main className="lg:container lg:mx-auto">
+                            {children}
+                        </main>
 
                         <Footer className="flex  w-full p-6 md:px-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             {/* footer*/}
+                            <Link
+                                href="/our-team"
+                                className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                            >
+                                Our Team
+                            </Link>
                         </Footer>
                     </Layout>
                 </Providers>
