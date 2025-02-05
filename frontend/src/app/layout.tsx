@@ -82,7 +82,10 @@ export default async function RootLayout({
                         </Header>
                         {/* main contents */}
                         <main className="lg:container lg:mx-auto">
-                            <SessionProvider basePath={"/auth"} session={session}>
+                            <SessionProvider
+                                basePath={"/auth"}
+                                session={session}
+                            >
                                 {children}
                             </SessionProvider>
                         </main>

@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Upload, message } from "antd";
 import { Upload as UploadIcon } from "@mui/icons-material";
-import type { UploadFile, UploadProps, UploadChangeParam } from "antd/es/upload";
+import type {
+    UploadFile,
+    UploadProps,
+    UploadChangeParam,
+} from "antd/es/upload";
 import { useSession } from "next-auth/react";
 import type { User } from "next-auth";
 import { useRouter } from "next/navigation";
@@ -21,25 +25,27 @@ export default function UserSettingsForm() {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(values),
-                }
+                },
             );
-            
+
             if (!response.ok) throw new Error();
-            
+
             await update(values);
             message.success("Updated successfully!");
-            router.push('/user/profile');
+            router.push("/user/profile");
         } catch {
             message.error("Update failed");
         }
     };
 
-    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam) => {
+    const handleChange: UploadProps["onChange"] = (info: UploadChangeParam) => {
         let newFileList = [...info.fileList];
         newFileList = newFileList.slice(-1);
         console.log(info.file.response);
         if (info.file.status === "done") {
-            form.setFieldsValue({ image: info.file.response.url.split("/").at(-1) });
+            form.setFieldsValue({
+                image: info.file.response.url.split("/").at(-1),
+            });
             message.success("Upload successful");
         } else if (info.file.status === "error") {
             message.error("Upload failed");
@@ -71,7 +77,7 @@ export default function UserSettingsForm() {
                     <Input.TextArea placeholder="Enter a short bio" rows={4} />
                 </Form.Item>
 
-                <Form.Item name="image" label="Change Avatar" >
+                <Form.Item name="image" label="Change Avatar">
                     <Upload
                         name="file"
                         action={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/upload`}
