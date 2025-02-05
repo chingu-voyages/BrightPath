@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { type Prisma } from "@prisma/client";
+import { Difficulty, type Prisma } from "@prisma/client";
 import { computeCourseDuration } from "@/lib/utils";
 import SignalCellularAlt1BarIcon from "@mui/icons-material/SignalCellularAlt1Bar";
 import SignalCellularAlt2BarIcon from "@mui/icons-material/SignalCellularAlt2Bar";
@@ -33,13 +33,13 @@ export default async function Courses() {
                 >
                     <div className="flex justify-between items-center mb-2">
                         <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
-                            {course.difficulty == "BEGINNER" && (
+                            {course.difficulty === Difficulty.BEGINNER && (
                                 <SignalCellularAlt1BarIcon />
                             )}
-                            {course.difficulty == "INTERMEDIATE" && (
+                            {course.difficulty === Difficulty.INTERMEDIATE && (
                                 <SignalCellularAlt2BarIcon />
                             )}
-                            {course.difficulty == "ADVANCED" && (
+                            {course.difficulty === Difficulty.ADVANCED && (
                                 <SignalCellularAltIcon />
                             )}
 
