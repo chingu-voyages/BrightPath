@@ -12,10 +12,8 @@ export default async function Profile() {
             <Link
                 href={"/user/settings"}
                 className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
-            >
-                <div>
-                    <SettingsOutlinedIcon />
-                </div>
+            >                 
+                <SettingsOutlinedIcon />
             </Link>
         </div>
     );

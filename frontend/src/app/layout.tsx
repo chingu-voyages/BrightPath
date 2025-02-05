@@ -8,6 +8,7 @@ import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -81,7 +82,9 @@ export default async function RootLayout({
                         </Header>
                         {/* main contents */}
                         <main className="lg:container lg:mx-auto">
-                            {children}
+                            <SessionProvider basePath={"/auth"} session={session}>
+                                {children}
+                            </SessionProvider>
                         </main>
 
                         <Footer className="flex  w-full p-6 md:px-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
