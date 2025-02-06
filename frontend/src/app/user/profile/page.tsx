@@ -9,13 +9,13 @@ export default async function Profile() {
     return (
         <div>
             {name && <h2>Welcome, {name}!</h2>}
-            <UserAvatar/>
+            <UserAvatar />
 
             <Link
                 href={"/user/settings"}
                 className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
             >
-                <SettingFilled className="text-4xl"/>
+                <SettingFilled className="text-4xl" />
             </Link>
         </div>
     );

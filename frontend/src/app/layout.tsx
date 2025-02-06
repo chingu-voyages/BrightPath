@@ -62,14 +62,14 @@ export default async function RootLayout({
                                     <div className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500">
                                         <UserMenu />
                                     </div>
-                                ) : <Link
+                                ) : (
+                                    <Link
                                         href={"/auth/signin"}
                                         className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
                                     >
                                         <UserAvatar />
                                     </Link>
-                                }
-                                
+                                )}
                             </nav>
                         </Header>
                         {/* main contents */}
