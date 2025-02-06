@@ -19,7 +19,7 @@ export default async function UserAvatar() {
                             width={52} 
                             height={52} 
                             unoptimized
-                            className="object-cover"
+                            className="object-cover cursor-pointer bg-blue-500 hover:bg-blue-600 transition"
                         />
                     }
             />
