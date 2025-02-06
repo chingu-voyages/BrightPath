@@ -13,13 +13,29 @@ dotenv.config();
 const app: Express = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+    cors({
+        origin: process.env.FRONTEND_URL || "http://localhost:3000",
+        credentials: true,
+    }),
+);
 // cors check origin a-brigpath.netlify.app
 
 // check jwt token for protected of the routes
 //
 // Serve static files from the "uploads" directory
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use(
+    "/uploads",
+    (req, res, next) => {
+        res.header(
+            "Access-Control-Allow-Origin",
+            process.env.FRONTEND_URL || "http://localhost:3000",
+        );
+        res.header("Access-Control-Allow-Methods", "GET");
+        next();
+    },
+    express.static(path.join(__dirname, "uploads")),
+);
 
 app.use("/courses", courseRouter);
 app.use("/user", userRouter);
