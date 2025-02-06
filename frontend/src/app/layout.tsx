@@ -31,14 +31,14 @@ export default async function RootLayout({
 }>) {
     const session = await auth();
 
-    const protectedRoutes = ["/user/profile", "/dashboard"];
+    // const protectedRoutes = ["/user/profile", "/dashboard"];
 
-    if (typeof window !== "undefined") {
-        const currentPath = window.location.pathname;
-        if (protectedRoutes.includes(currentPath) && !session?.user) {
-            return redirect("/auth/signin");
-        }
-    }
+    // if (typeof window !== "undefined") {
+    //     const currentPath = window.location.pathname;
+    //     if (protectedRoutes.includes(currentPath) && !session?.user) {
+    //         return redirect("/auth/signin");
+    //     }
+    // }
 
     return (
         <html lang="en">
@@ -58,11 +58,22 @@ export default async function RootLayout({
                                 >
                                     Home
                                 </Link>
+                                {session?.user && <Link
+                                    href={"/user/dashboard"}
+                                    // href={session.user.role === "STUDENT" ? "/user/dashboard":"/teacher/dashboard"}
+                                    // className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                                >Dashboard</Link>}
                                 <Link
                                     href={"/courses"}
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
                                 >
                                     Courses
+                                </Link>
+                                <Link
+                                    href={"/about"}
+                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                                >
+                                    About
                                 </Link>
                                 {session?.user ? (
                                     <div>
