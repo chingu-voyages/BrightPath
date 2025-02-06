@@ -4,11 +4,12 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import { Layout } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
-import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import UserAvatar from "@/components/UserAvatar";
+import UserMenu from "@/components/UserMenu";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -31,15 +32,6 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const session = await auth();
-
-    const protectedRoutes = ["/user/profile", "/dashboard"];
-
-    if (typeof window !== "undefined") {
-        const currentPath = window.location.pathname;
-        if (protectedRoutes.includes(currentPath) && !session?.user) {
-            return redirect("/auth/signin");
-        }
-    }
 
     return (
         <html lang="en">
@@ -65,19 +57,19 @@ export default async function RootLayout({
                                 >
                                     Courses
                                 </Link>
+
                                 {session?.user ? (
-                                    <Link href={"/auth/signout"}>Signout</Link>
-                                ) : null}
-                                <Link
-                                    href={
-                                        session?.user
-                                            ? "/user/profile"
-                                            : "/auth/signin"
-                                    }
-                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
-                                >
-                                    <UserOutlined className="p-2 text-center rounded-full border shadow-sm" />
-                                </Link>
+                                    <div className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500">
+                                        <UserMenu />
+                                    </div>
+                                ) : (
+                                    <Link
+                                        href={"/auth/signin"}
+                                        className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
+                                    >
+                                        <UserAvatar />
+                                    </Link>
+                                )}
                             </nav>
                         </Header>
                         {/* main contents */}

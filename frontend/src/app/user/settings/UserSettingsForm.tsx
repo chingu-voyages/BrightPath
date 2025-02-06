@@ -44,7 +44,7 @@ export default function UserSettingsForm() {
         console.log(info.file.response);
         if (info.file.status === "done") {
             form.setFieldsValue({
-                image: info.file.response.url.split("/").at(-1),
+                image: info.file.response.url,
             });
             message.success("Upload successful");
         } else if (info.file.status === "error") {
