@@ -1,6 +1,7 @@
 import Link from "next/link";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { SettingFilled } from "@ant-design/icons";
 import { auth } from "@/auth";
+import UserAvatar from "@/components/UserAvatar";
 
 export default async function Profile() {
     const session = await auth();
@@ -8,14 +9,13 @@ export default async function Profile() {
     return (
         <div>
             {name && <h2>Welcome, {name}!</h2>}
+            <UserAvatar />
 
             <Link
                 href={"/user/settings"}
                 className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
             >
-                <div>
-                    <SettingsOutlinedIcon />
-                </div>
+                <SettingFilled className="text-4xl" />
             </Link>
         </div>
     );
