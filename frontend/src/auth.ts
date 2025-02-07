@@ -91,8 +91,8 @@ const providers: Provider[] = [
     }),
     Credentials({
         credentials: {
-            email: { required: true },
-            password: { required: true },
+            email: { label: "Email", required: true },
+            password: { label: "Password", required: true, type: "password" },
         },
         authorize: async (
             credentials: Partial<
