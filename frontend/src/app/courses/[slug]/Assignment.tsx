@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
-import { Modal } from "antd";
+import { useEffect, useState } from "react";
+import { Modal, Breadcrumb } from "antd";
 import moment from "moment";
 import { AssignmentType, Enrollment, type Assignment } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
 import { AdsClick, Book, ChecklistRtl, Monitor } from "@mui/icons-material";
+import { ReadingAssignmentModal } from "./ReadingAssignment";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -26,6 +27,16 @@ export default function AssignmentComponent({
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    useEffect(() => {
+        if (isModalOpen) {
+            document.body.style.overflow = "hidden"; // Hide parent scrollbar
+        } else {
+            document.body.style.overflow = ""; // Restore scrolling when closed
+        }
+    }, [isModalOpen]);
+
+    const footer =(<div>Footer</div>);
+
     return (
         <>
             {/* Assignment Preview */}
@@ -41,9 +52,9 @@ export default function AssignmentComponent({
                     )}
                     {(assignment.type === AssignmentType.QUIZ ||
                         assignment.type ===
-                            AssignmentType.TIMED_ASSESSMENT) && (
-                        <ChecklistRtl />
-                    )}
+                        AssignmentType.TIMED_ASSESSMENT) && (
+                            <ChecklistRtl />
+                        )}
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -75,32 +86,30 @@ export default function AssignmentComponent({
             <Modal
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
-                footer={null}
-                width="100vw"
+                footer={footer}
+                width="100%"
                 style={{
                     top: 0,
-                    height: "100vh",
-                    maxWidth: "100vw",
+                    margin: 0,
                     padding: 0,
+                    borderRadius: 0,
+                    height: "100%",
+                    width: "100%",
+                    maxWidth: "100%",
                 }}
-                styles={{ body: { height: "100vh", overflow: "hidden" } }}
-                className="custom-fullscreen-modal"
+                styles={{ content: { height: "auto", minHeight: "100%", borderRadius: 0, overflow: "hidden" } }}
+                getContainer={false}
             >
-                <div className="h-full flex flex-col p-6 bg-white">
-                    <h2 className="text-xl font-semibold">
-                        {assignment.title}
-                    </h2>
-
-                    {/* Complete Assignment Button */}
-                    {enrollment && (
-                        <div className="mt-auto">
-                            <CompleteAssignmentButton
-                                assignmentId={assignment.id}
-                                unitId={unitId}
-                                enrollment={enrollment}
-                            />
-                        </div>
+                <div className="container mx-auto h-full p-6 bg-white">
+                    <header className="flex items-center justify-between mb-6">
+                        <Breadcrumb separator=">"/>
+                    </header>
+                    <div className="overflow-y h-[200px]">
+                    {assignment.type === AssignmentType.READING && (
+                        <ReadingAssignmentModal assignment={assignment} />
                     )}
+                    </div>
+
                 </div>
             </Modal>
         </>
