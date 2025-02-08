@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import { useState } from "react";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { CoursePageContext } from "./Course";
 import { Progress } from "antd";
 
@@ -24,4 +24,3 @@ export default function ProgressBar() {
         </div>
     );
 }
-

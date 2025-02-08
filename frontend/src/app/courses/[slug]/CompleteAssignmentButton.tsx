@@ -2,7 +2,7 @@
 
 import { type Prisma, type Enrollment } from "@prisma/client";
 import { useState } from "react";
-import { useContext } from 'react';
+import { useContext } from "react";
 import { CoursePageContext } from "./Course";
 import { CheckCircle, RadioButtonUnchecked } from "@mui/icons-material";
 
@@ -24,7 +24,6 @@ export const CompleteAssignmentButton = ({
     const [status, setStatus] = useState<boolean>(granularStatus);
 
     const { enrolled, setEnrolled } = useContext(CoursePageContext);
-
 
     const handle = async () => {
         setLoading(true);
@@ -63,7 +62,11 @@ export const CompleteAssignmentButton = ({
                 onClick={handle}
                 className="px-4 py-2 text-black rounded disabled:opacity-50"
             >
-                { status ? <CheckCircle fontSize="large"/> : <RadioButtonUnchecked fontSize="large"/> }
+                {status ? (
+                    <CheckCircle fontSize="large" />
+                ) : (
+                    <RadioButtonUnchecked fontSize="large" />
+                )}
             </button>
         </div>
     );

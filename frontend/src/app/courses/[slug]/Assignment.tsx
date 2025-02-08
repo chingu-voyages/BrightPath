@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useState } from "react";
 import { Modal } from "antd";
 import moment from "moment";
@@ -34,10 +34,16 @@ export default function AssignmentComponent({
                 className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
             >
                 <div className="">
-                    {assignment.type === AssignmentType.READING && (<Book />)}
-                    {assignment.type === AssignmentType.VIDEO && (<Monitor />)}
-                    {assignment.type === AssignmentType.INTERACTIVE && (<AdsClick />)}
-                    {(assignment.type === AssignmentType.QUIZ || assignment.type === AssignmentType.TIMED_ASSESSMENT) && (<ChecklistRtl />)}
+                    {assignment.type === AssignmentType.READING && <Book />}
+                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
+                    {assignment.type === AssignmentType.INTERACTIVE && (
+                        <AdsClick />
+                    )}
+                    {(assignment.type === AssignmentType.QUIZ ||
+                        assignment.type ===
+                            AssignmentType.TIMED_ASSESSMENT) && (
+                        <ChecklistRtl />
+                    )}
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -47,9 +53,13 @@ export default function AssignmentComponent({
                     </div>
 
                     <div className="flex items-center justify-between">
+                        <h4
+                            onClick={() => setIsModalOpen(true)}
+                            className="cursor-pointer hover:underline"
+                        >
+                            {assignment.title}
+                        </h4>
 
-                        <h4 onClick={() => setIsModalOpen(true)} className="cursor-pointer hover:underline">{assignment.title}</h4>
-                
                         {enrollment && (
                             <CompleteAssignmentButton
                                 assignmentId={assignment.id}
@@ -67,12 +77,19 @@ export default function AssignmentComponent({
                 onCancel={() => setIsModalOpen(false)}
                 footer={null}
                 width="100vw"
-                style={{ top: 0, height: "100vh", maxWidth: "100vw", padding: 0 }}
+                style={{
+                    top: 0,
+                    height: "100vh",
+                    maxWidth: "100vw",
+                    padding: 0,
+                }}
                 styles={{ body: { height: "100vh", overflow: "hidden" } }}
                 className="custom-fullscreen-modal"
             >
                 <div className="h-full flex flex-col p-6 bg-white">
-                    <h2 className="text-xl font-semibold">{assignment.title}</h2>
+                    <h2 className="text-xl font-semibold">
+                        {assignment.title}
+                    </h2>
 
                     {/* Complete Assignment Button */}
                     {enrollment && (
@@ -89,4 +106,3 @@ export default function AssignmentComponent({
         </>
     );
 }
-

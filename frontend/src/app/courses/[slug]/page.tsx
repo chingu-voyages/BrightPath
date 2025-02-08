@@ -167,10 +167,10 @@ export default async function Courses({
                                     </h4>
                                     <p className="text-sm text-gray-600">
                                         Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Sed pellentesque, purus sit
-                                        amet luctus venenatis, elit erat pretium
-                                        enim, nec ultricies lacus nunc nec nulla.
-                                        Nullam nec est ut sapien.
+                                        adipiscing elit. Sed pellentesque, purus
+                                        sit amet luctus venenatis, elit erat
+                                        pretium enim, nec ultricies lacus nunc
+                                        nec nulla. Nullam nec est ut sapien.
                                     </p>
                                 </div>
                             </div>
