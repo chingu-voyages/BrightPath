@@ -182,6 +182,53 @@ router.patch("/:userId", async (req: Request, res: Response) => {
     }
 });
 
+// POST /change-password
+router.post("/:userId/change-password", async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const { currentPassword, newPassword } = req.body;
+
+    try {
+        const user = await ctx.prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            res.status(404).json({ error: "User not found." });
+            return
+        }
+
+        // If user has no password set (OAuth user setting first password)
+        if (!user.password && currentPassword === "") {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await ctx.prisma.user.update({
+                where: { id: userId },
+                data: { password: hashedPassword },
+            });
+            res.status(200).json({ message: "Password set successfully." });
+            return 
+        }
+
+        // Verify current password
+        if (!user.password || !await bcrypt.compare(currentPassword, user.password)) {
+            res.status(401).json({ error: "Current password is incorrect." });
+            console.log("Current password is incorrect.");
+            return 
+        }
+
+        // Hash and update new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await ctx.prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword },
+        });
+
+        res.status(200).json({ message: "Password updated successfully." });
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res.status(500).json({ error: "Failed to update password." });
+    }
+});
+
 // GET /:userId/enrollments
 router.get("/:userId/enrollments", async (req: Request, res: Response) => {
     try {
