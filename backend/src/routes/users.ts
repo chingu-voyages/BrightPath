@@ -194,7 +194,7 @@ router.post("/:userId/change-password", async (req: Request, res: Response) => {
 
         if (!user) {
             res.status(404).json({ error: "User not found." });
-            return
+            return;
         }
 
         // If user has no password set (OAuth user setting first password)
@@ -205,14 +205,17 @@ router.post("/:userId/change-password", async (req: Request, res: Response) => {
                 data: { password: hashedPassword },
             });
             res.status(200).json({ message: "Password set successfully." });
-            return 
+            return;
         }
 
         // Verify current password
-        if (!user.password || !await bcrypt.compare(currentPassword, user.password)) {
+        if (
+            !user.password ||
+            !(await bcrypt.compare(currentPassword, user.password))
+        ) {
             res.status(401).json({ error: "Current password is incorrect." });
             console.log("Current password is incorrect.");
-            return 
+            return;
         }
 
         // Hash and update new password
