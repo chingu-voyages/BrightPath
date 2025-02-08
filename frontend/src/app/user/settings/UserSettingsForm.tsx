@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { Form, Input, Button, Upload, message } from "antd";
 import { Upload as UploadIcon } from "@mui/icons-material";
 import type {
@@ -95,6 +96,12 @@ export default function UserSettingsForm() {
                     </Button>
                 </Form.Item>
             </Form>
+            <Link
+                href={"/user/change-password"}
+                className="text-700 dark:text-100 hover:opacity-75 delay-500"
+            >
+                Click Here to Change Password
+            </Link>
         </div>
     );
 }
