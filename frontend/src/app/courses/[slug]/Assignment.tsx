@@ -35,7 +35,7 @@ export default function AssignmentComponent({
         }
     }, [isModalOpen]);
 
-    const footer =(<div>Footer</div>);
+    const footer = <div>Footer</div>;
 
     return (
         <>
@@ -52,9 +52,9 @@ export default function AssignmentComponent({
                     )}
                     {(assignment.type === AssignmentType.QUIZ ||
                         assignment.type ===
-                        AssignmentType.TIMED_ASSESSMENT) && (
-                            <ChecklistRtl />
-                        )}
+                            AssignmentType.TIMED_ASSESSMENT) && (
+                        <ChecklistRtl />
+                    )}
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -97,19 +97,25 @@ export default function AssignmentComponent({
                     width: "100%",
                     maxWidth: "100%",
                 }}
-                styles={{ content: { height: "auto", minHeight: "100%", borderRadius: 0, overflow: "hidden" } }}
+                styles={{
+                    content: {
+                        height: "auto",
+                        minHeight: "100%",
+                        borderRadius: 0,
+                        overflow: "hidden",
+                    },
+                }}
                 getContainer={false}
             >
                 <div className="container mx-auto h-full p-6 bg-white">
                     <header className="flex items-center justify-between mb-6">
-                        <Breadcrumb separator=">"/>
+                        <Breadcrumb separator=">" />
                     </header>
                     <div className="overflow-y h-[200px]">
-                    {assignment.type === AssignmentType.READING && (
-                        <ReadingAssignmentModal assignment={assignment} />
-                    )}
+                        {assignment.type === AssignmentType.READING && (
+                            <ReadingAssignmentModal assignment={assignment} />
+                        )}
                     </div>
-
                 </div>
             </Modal>
         </>
