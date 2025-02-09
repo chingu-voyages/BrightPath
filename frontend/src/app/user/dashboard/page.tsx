@@ -62,7 +62,7 @@ const Dashboard = async () => {
                 </section>
                 <section className="bg-slate-50 rounded-lg max-w-full p-6 border-b border-slate-300 mb-2">
                     <h1 className="text-3xl font-bold mb-4">
-                        Complmeted Course
+                        Completed Course
                     </h1>
                     {finished.length > 0 ? (
                         <div className="flex flex-col gap-4 ">
