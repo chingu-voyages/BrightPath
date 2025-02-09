@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react";
 import { Modal, Breadcrumb } from "antd";
 import moment from "moment";
-import { AssignmentType, Enrollment, type Assignment } from "@prisma/client";
+import { AssignmentType, Enrollment } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
 import { AdsClick, Book, ChecklistRtl, Monitor } from "@mui/icons-material";
 import { ReadingAssignmentModal } from "./ReadingAssignment";
+
+import { type Assignment } from "@/types";
 
 // format assignmetn types names to be displayed
 const types = {

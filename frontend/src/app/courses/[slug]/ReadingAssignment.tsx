@@ -1,9 +1,5 @@
 "use client";
-import { type Prisma } from "@prisma/client";
-
-type Assignment = Prisma.AssignmentGetPayload<{
-    include: { ReadingAssignment: true };
-}>;
+import { type Assignment } from "@/types";
 
 export const ReadingAssignmentModal = ({
     assignment,

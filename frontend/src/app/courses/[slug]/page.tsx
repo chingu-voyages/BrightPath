@@ -1,5 +1,4 @@
 import moment from "moment";
-import { Assignment, Enrollment, Prisma } from "@prisma/client";
 import { auth } from "@/auth";
 import { computeCourseDuration } from "@/lib/utils";
 import Link from "next/link";
@@ -7,7 +6,7 @@ import EnrollButton from "./EnrollButton";
 import AssignmentComponent from "./Assignment";
 import CoursePage from "./Course";
 import ProgressBar from "./ProgressBar";
-import { Course, Unit } from "@/types";
+import { Course, Unit, Assignment } from "@/types";
 
 export const dynamic = "force-dynamic";
 
