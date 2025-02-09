@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Providers from "@/components/Providers";
 import { Layout } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+
+import Providers from "@/components/Providers";
 import UserAvatar from "@/components/UserAvatar";
 import UserMenu from "@/components/UserMenu";
+
+import "./globals.css";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",

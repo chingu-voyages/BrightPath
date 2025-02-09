@@ -54,7 +54,7 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
         const unitId = parseInt(req.body.unitId);
         const status = req.body.status;
 
-        const enrollment = await ctx.prisma.enrollment.findUnique({
+        let enrollment = await ctx.prisma.enrollment.findUnique({
             where: { id: enrollmentId },
         });
 
@@ -87,7 +87,7 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
 
         const overallProgress = completedAssignments / totalAssignments;
 
-        const e = await ctx.prisma.enrollment.update({
+        enrollment = await ctx.prisma.enrollment.update({
             where: { id: enrollmentId },
             data: {
                 granularProgress: granularProgress,
@@ -95,8 +95,7 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
             },
         });
 
-        console.log(e);
-        res.status(200).json({ message: "Assignment completed." });
+        res.status(200).json(enrollment);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to complete assignment." });

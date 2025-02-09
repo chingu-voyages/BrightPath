@@ -15,14 +15,14 @@ const app: Express = express();
 app.use(express.json());
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL || "http://localhost:3000",
+        origin: process.env.FRONTEND_URL,
         credentials: true,
     }),
 );
-// cors check origin a-brigpath.netlify.app
-
+// todo
 // check jwt token for protected of the routes
 //
+// add actual docs
 // Serve static files from the "uploads" directory
 app.use(
     "/uploads",
