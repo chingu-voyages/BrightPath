@@ -49,7 +49,7 @@ const HorizontalCourseCard = async (props: Proptype) => {
                     ) : (
                         <Link
                             className="flex gap-2 p-2 px-4 rounded-md min-w-fit w-1/3 lg:w-1/3 text-slate-100 dark:text-slate-800  bg-slate-700 dark:bg-slate-400"
-                            href={`/course/${course.slug}`}
+                            href={`/courses/${course.slug}`}
                         >
                             <div>
                                 <p className="text-sm italic font-thin">
