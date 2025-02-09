@@ -109,10 +109,10 @@ const getRandomTimeInMs = (): number => {
 };
 
 const generateFakeHTML = () => {
-  return `
+    return `
     <div>
       <h1>${faker.lorem.sentence()}</h1>
-      <p>${faker.lorem.paragraphs(3, '<p></p>')}</p>
+      <p>${faker.lorem.paragraphs(3, "</p><p>")}</p>
       <img src="${faker.image.url()}" alt="Random Image">
       <ul>
         <li>${faker.lorem.words(3)}</li>
