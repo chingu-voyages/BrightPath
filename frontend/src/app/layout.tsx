@@ -11,7 +11,6 @@ import UserAvatar from "@/components/UserAvatar";
 import UserMenu from "@/components/UserMenu";
 
 import "./globals.css";
-import DarkModeToggle from "@/components/DarkModeToggle";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -60,8 +59,6 @@ export default async function RootLayout({
                                 >
                                     Courses
                                 </Link>
-
-                                <DarkModeToggle />
 
                                 {session?.user ? (
                                     <div className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500">
