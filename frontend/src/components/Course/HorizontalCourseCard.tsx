@@ -9,7 +9,7 @@ import React from "react";
 import { Image, Progress } from "antd";
 // import Image from 'next/image';
 type Proptype = Prisma.EnrollmentGetPayload<{
-    include:{course:true,user:true}
+    include: { course: true; user: true };
 }>;
 const HorizontalCourseCard = async (props: Proptype) => {
     // const res = await fetch(`${process.env.BACKEND_API_URL}/courses/${id}`);
