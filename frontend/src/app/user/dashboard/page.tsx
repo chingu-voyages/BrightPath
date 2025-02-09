@@ -1,3 +1,4 @@
+import CourseCard from "@/app/courses/CourseCard";
 import { auth } from "@/auth";
 import HorizontalCourseCard from "@/components/Course/HorizontalCourseCard";
 import { MoreHorizOutlined } from "@mui/icons-material";
@@ -29,6 +30,9 @@ const Dashboard = async () => {
             `${process.env.BACKEND_API_URL}/user/${user?.id}/enrollments`,
         )
     ).json();
+    const recommandations = await (
+        await fetch(process.env.BACKEND_API_URL + "/courses/popular")
+    ).json();
     const finished = enrollments.filter(
         (enrollement) => enrollement.status === EnrollmentStatus.COMPLETED,
     );
@@ -38,7 +42,7 @@ const Dashboard = async () => {
 
     return (
         <div className="py-6 flex flex-col items-center gap-2">
-            <div className="max-w-fit border ">
+            <div className="max-w-fit ">
                 {/* intro */}
                 {/* in progress */}
                 <section className="bg-slate-50 rounded-lg max-w-fit p-6 border-b border-slate-300 mb-2">
@@ -84,8 +88,13 @@ const Dashboard = async () => {
                     )}
                 </section>
 
-                <section>
-                    <h1>Recommandations</h1>
+                <section className="bg-slate-50 rounded-lg max-w-full p-6 border-b border-slate-300 mb-2">
+                    <h1 className="text-3xl font-bold mb-4">Recommandations</h1>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-5xl gap-4 ">
+                        {recommandations.map((course: Course) => (
+                            <CourseCard key={course.id} course={course} />
+                        ))}
+                    </div>
                 </section>
             </div>
         </div>
