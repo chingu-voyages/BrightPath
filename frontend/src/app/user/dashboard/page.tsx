@@ -3,12 +3,7 @@ import { auth } from "@/auth";
 import HorizontalCourseCard from "@/components/Course/HorizontalCourseCard";
 import { Enrollment } from "@/types";
 import { MoreHorizOutlined } from "@mui/icons-material";
-import {
-    Course,
-    EnrollmentStatus,
-    Prisma,
-    User,
-} from "@prisma/client";
+import { Course, EnrollmentStatus, Prisma, User } from "@prisma/client";
 import { Metadata } from "next";
 import React from "react";
 
@@ -16,7 +11,6 @@ export const metadata: Metadata = {
     title: "Student dashboard",
     description: "Overwiew of courses...",
 };
-
 
 const Dashboard = async () => {
     const session = await auth()!;
