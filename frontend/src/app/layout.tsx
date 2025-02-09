@@ -53,15 +53,7 @@ export default async function RootLayout({
                                 >
                                     Home
                                 </Link>
-                                {session?.user && (
-                                    <Link
-                                        href={"/user/dashboard"}
-                                        // href={session.user.role === "STUDENT" ? "/user/dashboard":"/teacher/dashboard"}
-                                        // className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                )}
+
                                 <Link
                                     href={"/courses"}
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
