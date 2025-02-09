@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CoursePageContext } from "./Course";
 
 type EnrollButtonProps = {
     userId: string;
@@ -10,6 +11,7 @@ type EnrollButtonProps = {
 export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string>("Enroll");
+    const { setEnrolled } = useContext(CoursePageContext);
 
     const handleEnroll = async () => {
         setLoading(true);
@@ -26,7 +28,9 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
             );
 
             const data = await response.json();
+
             if (response.ok) {
+                setEnrolled(data);
                 setMessage("Enrolled");
             } else {
                 setMessage("Failed to enroll");
