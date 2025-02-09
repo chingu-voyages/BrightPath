@@ -60,7 +60,18 @@ describe("getCourseBySlug", () => {
             where: { slug: "sample-course" },
             include: {
                 instructor: true,
-                units: { include: { assignments: true } },
+                units: {
+                    include: {
+                        assignments: {
+                            include: {
+                                ReadingAssignment: true,
+                                VideoAssignment: true,
+                                InteractiveAssignment: true,
+                                QuizAssignment: true,
+                            },
+                        },
+                    },
+                },
             },
         });
     });
