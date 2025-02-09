@@ -22,9 +22,10 @@ export async function getCourseBySlug(ctx: Context, slug: string) {
                         include: {
                             ReadingAssignment: true,
                             VideoAssignment: true,
+                            InteractiveAssignment: true,
                             QuizAssignment: true,
                         },
-                    }
+                    },
                 },
             },
         },
