@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Providers from "@/components/Providers";
 import { Layout } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+
+import Providers from "@/components/Providers";
 import UserAvatar from "@/components/UserAvatar";
 import UserMenu from "@/components/UserMenu";
+
+import "./globals.css";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -58,6 +60,8 @@ export default async function RootLayout({
                                 >
                                     Courses
                                 </Link>
+
+                                <DarkModeToggle />
 
                                 {session?.user ? (
                                     <div className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500">
