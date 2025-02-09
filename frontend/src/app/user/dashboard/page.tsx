@@ -23,15 +23,17 @@ type EnrollmelntOutput = Prisma.EnrollmentGetPayload<{
 
 const Dashboard = async () => {
     const session = await auth()!;
-    const { user } = session!;
+  const { user } = session!;
+    //!! still type buggy_ish
+    const recommandations:any[] = await (
+        await fetch(process.env.BACKEND_API_URL + "/courses/popular")
+    ).json();
+  
     // enrolls
     const enrollments: EnrollmelntOutput[] = await (
         await fetch(
             `${process.env.BACKEND_API_URL}/user/${user?.id}/enrollments`,
         )
-    ).json();
-    const recommandations = await (
-        await fetch(process.env.BACKEND_API_URL + "/courses/popular")
     ).json();
     const finished = enrollments.filter(
         (enrollement) => enrollement.status === EnrollmentStatus.COMPLETED,
@@ -91,7 +93,8 @@ const Dashboard = async () => {
                 <section className="bg-slate-50 rounded-lg max-w-full p-6 border-b border-slate-300 mb-2">
                     <h1 className="text-3xl font-bold mb-4">Recommandations</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-5xl gap-4 ">
-                        {recommandations.map((course: Course) => (
+                      {/* buggy_ish */}
+                        {recommandations.map((course:any) => (
                             <CourseCard key={course.id} course={course} />
                         ))}
                     </div>
