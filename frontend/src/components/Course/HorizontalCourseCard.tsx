@@ -1,4 +1,4 @@
-import { Course, Enrollment, User } from "@prisma/client";
+import { Course, Enrollment, Prisma, User } from "@prisma/client";
 import {
     CheckCircleOutlined,
     DesktopOutlined,
@@ -8,7 +8,9 @@ import Link from "next/link";
 import React from "react";
 import { Image, Progress } from "antd";
 // import Image from 'next/image';
-type Proptype = Enrollment & { course: Course; user: User };
+type Proptype = Prisma.EnrollmentGetPayload<{
+    include:{course:true,user:true}
+}>;
 const HorizontalCourseCard = async (props: Proptype) => {
     // const res = await fetch(`${process.env.BACKEND_API_URL}/courses/${id}`);
     // const course: Course = await res.json();
@@ -47,7 +49,7 @@ const HorizontalCourseCard = async (props: Proptype) => {
                     ) : (
                         <Link
                             className="flex gap-2 p-2 px-4 rounded-md min-w-fit w-1/3 lg:w-1/3 text-slate-100 dark:text-slate-800  bg-slate-700 dark:bg-slate-400"
-                            href={`/course/${course.id}`}
+                            href={`/course/${course.slug}`}
                         >
                             <div>
                                 <p className="text-sm italic font-thin">

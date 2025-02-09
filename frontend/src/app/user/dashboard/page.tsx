@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import HorizontalCourseCard from "@/components/Course/HorizontalCourseCard";
-import { Course, Enrollment, User } from "@prisma/client";
+import { MoreHorizOutlined } from "@mui/icons-material";
+import { Course, Enrollment, EnrollmentStatus, Prisma, User } from "@prisma/client";
 import { Metadata } from "next";
 import React from "react";
 
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
     description: "Overwiew of courses...",
 };
 
-type EnrollmelntOutput = Enrollment & { course: Course; user: User };
+type EnrollmelntOutput = Prisma.EnrollmentGetPayload<{
+    include:{course:true,user:true}
+}>;;
 
 const Dashboard = async () => {
     const session = await auth()!;
@@ -21,17 +24,18 @@ const Dashboard = async () => {
         )
     ).json();
     const finished = enrollments.filter(
-        (enrollement) => enrollement.status === "COMPLETED",
+        (enrollement) => enrollement.status === EnrollmentStatus.COMPLETED,
     );
     const currents = enrollments.filter(
-        (enrollement) => enrollement.status === "ACTIVE",
+        (enrollement) => enrollement.status ===EnrollmentStatus.ACTIVE,
     );
 
-    return (
-        <div className="py-6 flex flex-col items-center gap-2">
+  return (
+      <div className="py-6 flex flex-col items-center gap-2">
+        <div className="max-w-fit border ">
             {/* intro */}
             {/* in progress */}
-            <section className="bg-slate-50 rounded-lg max-w-fit p-6 border-b border-slate-300">
+            <section className="bg-slate-50 rounded-lg max-w-fit p-6 border-b border-slate-300 mb-2">
                 <p className="text-lg italic md:w-8/12 border-b border-slate-300 mb-4 w-full">
                     “Success isn't always about greatness. It's about
                     consistency. <br />
@@ -48,15 +52,29 @@ const Dashboard = async () => {
                     ))}
                 </div>
             </section>
-
-            <section>
-                <h1>Completed Courses</h1>
+            <section className="bg-slate-50 rounded-lg max-w-full p-6 border-b border-slate-300 mb-2">
+                <h1 className="text-3xl font-bold mb-4">Complmeted Course</h1>
+          {finished.length > 0 ? (
+            <div className="flex flex-col gap-4 ">
+              {finished.map((enrollement) => (
+                <HorizontalCourseCard
+                  key={enrollement.id}
+                  {...enrollement}
+                />
+              ))}
+            </div>) : (
+              <div className="w-full flex flex-col justify-center  items-center">
+                <MoreHorizOutlined style={{ fontSize: 32 }} />
+                <p className="italic">Nope; Still empty.  Want a joke instead?  (Just kidding...unless? 😁)</p>
+              </div>
+            )}
             </section>
 
             <section>
                 <h1>Recommandations</h1>
             </section>
-        </div>
+      </div>
+      </div>
     );
 };
 
