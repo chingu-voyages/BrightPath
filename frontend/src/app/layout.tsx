@@ -40,19 +40,20 @@ export default async function RootLayout({
             <body>
                 <Providers>
                     <Layout
-                        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 flex flex-col justify-start items-start bg-slate-200 dark:bg-slate-900 lg:h-svh font-medium font-mono`}
+                        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 flex flex-col justify-start items-start text-slate-700 dark:text-slate-200 bg-slate-200 dark:bg-slate-900 font-medium font-mono`}
                     >
-                        <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                        <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12 lg:px-28 xl:px-48 2xl:px-72  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             <Link href={"/"} className="font-semibold">
                                 BrightPath
                             </Link>
                             <nav className="flex justify-center items-center gap-4   ">
                                 <Link
                                     href={"/"}
-                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
+                                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500 hidden md:block"
                                 >
                                     Home
                                 </Link>
+
                                 <Link
                                     href={"/courses"}
                                     className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
@@ -84,7 +85,7 @@ export default async function RootLayout({
                             </SessionProvider>
                         </main>
 
-                        <Footer className="flex  w-full p-6 md:px-12  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
+                        <Footer className="flex  w-full p-6 md:px-12 lg:px-28 xl:px-48 2xl:px-72  rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             {/* footer*/}
                             <Link
                                 href="/our-team"

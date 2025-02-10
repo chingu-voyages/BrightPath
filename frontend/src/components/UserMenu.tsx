@@ -5,6 +5,7 @@ import {
     SettingOutlined,
     LoginOutlined,
     UserAddOutlined,
+    PieChartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
@@ -20,6 +21,11 @@ const UserMenu = () => {
             key: "settings",
             label: <Link href="/user/settings">Settings</Link>,
             icon: <SettingOutlined />,
+        },
+        {
+            key: "dashboard",
+            label: <Link href="/user/dashboard">Dashboard</Link>,
+            icon: <PieChartOutlined />,
         },
         {
             type: "divider",
