@@ -46,11 +46,11 @@ const OurTeam: React.FC = () => {
                     {teamMembers.map((member) => (
                         <Col xs={24} sm={12} md={8} lg={6} key={member.id}>
                             <Card
-                                className="text-center rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl  w-[300px]"
+                                className="flex flex-col justify-stretch text-center rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl  w-[300px] h-[550px]"
                                 cover={
                                     <div className="flex justify-center mt-6">
                                         <Avatar
-                                            src={member.profilePicture}
+                                            src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/uploads/${member.profilePicture}`}
                                             size={150}
                                             className="border-4 border-gray-200"
                                         />
