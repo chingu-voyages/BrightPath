@@ -184,7 +184,7 @@ const generateFakeQuizQuestionsArray = () => {
         questions.push({ question, options, answer });
     }
 
-    return JSON.stringify(questions);
+    return questions;
 };
 
 const getRandomTimeInMs = (): number => {
