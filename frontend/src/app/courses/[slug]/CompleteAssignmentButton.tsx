@@ -47,8 +47,7 @@ export const CompleteAssignmentButton = ({
 
     const granularProgress = enrolled.granularProgress as Prisma.JsonObject;
     // @ts-ignore
-    const status =
-        (granularProgress[unitId]?.[assignmentId] as boolean) ?? false;
+    const status = granularProgress[unitId]?.[assignmentId] as boolean;
 
     const handle = async () => {
         setLoading(true);

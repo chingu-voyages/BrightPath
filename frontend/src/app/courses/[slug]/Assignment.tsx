@@ -2,7 +2,7 @@
 import moment from "moment";
 import { useState, useEffect, useContext } from "react";
 import { Modal, Breadcrumb } from "antd";
-import { AssignmentType } from "@prisma/client";
+import { Prisma, AssignmentType } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
 import {
     AdsClick,
