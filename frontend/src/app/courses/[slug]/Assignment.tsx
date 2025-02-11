@@ -1,13 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Modal, Breadcrumb } from "antd";
 import moment from "moment";
-import { AssignmentType, Enrollment } from "@prisma/client";
+import { useState, useEffect, useContext } from "react";
+import { Modal, Breadcrumb } from "antd";
+import { Prisma, AssignmentType } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
-import { AdsClick, Book, ChecklistRtl, Monitor } from "@mui/icons-material";
+import {
+    AdsClick,
+    Book,
+    ChecklistRtl,
+    Lock,
+    Monitor,
+} from "@mui/icons-material";
 import { ReadingAssignmentModal } from "./ReadingAssignment";
 
 import { type Assignment } from "@/types";
+import { CoursePageContext } from "./Course";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -20,24 +29,160 @@ const types = {
 
 export default function AssignmentComponent({
     assignment,
-    enrollment,
     unitId,
+    isOpen,
+    onOpen,
+    onContinue,
+    onClose,
 }: {
     assignment: Assignment;
-    enrollment: Enrollment | undefined;
     unitId: number;
+    isOpen: boolean;
+    onOpen: () => void;
+    onContinue: () => void;
+    onClose: () => void;
 }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
+
+    const { data: session, update } = useSession();
+
+    const handleEnroll = async () => {
+        setLoading(true);
+
+        if (!session || !session.user) {
+            redirect("/auth/signin");
+        }
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/enrollments`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        courseId: course?.id,
+                        userId: session.user.id,
+                    }),
+                },
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setEnrolled(data);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = "hidden"; // Hide parent scrollbar
+        if (enrolled && isOpen) {
+            document.body.classList.add("modal-open");
         } else {
-            document.body.style.overflow = ""; // Restore scrolling when closed
+            document.body.classList.remove("modal-open");
         }
-    }, [isModalOpen]);
 
-    const footer = <div>Footer</div>;
+        return () => document.body.classList.remove("modal-open");
+    }, [isOpen]);
+
+    if (!enrolled) {
+        return (
+            <div
+                className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
+                onClick={handleEnroll}
+            >
+                <div className="">
+                    {assignment.type === AssignmentType.READING && <Book />}
+                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
+                    {assignment.type === AssignmentType.INTERACTIVE && (
+                        <AdsClick />
+                    )}
+                    {(assignment.type === AssignmentType.QUIZ ||
+                        assignment.type ===
+                            AssignmentType.TIMED_ASSESSMENT) && (
+                        <ChecklistRtl />
+                    )}
+                </div>
+                <div className="flex-1 ml-4">
+                    <div className="flex items-center">
+                        <p>{types[assignment.type]}</p>
+                        <span className="mx-2">•</span>
+                        <p>{moment.duration(assignment.duration).humanize()}</p>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <h4 className="cursor-pointer hover:underline">
+                            {assignment.title}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // @ts-ignore
+    const unitProgress = enrolled?.granularProgress?.[
+        `${unitId}`
+    ] as Prisma.JsonObject;
+
+    const isAssignmentUnlocked = (assignment: Assignment) => {
+        if (assignment.type !== AssignmentType.QUIZ) return true;
+        return Object.entries(unitProgress)
+            .filter(([id]) => Number(id) !== assignment.id) // Exclude the quiz itself
+            .every(([, completed]) => completed === true); // Check if all others are true
+    };
+
+    const completeAssignment = async () => {
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/enrollments/${enrolled?.id}/complete-assignment`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        assignmentId: assignment.id,
+                        unitId,
+                        status: true,
+                    }),
+                },
+            );
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setEnrolled(data);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+            onContinue();
+        }
+    };
+
+    const footer = (
+        <div className="flex items-center justify-between">
+            <button
+                onClick={onClose}
+                className="px-4 py-2 text-sm text-white bg-gray-400 rounded-lg"
+            >
+                Back to course overview
+            </button>
+
+            <button
+                onClick={completeAssignment}
+                className="px-4 py-2 text-sm text-white bg-gray-400 rounded-lg"
+            >
+                Continue
+            </button>
+        </div>
+    );
 
     return (
         <>
@@ -67,18 +212,22 @@ export default function AssignmentComponent({
 
                     <div className="flex items-center justify-between">
                         <h4
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={onOpen}
                             className="cursor-pointer hover:underline"
                         >
                             {assignment.title}
                         </h4>
 
-                        {enrollment && (
+                        {isAssignmentUnlocked(assignment) && (
                             <CompleteAssignmentButton
                                 assignmentId={assignment.id}
                                 unitId={unitId}
-                                enrollment={enrollment}
                             />
+                        )}
+                        {!isAssignmentUnlocked(assignment) && (
+                            <div className="px-3 py-2">
+                                <Lock fontSize="large" />
+                            </div>
                         )}
                     </div>
                 </div>
@@ -86,27 +235,9 @@ export default function AssignmentComponent({
 
             {/* Full-Screen Modal */}
             <Modal
-                open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
+                open={isOpen}
+                onCancel={onClose}
                 footer={footer}
-                width="100%"
-                style={{
-                    top: 0,
-                    margin: 0,
-                    padding: 0,
-                    borderRadius: 0,
-                    height: "100%",
-                    width: "100%",
-                    maxWidth: "100%",
-                }}
-                styles={{
-                    content: {
-                        height: "auto",
-                        minHeight: "100%",
-                        borderRadius: 0,
-                        overflow: "hidden",
-                    },
-                }}
                 getContainer={false}
             >
                 <div className="container mx-auto h-full p-6 bg-white">

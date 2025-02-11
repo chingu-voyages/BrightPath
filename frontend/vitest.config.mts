@@ -11,5 +11,10 @@ export default defineConfig({
     test: {
         environment: "jsdom",
         setupFiles: ["./tests/setupTests.ts"],
+        env: {
+            ...process.env,
+            BACKEND_API_URL: "http://localhost:5000",
+            NEXT_PUBLIC_BACKEND_API_URL: "http://localhost:5000",
+        },
     },
 });

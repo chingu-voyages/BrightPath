@@ -14,7 +14,7 @@ Our practical, project-based courses will help learners stay at the forefront of
 ---
 
 ## Primary Links  
-- **Frontend**: [BrightPath Frontend](https://a-brightpath.netlify.app/)  
+- **Frontend**: [BrightPath Frontend](https://brightpath.courses)
 - **Backend**: [BrightPath Backend](https://brightpath-api.up.railway.app/)  
 
 ---

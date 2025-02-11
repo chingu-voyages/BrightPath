@@ -3,10 +3,10 @@ import { auth } from "@/auth";
 import { computeCourseDuration } from "@/lib/utils";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
-import AssignmentComponent from "./Assignment";
 import CoursePage from "./Course";
 import ProgressBar from "./ProgressBar";
-import { Course, Unit, Assignment } from "@/types";
+import { Course, Unit } from "@/types";
+import { UnitComponent } from "./Unit";
 
 export const dynamic = "force-dynamic";
 
@@ -120,33 +120,11 @@ export default async function Courses({
                         </h3>
                         <div className="space-y-4">
                             {course.units?.map((unit: Unit, index: number) => (
-                                <div
+                                <UnitComponent
                                     key={unit.id}
-                                    className="p-4 border rounded-lg bg-gray-50"
-                                >
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h4 className="font-semibold">
-                                            Unit {index + 1} -{" "}
-                                            {moment
-                                                .duration(unit.duration)
-                                                .humanize()}
-                                        </h4>
-                                    </div>
-                                    <h3 className="text-lg font-semibold mb-2">
-                                        {unit.title}
-                                    </h3>
-                                    <p className="">{unit.description}</p>
-                                    {unit.assignments?.map(
-                                        (assignment: Assignment) => (
-                                            <AssignmentComponent
-                                                key={assignment.id}
-                                                assignment={assignment}
-                                                enrollment={enrollment}
-                                                unitId={unit.id}
-                                            />
-                                        ),
-                                    )}
-                                </div>
+                                    unit={unit}
+                                    n={index}
+                                />
                             ))}
                         </div>
                     </div>
