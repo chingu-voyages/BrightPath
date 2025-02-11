@@ -3,10 +3,9 @@ import { auth } from "@/auth";
 import { computeCourseDuration } from "@/lib/utils";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
-import AssignmentComponent from "./Assignment";
 import CoursePage from "./Course";
 import ProgressBar from "./ProgressBar";
-import { Course, Unit, Assignment } from "@/types";
+import { Course, Unit } from "@/types";
 import { UnitComponent } from "./Unit";
 
 export const dynamic = "force-dynamic";
