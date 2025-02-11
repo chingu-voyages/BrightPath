@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
 
     const reqPath = request.nextUrl.pathname;
 
-    const protectedRoutes = ["/user/profile", "user/setting"];
+    const protectedRoutes = ["/user/profile", "user/setting", "user/dashboard"];
     if (reqPath == "/auth/signin" && session?.user) {
         return NextResponse.redirect(new URL("/", request.url));
     }
