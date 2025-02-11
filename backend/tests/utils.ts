@@ -66,7 +66,7 @@ export const createPersistentCourse = async (
         skipDuplicates: true,
     });
 
-    const assignmentTypes = Object.values(AssignmentType);
+    const assignmentTypes = Object.values(AssignmentType).filter(type => type !== AssignmentType.TIMED_ASSESSMENT);
 
     for (const course of courses) {
         const units = await ctx.prisma.unit.createManyAndReturn({
