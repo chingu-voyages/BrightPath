@@ -19,7 +19,7 @@ export const CompleteAssignmentButton = ({
     const fetchEnrollment = async () => {
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/enrollments/current`
+                `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/enrollments/current`,
             );
             const data = await response.json();
 
@@ -42,12 +42,13 @@ export const CompleteAssignmentButton = ({
             >
                 <RadioButtonUnchecked fontSize="large" />
             </button>
-        )
+        );
     }
 
     const granularProgress = enrolled.granularProgress as Prisma.JsonObject;
     // @ts-ignore
-    const status = granularProgress[unitId]?.[assignmentId] as boolean ?? false;
+    const status =
+        (granularProgress[unitId]?.[assignmentId] as boolean) ?? false;
 
     const handle = async () => {
         setLoading(true);

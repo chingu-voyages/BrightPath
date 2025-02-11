@@ -4,7 +4,13 @@ import { useState, useEffect, useContext } from "react";
 import { Modal, Breadcrumb } from "antd";
 import { AssignmentType } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
-import { AdsClick, Book, ChecklistRtl, Lock, Monitor } from "@mui/icons-material";
+import {
+    AdsClick,
+    Book,
+    ChecklistRtl,
+    Lock,
+    Monitor,
+} from "@mui/icons-material";
 import { ReadingAssignmentModal } from "./ReadingAssignment";
 
 import { type Assignment } from "@/types";
@@ -24,7 +30,10 @@ const types = {
 export default function AssignmentComponent({
     assignment,
     unitId,
-    isOpen, onOpen, onContinue, onClose
+    isOpen,
+    onOpen,
+    onContinue,
+    onClose,
 }: {
     assignment: Assignment;
     unitId: number;
@@ -51,7 +60,10 @@ export default function AssignmentComponent({
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ courseId: course?.id, userId: session.user.id }),
+                    body: JSON.stringify({
+                        courseId: course?.id,
+                        userId: session.user.id,
+                    }),
                 },
             );
 
@@ -59,7 +71,7 @@ export default function AssignmentComponent({
 
             if (response.ok) {
                 setEnrolled(data);
-            } 
+            }
         } catch (err) {
             console.error(err);
         } finally {
@@ -69,17 +81,20 @@ export default function AssignmentComponent({
 
     useEffect(() => {
         if (enrolled && isOpen) {
-            document.body.classList.add('modal-open');
+            document.body.classList.add("modal-open");
         } else {
-            document.body.classList.remove('modal-open');
+            document.body.classList.remove("modal-open");
         }
 
-        return () => document.body.classList.remove('modal-open');
+        return () => document.body.classList.remove("modal-open");
     }, [isOpen]);
 
     if (!enrolled) {
         return (
-            <div className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer" onClick={handleEnroll}>
+            <div
+                className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
+                onClick={handleEnroll}
+            >
                 <div className="">
                     {assignment.type === AssignmentType.READING && <Book />}
                     {assignment.type === AssignmentType.VIDEO && <Monitor />}
@@ -88,9 +103,9 @@ export default function AssignmentComponent({
                     )}
                     {(assignment.type === AssignmentType.QUIZ ||
                         assignment.type ===
-                        AssignmentType.TIMED_ASSESSMENT) && (
-                            <ChecklistRtl />
-                        )}
+                            AssignmentType.TIMED_ASSESSMENT) && (
+                        <ChecklistRtl />
+                    )}
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -100,9 +115,7 @@ export default function AssignmentComponent({
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <h4
-                            className="cursor-pointer hover:underline"
-                        >
+                        <h4 className="cursor-pointer hover:underline">
                             {assignment.title}
                         </h4>
                     </div>
@@ -111,9 +124,10 @@ export default function AssignmentComponent({
         );
     }
 
-
     // @ts-ignore
-    const unitProgress = enrolled?.granularProgress?.[`${unitId}`] as Prisma.JsonObject;
+    const unitProgress = enrolled?.granularProgress?.[
+        `${unitId}`
+    ] as Prisma.JsonObject;
 
     const isAssignmentUnlocked = (assignment: Assignment) => {
         if (assignment.type !== AssignmentType.QUIZ) return true;
@@ -121,7 +135,6 @@ export default function AssignmentComponent({
             .filter(([id]) => Number(id) !== assignment.id) // Exclude the quiz itself
             .every(([, completed]) => completed === true); // Check if all others are true
     };
-
 
     const completeAssignment = async () => {
         setLoading(true);
@@ -153,7 +166,6 @@ export default function AssignmentComponent({
         }
     };
 
-
     const footer = (
         <div className="flex items-center justify-between">
             <button
@@ -170,7 +182,7 @@ export default function AssignmentComponent({
                 Continue
             </button>
         </div>
-    )
+    );
 
     return (
         <>
@@ -187,9 +199,9 @@ export default function AssignmentComponent({
                     )}
                     {(assignment.type === AssignmentType.QUIZ ||
                         assignment.type ===
-                        AssignmentType.TIMED_ASSESSMENT) && (
-                            <ChecklistRtl />
-                        )}
+                            AssignmentType.TIMED_ASSESSMENT) && (
+                        <ChecklistRtl />
+                    )}
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">

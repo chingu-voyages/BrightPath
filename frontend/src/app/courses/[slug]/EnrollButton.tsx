@@ -31,7 +31,7 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
 
             if (response.ok) {
                 setEnrolled(data);
-            } 
+            }
         } catch (err) {
             setMessage("Failed to enroll");
             console.error(err);
@@ -42,7 +42,7 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
 
     if (enrolled) {
         // find the next lesson to redirect to from granular progress
-        
+
         return <div>Enrolled</div>;
     }
 

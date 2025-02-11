@@ -13,7 +13,9 @@ export default function ProgressBar() {
         return null;
     }
 
-    const currentDuration = moment.duration(course.duration - (course.duration * enrolled.progress)).humanize();
+    const currentDuration = moment
+        .duration(course.duration - course.duration * enrolled.progress)
+        .humanize();
 
     const progress = Math.round(enrolled.progress * 100);
 
