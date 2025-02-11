@@ -1,4 +1,4 @@
-import { Course, Enrollment, Prisma, User } from "@prisma/client";
+import { Course, Prisma, User } from "@prisma/client";
 import {
     CheckCircleOutlined,
     DesktopOutlined,
@@ -7,11 +7,9 @@ import {
 import Link from "next/link";
 import React from "react";
 import { Image, Progress } from "antd";
+import { Enrollment } from "@/types";
 // import Image from 'next/image';
-type Proptype = Prisma.EnrollmentGetPayload<{
-    include: { course: true; user: true };
-}>;
-const HorizontalCourseCard = async (props: Proptype) => {
+const HorizontalCourseCard = async (props: Enrollment) => {
     // const res = await fetch(`${process.env.BACKEND_API_URL}/courses/${id}`);
     // const course: Course = await res.json();
 

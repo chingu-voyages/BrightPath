@@ -102,6 +102,91 @@ export const videoAssignmentCreateInputFactory = () => {
     };
 };
 
+export const timedAssesmentAssignmentCreateInputFactory = () => {
+    return {
+        ...quizAssignmentCreateInputFactory(),
+        timeLimit: 1000 * 60 * 30, // 30 minutes in ms
+    };
+};
+
+export const quizAssignmentCreateInputFactory = () => {
+    return {
+        questions: generateFakeQuizQuestionsArray(),
+    };
+};
+
+export const interactiveAssignmentCreateInputFactory = () => {
+    const language = faker.helpers.arrayElement([
+        "javascript",
+        "python",
+        "java",
+        "cpp",
+    ]);
+    return {
+        codeSnippet: generateFakeCodeSnippet(language),
+        language,
+        testCases: generateFakeTestCases(language),
+        maxAttempts: faker.number.int({ min: 1, max: 5 }),
+        constraints: generateFakeConstraints(),
+        instructions: `Implement a function that adds two numbers together. The function should take two parameters and return their sum.`,
+    };
+};
+
+const generateFakeCodeSnippet = (language: string) => {
+    const examples: Record<string, string> = {
+        javascript: `function add(a, b) {\n  return a + b;\n}`,
+        python: `def add(a, b):\n    return a + b`,
+        java: `public class Solution {\n  public static int add(int a, int b) {\n    return a + b;\n  }\n}`,
+        cpp: `int add(int a, int b) {\n  return a + b;\n}`,
+    };
+    return examples[language] || examples.javascript;
+};
+
+const generateFakeTestCases = (language: string) => {
+    return [
+        { input: "(2, 3)", expectedOutput: "5" },
+        { input: "(10, 15)", expectedOutput: "25" },
+        { input: "(-5, 5)", expectedOutput: "0" },
+    ].map((tc) => ({
+        input:
+            language === "python"
+                ? tc.input.replace("(", "").replace(")", "")
+                : tc.input,
+        expectedOutput: tc.expectedOutput,
+    }));
+};
+
+const generateFakeConstraints = () => {
+    return faker.helpers.arrayElements(
+        [
+            "Must use recursion",
+            "Execution time must be below 100ms",
+            "Function must have O(n) complexity",
+        ],
+        faker.number.int({ min: 1, max: 3 }),
+    );
+};
+
+const generateFakeQuizQuestionsArray = () => {
+    const questions = [] as {
+        question: string;
+        options: string[];
+        answer: number;
+    }[];
+
+    for (let i = 0; i < 5; i++) {
+        const question = faker.lorem.sentence();
+        const options = [] as string[];
+        for (let j = 0; j < 4; j++) {
+            options.push(faker.lorem.word());
+        }
+        const answer = faker.number.int({ min: 0, max: 3 });
+        questions.push({ question, options, answer });
+    }
+
+    return questions;
+};
+
 const getRandomTimeInMs = (): number => {
     const minMs = 60_000; // 1 minute in ms
     const maxMs = 7_200_000; // 2 hours in ms

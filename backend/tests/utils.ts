@@ -8,12 +8,17 @@ import {
 import { unitCreateInputWithoutCourseFactory } from "../factories/unit";
 import {
     assignmentCreateInputWithoutUnitFactory,
+    interactiveAssignmentCreateInputFactory,
+    quizAssignmentCreateInputFactory,
     readingAssignmentCreateInputFactory,
+    timedAssesmentAssignmentCreateInputFactory,
     videoAssignmentCreateInputFactory,
 } from "../factories/assignment";
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteQuizzes = ctx.prisma.quizAssignment.deleteMany();
+    const deleteInteractiveAssignments =
+        ctx.prisma.interactiveAssignment.deleteMany();
     const deleteVideoAssignments = ctx.prisma.videoAssignment.deleteMany();
     const deleteReadingAssignments = ctx.prisma.readingAssignment.deleteMany();
     const deleteAssignments = ctx.prisma.assignment.deleteMany();
@@ -24,6 +29,7 @@ export const cleanDatabase = async (ctx: Context) => {
 
     await ctx.prisma.$transaction([
         deleteQuizzes,
+        deleteInteractiveAssignments,
         deleteVideoAssignments,
         deleteReadingAssignments,
         deleteAssignments,
@@ -78,23 +84,12 @@ export const createPersistentCourse = async (
         for (const unit of units) {
             const assignments = await ctx.prisma.assignment.createManyAndReturn(
                 {
-                    data: Array.from(
-                        { length: Math.floor(Math.random() * 5) + 1 },
-                        () => {
-                            const type =
-                                assignmentTypes[
-                                    Math.floor(
-                                        Math.random() * assignmentTypes.length,
-                                    )
-                                ];
-                            return {
-                                ...assignmentCreateInputWithoutUnitFactory(
-                                    type,
-                                ),
-                                unitId: unit.id,
-                            };
-                        },
-                    ),
+                    data: assignmentTypes.map((type) => {
+                        return {
+                            ...assignmentCreateInputWithoutUnitFactory(type),
+                            unitId: unit.id,
+                        };
+                    }),
                 },
             );
 
@@ -113,6 +108,33 @@ export const createPersistentCourse = async (
                         data: {
                             assignmentId: assignment.id,
                             ...videoAssignmentCreateInputFactory(),
+                        },
+                    });
+                }
+
+                if (assignment.type === AssignmentType.INTERACTIVE) {
+                    await ctx.prisma.interactiveAssignment.create({
+                        data: {
+                            assignmentId: assignment.id,
+                            ...interactiveAssignmentCreateInputFactory(),
+                        },
+                    });
+                }
+
+                if (assignment.type === AssignmentType.QUIZ) {
+                    await ctx.prisma.quizAssignment.create({
+                        data: {
+                            assignmentId: assignment.id,
+                            ...quizAssignmentCreateInputFactory(),
+                        },
+                    });
+                }
+
+                if (assignment.type === AssignmentType.TIMED_ASSESSMENT) {
+                    await ctx.prisma.quizAssignment.create({
+                        data: {
+                            assignmentId: assignment.id,
+                            ...timedAssesmentAssignmentCreateInputFactory(),
                         },
                     });
                 }

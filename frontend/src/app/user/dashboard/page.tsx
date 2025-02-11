@@ -1,14 +1,9 @@
 import CourseCard from "@/app/courses/CourseCard";
 import { auth } from "@/auth";
 import HorizontalCourseCard from "@/components/Course/HorizontalCourseCard";
+import { Enrollment } from "@/types";
 import { MoreHorizOutlined } from "@mui/icons-material";
-import {
-    Course,
-    Enrollment,
-    EnrollmentStatus,
-    Prisma,
-    User,
-} from "@prisma/client";
+import { Course, EnrollmentStatus, Prisma, User } from "@prisma/client";
 import { Metadata } from "next";
 import React from "react";
 
@@ -16,10 +11,6 @@ export const metadata: Metadata = {
     title: "Student dashboard",
     description: "Overwiew of courses...",
 };
-
-type EnrollmelntOutput = Prisma.EnrollmentGetPayload<{
-    include: { course: true; user: true };
-}>;
 
 const Dashboard = async () => {
     const session = await auth()!;
@@ -30,7 +21,7 @@ const Dashboard = async () => {
     ).json();
 
     // enrolls
-    const enrollments: EnrollmelntOutput[] = await (
+    const enrollments: Enrollment[] = await (
         await fetch(
             `${process.env.BACKEND_API_URL}/user/${user?.id}/enrollments`,
         )
