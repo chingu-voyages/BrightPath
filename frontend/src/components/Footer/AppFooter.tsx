@@ -119,12 +119,9 @@ export default function AppFooter() {
                     />
                     <Text className="text-white">
                         <span className="font-bold">
-                            BrightPath branding and graphics{" "} 
+                            BrightPath branding and graphics{" "}
                         </span>
-                        <span>
-                            © 2025 by the{" "}
-                        </span>
-                        
+                        <span>© 2025 by the </span>
                         <Link
                             href="https://github.com/chingu-voyages/BrightPath"
                             target="_blank"
