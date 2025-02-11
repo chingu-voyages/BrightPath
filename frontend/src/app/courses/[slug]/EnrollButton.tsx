@@ -10,8 +10,8 @@ type EnrollButtonProps = {
 
 export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string>("Enroll");
-    const { setEnrolled } = useContext(CoursePageContext);
+    const [message, setMessage] = useState<string>("Start learning!");
+    const { enrolled, setEnrolled } = useContext(CoursePageContext);
 
     const handleEnroll = async () => {
         setLoading(true);
@@ -31,10 +31,7 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
 
             if (response.ok) {
                 setEnrolled(data);
-                setMessage("Enrolled");
-            } else {
-                setMessage("Failed to enroll");
-            }
+            } 
         } catch (err) {
             setMessage("Failed to enroll");
             console.error(err);
@@ -42,6 +39,12 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
             setLoading(false);
         }
     };
+
+    if (enrolled) {
+        // find the next lesson to redirect to from granular progress
+        
+        return <div>Enrolled</div>;
+    }
 
     return (
         <div>
