@@ -1,8 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Footer } from "antd/es/layout/layout";
-import { Image } from "antd";
-import { HomeOutlined } from "@mui/icons-material";
+import Image from "next/image";
 import Text from "antd/es/typography/Text";
 
 const slogan: string = `"Learn in Public. \n
@@ -10,30 +9,28 @@ Grow in community."`;
 
 export default function AppFooter() {
     return (
-        <Footer className="flex w-full gap-24 p-6 md:px-12 lg:px-28 xl:px-48 2xl:px-72 mt-6 rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-[#0B516F]">
+        <Footer className="flex flex-col sm:flex-row w-full justify-center items-center sm:items-start gap-[1.5rem] p-6 mt-6 rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-[#0B516F]">
             {/* footer*/}
-            <div className="flex flex-col justify-start items-center h-[250px] gap-4">
-                <Link href={"/"} className="font-semibold ">
-                    <Image
-                        src="/Logo_DarkM.png"
-                        alt="Logo"
-                        width={280}
-                        height={63}
-                    />
-                </Link>
-                <h2 className="text-white text-lg flex flex-col items-center">
+            <div className="flex flex-col justify-start w-[300px] sm:h-[250px] gap-4">
+                <Image
+                    src="/Logo_DarkM.png"
+                    alt="Logo"
+                    width={280}
+                    height={63}
+                />
+                <h2 className="w-full text-white text-lg sm:text-sm md:text-lg flex flex-col ">
                     <span>"Learn in Public.</span>
                     <span>Grow in community."</span>
                 </h2>
             </div>
 
-            <div className="flex flex-col w-[300px] gap-2">
+            <div className="flex flex-col w-[300px] gap-2 pt-1 md:pt-3 lg:pt-4 xl:pt-5">
                 <h1 className="text-white text-2xl">Attribution</h1>
-                <div className="flex justify-start gap-1">
+                <div className="flex sm:flex-col md:flex-row justify-start items-start gap-2">
                     <Image
                         src="/volunteer_activism.svg"
                         alt="Logo"
-                        width={50}
+                        width={20}
                         height={20}
                     />
                     <Text className="text-white">
@@ -96,7 +93,7 @@ export default function AppFooter() {
                         .
                     </Text>
                 </div>
-                <div className="flex justify-start gap-1">
+                <div className="flex sm:flex-col md:flex-row justify-start gap-2">
                     <Image src="/home.svg" alt="Logo" width={20} height={20} />
                     <Text className="text-white">
                         Facilitated by{" "}
@@ -111,9 +108,9 @@ export default function AppFooter() {
                 </div>
             </div>
 
-            <div className="flex flex-col w-[300px] gap-2">
+            <div className="flex flex-col w-[300px] sm:w-[260px] gap-2 pt-1 md:pt-3 lg:pt-4 xl:pt-5">
                 <h1 className="text-white text-2xl">Licensing</h1>
-                <div className="flex justify-start gap-1">
+                <div className="flex sm:flex-col md:flex-row justify-start items-start gap-2">
                     <Image
                         src="/palette.svg"
                         alt="Logo"
@@ -122,9 +119,12 @@ export default function AppFooter() {
                     />
                     <Text className="text-white">
                         <span className="font-bold">
-                            BrightPath branding and graphics <br />
+                            BrightPath branding and graphics{" "} 
                         </span>
-                        © 2025 by the{" "}
+                        <span>
+                            © 2025 by the{" "}
+                        </span>
+                        
                         <Link
                             href="https://github.com/chingu-voyages/BrightPath"
                             target="_blank"
@@ -135,11 +135,11 @@ export default function AppFooter() {
                         :{"."}
                     </Text>
                 </div>
-                <div className="flex justify-start gap-1">
+                <div className="flex sm:flex-col md:flex-row justify-start items-start gap-2">
                     <Image
                         src="/frame_source.svg"
                         alt="Logo"
-                        width={40}
+                        width={20}
                         height={20}
                     />
                     <Text className="text-white">
@@ -149,11 +149,11 @@ export default function AppFooter() {
                         is open source! Find our code on Github.
                     </Text>
                 </div>
-                <div className="flex justify-start gap-1">
+                <div className="flex sm:flex-col md:flex-row justify-start items-start gap-2">
                     <Image
                         src="/dictionary.svg"
                         alt="Logo"
-                        width={50}
+                        width={20}
                         height={20}
                     />
                     <Text className="text-white">
