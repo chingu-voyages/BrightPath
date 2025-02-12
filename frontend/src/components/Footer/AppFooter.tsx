@@ -9,7 +9,7 @@ Grow in community."`;
 
 export default function AppFooter() {
     return (
-        <Footer className="flex flex-col sm:flex-row w-full justify-center items-center sm:items-start gap-[1.5rem] p-6 mt-auto rounded-md md:rounded-xl shadow-sm border border-slate-300 dark:border-slate-800 bg-[#0B516F]">
+        <Footer className="flex flex-col sm:flex-row w-full justify-center items-center sm:items-start gap-[1.5rem] p-6 mt-auto left-0 shadow-sm bg-[#0B516F]">
             {/* footer*/}
             <div className="flex flex-col justify-start w-[300px] sm:h-[250px] gap-4">
                 <Image
