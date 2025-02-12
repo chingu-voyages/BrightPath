@@ -21,6 +21,7 @@ const QuizAssigmentModal = ({
     const [submited, setSubmited] = useState(false);
     const [value, setValue] = useState(0);
     const [completed, setCompleted] = useState(false);
+    const [points, setPoints] = useState(0);
 
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
@@ -30,11 +31,9 @@ const QuizAssigmentModal = ({
         key: i,
         title: "",
     }));
-
-    let points = 0;
     function submitAnswer() {
-        if (value === Number(answer)) {
-            points += 1;
+        if (value == Number(answer)) {
+            setPoints((p) => p + 1);
         }
         setSubmited(true);
     }
@@ -137,31 +136,20 @@ const QuizAssigmentModal = ({
             </article>
             {completed ? (
                 <div className="w-full flex justify-center items-center mt-6  py-6 border-t-2 border-slate-100">
-                    <button
-                        type="button"
-                        className="p-4  md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-600 cursor-pointer text-lg font-semibold"
-                        onClick={complete}
-                    >
-                        <span>next unit </span>
-                    </button>
+                    {points / items.length > 0.5 ? (
+                        <span className="text-xl font-normal">😎 not bad</span>
+                    ) : (
+                        <span className="text-xl font-normal">
+                            😔 maybe next time !
+                        </span>
+                    )}
                 </div>
             ) : (
-                <div className="w-full flex justify-between mt-6  py-6 border-t-2 border-slate-100">
-                    <button
-                        type="button"
-                        className="p-4 flex items-center justify-between w-full md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-600 cursor-pointer text-lg font-semibold"
-                        onClick={() => router.back()}
-                    >
-                        <span>Back to course preview</span>
-                        <span className="div p-1 shadow-md border rounded-md">
-                            esc
-                        </span>
-                    </button>
-
+                <div className="w-full flex justify-end mt-6  py-6 border-t-2 border-slate-100">
                     {submited ? (
                         <button
                             type="button"
-                            className="px-4 flex items-center justify-between w-full md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
+                            className="p-4 flex items-center justify-between w-full md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
                             onClick={next}
                         >
                             <span>
@@ -175,7 +163,7 @@ const QuizAssigmentModal = ({
                         </button>
                     ) : (
                         <button
-                            className="px-4 flex items-center justify-between w-full md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
+                            className="p-4 flex items-center justify-between w-full md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
                             onClick={submitAnswer}
                         >
                             <span>Submit Answer</span>
