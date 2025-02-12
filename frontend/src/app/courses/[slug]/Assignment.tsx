@@ -253,7 +253,7 @@ export default function AssignmentComponent({
                 footer={footer}
                 getContainer={false}
             >
-                <div className="container mx-auto lg:max-w-6xl h-full p-6 bg-white">
+                <div className="container mx-auto lg:max-w-6xl  p-6 bg-white">
                     <header className="flex items-center justify-between mb-6">
                         <Breadcrumb separator=">" items={breadcrumb} />
                     </header>
@@ -264,7 +264,12 @@ export default function AssignmentComponent({
 
                         {/* quiz ?? */}
                         {assignment.type === AssignmentType.QUIZ && (
-                            <QuizAssigmentModal assignment={assignment} />
+                            <QuizAssigmentModal  assignment={assignment} />
+                        )}
+
+                        {/* timed */}
+                        {assignment.type === AssignmentType.TIMED_ASSESSMENT && (
+                            <QuizAssigmentModal timed={false}  assignment={assignment} />
                         )}
                     </div>
                 </div>

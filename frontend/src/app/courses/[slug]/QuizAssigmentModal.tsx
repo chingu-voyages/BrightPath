@@ -5,7 +5,7 @@ import { EllipsisOutlined, EnterOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 
-const QuizAssigmentModal = ({ assignment }: { assignment: Assignment }) => {
+const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment,timed?:boolean }) => {
     const router = useRouter();
 
     // for later fix ...
@@ -13,6 +13,7 @@ const QuizAssigmentModal = ({ assignment }: { assignment: Assignment }) => {
     const [submited, setSubmited] = useState(false);
     const [value, setValue] = useState(0);
     const [completed, setCompleted] = useState(false);
+
 
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
