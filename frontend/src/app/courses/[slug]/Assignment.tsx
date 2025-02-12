@@ -166,6 +166,18 @@ export default function AssignmentComponent({
         }
     };
 
+    const breadcrumb = [
+        {
+            title: "Course Overview",
+        },
+        {
+            title: "Unit 1",
+        },
+        {
+            title: assignment.title,
+        },
+    ];
+
     const footer = (
         <div className="flex items-center justify-between">
             <button
@@ -242,7 +254,7 @@ export default function AssignmentComponent({
             >
                 <div className="container mx-auto h-full p-6 bg-white">
                     <header className="flex items-center justify-between mb-6">
-                        <Breadcrumb separator=">" />
+                        <Breadcrumb separator=">" items={breadcrumb} />
                     </header>
                     <div className="overflow-y h-[200px]">
                         {assignment.type === AssignmentType.READING && (
