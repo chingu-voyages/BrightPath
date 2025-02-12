@@ -17,7 +17,6 @@ const QuizAssigmentModal = ({ assignment }: { assignment: Assignment }) => {
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
 
-    console.log(assignment.title);
     // const items = questions.map((question,i) => ({ key: question.id, title: "" }))
     const items = Object.keys(questions!).map((q, i) => ({
         key: i,
