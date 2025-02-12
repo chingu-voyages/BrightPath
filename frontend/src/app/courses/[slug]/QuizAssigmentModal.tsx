@@ -2,8 +2,8 @@ import { type Assignment } from "@/types";
 import { Progress, Steps } from "antd";
 import React, { useState } from "react";
 import { EllipsisOutlined, EnterOutlined } from "@ant-design/icons";
-import { JsonArray } from "next-auth/adapters";
 import { useRouter } from "next/navigation";
+import { Prisma } from "@prisma/client";
 
 const QuizAssigmentModal = ({ assignment }: { assignment: Assignment }) => {
     const router = useRouter();
@@ -14,8 +14,8 @@ const QuizAssigmentModal = ({ assignment }: { assignment: Assignment }) => {
     const [value, setValue] = useState(0);
     const [completed, setCompleted] = useState(false);
 
-    const questions: JsonArray = assignment.QuizAssignment
-        ?.questions! as JsonArray;
+    const questions: Prisma.JsonArray = assignment.QuizAssignment
+        ?.questions! as Prisma.JsonArray;
 
     console.log(assignment.title);
     // const items = questions.map((question,i) => ({ key: question.id, title: "" }))
