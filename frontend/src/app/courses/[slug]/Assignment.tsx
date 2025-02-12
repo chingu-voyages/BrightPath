@@ -18,6 +18,7 @@ import { CoursePageContext } from "./Course";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import QuizAssigmentModal from "./QuizAssigmentModal";
+import InteractiveAssigment from "./InteractiveAssigment";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -253,7 +254,7 @@ export default function AssignmentComponent({
                 footer={footer}
                 getContainer={false}
             >
-                <div className="container mx-auto lg:max-w-6xl  p-6 bg-white">
+                <div className="container mx-auto lg:max-w-6xl  p-6 bg-white overflow-y-hidden">
                     <header className="flex items-center justify-between mb-6">
                         <Breadcrumb separator=">" items={breadcrumb} />
                     </header>
@@ -274,6 +275,15 @@ export default function AssignmentComponent({
                         {assignment.type ===
                             AssignmentType.TIMED_ASSESSMENT && (
                             <QuizAssigmentModal
+                                complete={completeAssignment}
+                                timed={false}
+                                assignment={assignment}
+                            />
+                            )}
+                        
+                        {assignment.type ===
+                            AssignmentType.INTERACTIVE && (
+                            <InteractiveAssigment
                                 complete={completeAssignment}
                                 timed={false}
                                 assignment={assignment}
