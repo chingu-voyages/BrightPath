@@ -56,7 +56,6 @@ const QuizAssigmentModal = ({
         any
     >;
 
-    console.log(questions);
     return (
         <>
             <article className="w-full h-full">
