@@ -135,7 +135,7 @@ const QuizAssigmentModal = ({
                 </div>
             </article>
             {completed ? (
-                <div className="w-full flex justify-center items-center mt-6  py-6 border-t-2 border-slate-100">
+                <div className="w-full flex justify-between items-center mt-6  py-6 border-t-2 border-slate-100">
                     {points / items.length > 0.5 ? (
                         <span className="text-xl font-normal">😎 not bad</span>
                     ) : (
@@ -143,6 +143,14 @@ const QuizAssigmentModal = ({
                             😔 maybe next time !
                         </span>
                     )}
+
+                    <button
+                        className="p-4 rounded-md capitalize border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
+                        type="button"
+                        onClick={complete}
+                    >
+                        next unit/assigment
+                    </button>
                 </div>
             ) : (
                 <div className="w-full flex justify-end mt-6  py-6 border-t-2 border-slate-100">
