@@ -10,7 +10,7 @@ export type Unit = Prisma.UnitGetPayload<{
 
 export type Enrollment = Prisma.EnrollmentGetPayload<{
     include: { course: true; user: true };
-}> & { course: Course };
+}> & { course: Course, granularProgress: GranularProgress };
 
 export type Assignment = Prisma.AssignmentGetPayload<{
     include: {
@@ -20,3 +20,9 @@ export type Assignment = Prisma.AssignmentGetPayload<{
         QuizAssignment: true;
     };
 }>;
+
+export interface GranularProgress extends Prisma.JsonValue {
+    [unitId: string]: {
+        [assignmentId: string]: number; // Each assignment has a progress value
+    };
+}
