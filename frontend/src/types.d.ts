@@ -10,7 +10,7 @@ export type Unit = Prisma.UnitGetPayload<{
 
 export type Enrollment = Prisma.EnrollmentGetPayload<{
     include: { course: true; user: true };
-}> & { course: Course, granularProgress: GranularProgress };
+}> & { course: Course; granularProgress: GranularProgress };
 
 export type Assignment = Prisma.AssignmentGetPayload<{
     include: {

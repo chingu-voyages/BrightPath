@@ -11,7 +11,6 @@ export default function EnrollButton() {
     const { data: session } = useSession();
     const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
 
-
     if (!session?.user) {
         return <Link href="/auth/signin">Enroll</Link>;
     }
@@ -26,7 +25,10 @@ export default function EnrollButton() {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ courseId: course?.id, userId: session?.user?.id }),
+                    body: JSON.stringify({
+                        courseId: course?.id,
+                        userId: session?.user?.id,
+                    }),
                 },
             );
 
@@ -45,12 +47,23 @@ export default function EnrollButton() {
 
     if (enrolled) {
         // todo: refactor finding next assignment
-        const granularProgress = enrolled.granularProgress as Record<string, Record<string, number>>;
-        const nextUnit = Object.entries(granularProgress).find(([unit, assignments]) => {
-            return Object.entries(assignments).find(([id, progress]) => progress === 0);
-        })
+        const granularProgress = enrolled.granularProgress as Record<
+            string,
+            Record<string, number>
+        >;
+        const nextUnit = Object.entries(granularProgress).find(
+            ([unit, assignments]) => {
+                return Object.entries(assignments).find(
+                    ([id, progress]) => progress === 0,
+                );
+            },
+        );
 
-        const nextAssignment = nextUnit && Object.entries(nextUnit[1]).find(([id, progress]) => progress === 0);
+        const nextAssignment =
+            nextUnit &&
+            Object.entries(nextUnit[1]).find(
+                ([id, progress]) => progress === 0,
+            );
 
         if (nextAssignment === undefined) {
             return (
@@ -60,23 +73,25 @@ export default function EnrollButton() {
                 >
                     Continue learning
                 </button>
-            )
+            );
         }
 
-        const actualNextAssignment = nextUnit && nextAssignment && course?.units.find((unit) => unit.id === parseInt(nextUnit[0]))?.assignments.find((assignment) => assignment.id === parseInt(nextAssignment[0]));
+        const actualNextAssignment =
+            nextUnit &&
+            nextAssignment &&
+            course?.units
+                .find((unit) => unit.id === parseInt(nextUnit[0]))
+                ?.assignments.find(
+                    (assignment) =>
+                        assignment.id === parseInt(nextAssignment[0]),
+                );
 
         return (
-            <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-                <div className="text-left text-sm">
-                    Continue learning
-                </div>
-                <div className="text-left">
-                    {actualNextAssignment?.title}
-                </div>
+            <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <div className="text-left text-sm">Continue learning</div>
+                <div className="text-left">{actualNextAssignment?.title}</div>
             </button>
-        )
+        );
     }
 
     return (

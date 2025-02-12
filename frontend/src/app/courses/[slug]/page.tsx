@@ -41,7 +41,6 @@ export default async function Courses({
         if (user && user.id) {
             return <EnrollButton courseId={course.id} userId={user.id} />;
         }
-
     };
 
     return (

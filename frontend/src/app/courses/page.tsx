@@ -16,9 +16,7 @@ export default async function Courses() {
         <div className="my-6">
             <h2 className="text-3xl font-bold mb-6">BrightPath Courses</h2>
 
-            <div className="mb-6">
-                {getRandomQuote()}
-            </div>
+            <div className="mb-6">{getRandomQuote()}</div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {courses.map((course: Course) => (
