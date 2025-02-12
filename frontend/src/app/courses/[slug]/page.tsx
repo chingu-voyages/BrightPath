@@ -37,28 +37,9 @@ export default async function Courses({
         isEnrolled = !!enrollment;
     }
 
-    const DynamicEnrollButton = () => {
-        if (isEnrolled) {
-            return (
-                <button
-                    disabled
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-                >
-                    Enrolled
-                </button>
-            );
-        }
-
-        if (user && user.id) {
-            return <EnrollButton courseId={course.id} userId={user.id} />;
-        }
-
-        return <Link href="/auth/signin">Enroll</Link>;
-    };
-
     return (
         <CoursePage course={course} enrollment={enrollment}>
-            <div className="w-full grid grid-cols-1 gap-y-4 p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+            <div className="w-full grid grid-cols-1 gap-y-4 p-6 my-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
                 {/* Header Section */}
                 <div className="flex justify-between items-start">
                     <div>
@@ -93,7 +74,7 @@ export default async function Courses({
                     <p className="text-sm text-gray-600 mt-2">
                         {course.shortDescription}
                     </p>
-                    <DynamicEnrollButton />
+                    <EnrollButton />
                 </div>
 
                 {/* Video & Description */}
