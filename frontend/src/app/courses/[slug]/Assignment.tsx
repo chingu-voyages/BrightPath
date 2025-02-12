@@ -8,6 +8,7 @@ import { AdsClick, Book, ChecklistRtl, Monitor } from "@mui/icons-material";
 import { ReadingAssignmentModal } from "./ReadingAssignment";
 
 import { type Assignment } from "@/types";
+import QuizAssigmentModal from "./QuizAssigmentModal";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -109,13 +110,18 @@ export default function AssignmentComponent({
                 }}
                 getContainer={false}
             >
-                <div className="container mx-auto h-full p-6 bg-white">
+                <div className="container mx-auto lg:max-w-6xl h-full p-6 bg-white">
                     <header className="flex items-center justify-between mb-6">
                         <Breadcrumb separator=">" />
                     </header>
-                    <div className="overflow-y h-[200px]">
+                    <div className="overflow-y h-full">
                         {assignment.type === AssignmentType.READING && (
                             <ReadingAssignmentModal assignment={assignment} />
+                        )}
+
+                        {/* quiz ?? */}
+                        {assignment.type === AssignmentType.QUIZ && (
+                            <QuizAssigmentModal assignment={assignment} />
                         )}
                     </div>
                 </div>
