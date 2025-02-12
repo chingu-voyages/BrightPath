@@ -264,12 +264,20 @@ export default function AssignmentComponent({
 
                         {/* quiz ?? */}
                         {assignment.type === AssignmentType.QUIZ && (
-                            <QuizAssigmentModal  assignment={assignment} />
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                assignment={assignment}
+                            />
                         )}
 
                         {/* timed */}
-                        {assignment.type === AssignmentType.TIMED_ASSESSMENT && (
-                            <QuizAssigmentModal timed={false}  assignment={assignment} />
+                        {assignment.type ===
+                            AssignmentType.TIMED_ASSESSMENT && (
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                timed={false}
+                                assignment={assignment}
+                            />
                         )}
                     </div>
                 </div>

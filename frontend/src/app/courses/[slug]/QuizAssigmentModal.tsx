@@ -5,7 +5,15 @@ import { EllipsisOutlined, EnterOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 
-const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment,timed?:boolean }) => {
+const QuizAssigmentModal = ({
+    timed = false,
+    assignment,
+    complete,
+}: {
+    assignment: Assignment;
+    timed?: boolean;
+    complete: () => Promise<void>;
+}) => {
     const router = useRouter();
 
     // for later fix ...
@@ -13,7 +21,6 @@ const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment
     const [submited, setSubmited] = useState(false);
     const [value, setValue] = useState(0);
     const [completed, setCompleted] = useState(false);
-
 
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
@@ -41,7 +48,7 @@ const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment
             setCompleted(true);
         }
         // submit assigment
-        //
+        // complete();
     }
 
     const { question, answer, options } = questions[current] as Record<
@@ -134,9 +141,9 @@ const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment
                     <button
                         type="button"
                         className="p-4  md:max-w-72  border-2 rounded-md   border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-600 cursor-pointer text-lg font-semibold"
-                        onClick={() => router.back()}
+                        onClick={complete}
                     >
-                        <span>next chap </span>
+                        <span>next unit </span>
                     </button>
                 </div>
             ) : (
@@ -163,7 +170,9 @@ const QuizAssigmentModal = ({timed=false, assignment }: { assignment: Assignment
                                     ? "Complete Assigment"
                                     : "next question"}
                             </span>
-                            <span>entr</span>
+                            <span>
+                                <EnterOutlined />
+                            </span>
                         </button>
                     ) : (
                         <button
