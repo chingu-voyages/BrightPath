@@ -37,12 +37,6 @@ export default async function Courses({
         isEnrolled = !!enrollment;
     }
 
-    const DynamicEnrollButton = () => {
-        if (user && user.id) {
-            return <EnrollButton courseId={course.id} userId={user.id} />;
-        }
-    };
-
     return (
         <CoursePage course={course} enrollment={enrollment}>
             <div className="w-full grid grid-cols-1 gap-y-4 p-6 my-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
