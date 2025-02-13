@@ -18,7 +18,7 @@ export default async function Home() {
     return (
         <>
             {/* Hero Section */}
-            <section className="grid md:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg">
+            <section className="text-black grid md:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg">
                 <div>
                     <h1 className="text-4xl font-bold mb-4">
                         Welcome to BrightPath!
@@ -74,7 +74,7 @@ export default async function Home() {
             </section>
 
             {/* Certification */}
-            <section className="mt-12 bg-gray-100 p-6 rounded-lg">
+            <section className="mt-12 bg-gray-100 p-6 rounded-lg text-black">
                 <h2 className="text-3xl font-bold mb-6">Certified learning.</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="border p-6 rounded-lg bg-white text-center">
