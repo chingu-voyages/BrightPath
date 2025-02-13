@@ -13,6 +13,11 @@ import UserAvatar from "./UserAvatar";
 const UserMenu = () => {
     const items: MenuProps["items"] = [
         {
+            key: "dashboard",
+            label: <Link href="/user/dashboard">Dashboard</Link>,
+            icon: <PieChartOutlined />,
+        },
+        {
             key: "profile",
             label: <Link href="/user/profile">Profile</Link>,
             icon: <UserOutlined />,
@@ -22,14 +27,7 @@ const UserMenu = () => {
             label: <Link href="/user/settings">Settings</Link>,
             icon: <SettingOutlined />,
         },
-        {
-            key: "dashboard",
-            label: <Link href="/user/dashboard">Dashboard</Link>,
-            icon: <PieChartOutlined />,
-        },
-        {
-            type: "divider",
-        },
+        {   type: "divider" },
         {
             key: "signout",
             label: <Link href="/auth/signout">Signout</Link>,
