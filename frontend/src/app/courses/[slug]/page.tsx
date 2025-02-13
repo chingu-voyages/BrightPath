@@ -84,7 +84,10 @@ export default async function Courses({
                             controls
                             className="rounded-lg shadow-sm w-full md:w-2/3"
                         >
-                            <source src={course.introVideoUrl} type="video/mp4" />
+                            <source
+                                src={course.introVideoUrl}
+                                type="video/mp4"
+                            />
                             Your browser does not support the video tag.
                         </video>
 
@@ -123,7 +126,10 @@ export default async function Courses({
                                     controls
                                     className="rounded-lg shadow-sm w-full mb-4"
                                 >
-                                    <source src={course.introVideoUrl} type="video/mp4" />
+                                    <source
+                                        src={course.introVideoUrl}
+                                        type="video/mp4"
+                                    />
                                     Your browser does not support the video tag.
                                 </video>
 
@@ -133,7 +139,7 @@ export default async function Courses({
                                 </p>
                             </div>
                         )}
-                        <hr className="my-4"/>
+                        <hr className="my-4" />
                         <div className="">
                             {/* Certificate */}
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">

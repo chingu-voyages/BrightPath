@@ -21,4 +21,4 @@ export const AssignmentIcon = ({ type }: { type: AssignmentType }) => {
         default:
             return <Lock />;
     }
-}
+};

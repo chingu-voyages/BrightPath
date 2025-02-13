@@ -24,28 +24,42 @@ export const UnitComponent = ({ unit, n }: { unit: Unit; n: number }) => {
             <div className="flex justify-between items-center">
                 <div>
                     <h4 className="text-gray-500">
-                        Unit {n + 1}<span className="mx-1">•</span>{moment.duration(unit.duration).humanize()}
+                        Unit {n + 1}
+                        <span className="mx-1">•</span>
+                        {moment.duration(unit.duration).humanize()}
                     </h4>
                     <h3 className="text-xl font-bold mb-2">{unit.title}</h3>
                 </div>
                 <div className="cursor-pointer px-4">
-                    {isCollapsed ? (<KeyboardArrowDown fontSize="large" onClick={() => setIsCollapsed(false)} />) : (<KeyboardArrowUp fontSize="large" onClick={() => setIsCollapsed(true)} />)}
+                    {isCollapsed ? (
+                        <KeyboardArrowDown
+                            fontSize="large"
+                            onClick={() => setIsCollapsed(false)}
+                        />
+                    ) : (
+                        <KeyboardArrowUp
+                            fontSize="large"
+                            onClick={() => setIsCollapsed(true)}
+                        />
+                    )}
                 </div>
             </div>
             {!isCollapsed && (
                 <div>
                     <p className="mb-2">{unit.description}</p>
-                    {unit.assignments?.map((assignment: Assignment, index: number) => (
-                        <AssignmentComponent
-                            key={assignment.id}
-                            assignment={assignment}
-                            unitId={unit.id}
-                            isOpen={currentIndex === index}
-                            onOpen={() => setCurrentIndex(index)}
-                            onContinue={handleContinue}
-                            onClose={() => setCurrentIndex(null)}
-                        />
-                    ))}
+                    {unit.assignments?.map(
+                        (assignment: Assignment, index: number) => (
+                            <AssignmentComponent
+                                key={assignment.id}
+                                assignment={assignment}
+                                unitId={unit.id}
+                                isOpen={currentIndex === index}
+                                onOpen={() => setCurrentIndex(index)}
+                                onContinue={handleContinue}
+                                onClose={() => setCurrentIndex(null)}
+                            />
+                        ),
+                    )}
                 </div>
             )}
         </div>

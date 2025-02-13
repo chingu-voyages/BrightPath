@@ -75,7 +75,6 @@ export default function EnrollButton() {
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
                     Continue learning
-
                 </button>
             );
         }
@@ -97,8 +96,12 @@ export default function EnrollButton() {
                         <p className="text-sm text-nowrap">Continue learning</p>
 
                         <div className="flex items-center">
-                            <AssignmentIcon type={actualNextAssignment?.type || 'READING'} />
-                            <p className="pl-2 text-lg font-bold">{actualNextAssignment?.title}</p>
+                            <AssignmentIcon
+                                type={actualNextAssignment?.type || "READING"}
+                            />
+                            <p className="pl-2 text-lg font-bold">
+                                {actualNextAssignment?.title}
+                            </p>
                         </div>
                     </div>
                     <KeyboardArrowRight fontSize="large" />

@@ -22,20 +22,29 @@ export default async function Home() {
         <>
             {/* Hero Section */}
             <section className="hero relative grid min-h-[50vh] text-black overflow-hidden">
-                <img src="/hero-image.jpg" alt="Hero" className="absolute inset-0 h-full w-full" />
+                <img
+                    src="/hero-image.jpg"
+                    alt="Hero"
+                    className="absolute inset-0 h-full w-full"
+                />
                 <div className="absolute inset-0 hero-gradient h-full w-full" />
 
                 <div className="relative flex items-start justify-center flex-col px-6 pb-24 h-full w-full sm:w-1/2 md:w-2/5">
-                    <Image src="/logo.svg" alt="BrightPath" width={300} height={300} />
+                    <Image
+                        src="/logo.svg"
+                        alt="BrightPath"
+                        width={300}
+                        height={300}
+                    />
                     <p className="text-gray-700 mb-4">
                         Ready to take your dev journey deeper?
                     </p>
                     <p className="text-gray-700">
-                        Learn by doing, with hands-on, project-based exercises, and stand out from the crowd with specialized knowledge and skills.
+                        Learn by doing, with hands-on, project-based exercises,
+                        and stand out from the crowd with specialized knowledge
+                        and skills.
                     </p>
-                    <Link href="/courses">
-                        Start learning
-                    </Link>
+                    <Link href="/courses">Start learning</Link>
                 </div>
             </section>
 

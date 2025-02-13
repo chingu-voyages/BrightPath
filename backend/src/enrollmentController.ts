@@ -16,7 +16,10 @@ export async function getEnrollmentsByUserId(ctx: Context, userId: string) {
         where: { userId },
         include: {
             course: {
-                include: { instructor: true, units: { include: { assignments: true } } }
+                include: {
+                    instructor: true,
+                    units: { include: { assignments: true } },
+                },
             },
         },
     });

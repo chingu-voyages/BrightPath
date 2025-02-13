@@ -27,7 +27,7 @@ const UserMenu = () => {
             label: <Link href="/user/settings">Settings</Link>,
             icon: <SettingOutlined />,
         },
-        {   type: "divider" },
+        { type: "divider" },
         {
             key: "signout",
             label: <Link href="/auth/signout">Signout</Link>,
