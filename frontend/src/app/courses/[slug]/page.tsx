@@ -39,7 +39,7 @@ export default async function Courses({
 
     return (
         <CoursePage course={course} enrollment={enrollment}>
-            <div className="w-full grid grid-cols-1 gap-y-4 p-6 my-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+            <div className="w-full grid grid-cols-1 gap-y-6 p-6 my-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
                 {/* Header Section */}
                 <div className="flex justify-between items-start">
                     <div>
@@ -78,28 +78,27 @@ export default async function Courses({
                 </div>
 
                 {/* Video & Description */}
-                <div className="grid grid-cols-2">
-                    <video
-                        controls
-                        className="rounded-lg shadow-sm w-full md:w-2/3"
-                    >
-                        <source src={course.introVideoUrl} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
+                {!isEnrolled && (
+                    <div className="grid grid-cols-2">
+                        <video
+                            controls
+                            className="rounded-lg shadow-sm w-full md:w-2/3"
+                        >
+                            <source src={course.introVideoUrl} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
 
-                    {/* Course Description */}
-                    <p className="text-sm text-gray-700 mb-6">
-                        {course.description}
-                    </p>
-                </div>
+                        {/* Course Description */}
+                        <p className="text-sm text-gray-700 mb-6">
+                            {course.description}
+                        </p>
+                    </div>
+                )}
 
-                <div className="grid grid-cols-2 gap-x-4 text-black">
+                <div className="md:flex gap-x-8 text-black">
                     {/* Course Outline */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                            Course Outline
-                        </h3>
-                        <div className="space-y-4">
+                    <div className="w-3/5">
+                        <div>
                             {course.units?.map((unit: Unit, index: number) => (
                                 <UnitComponent
                                     key={unit.id}
@@ -110,7 +109,31 @@ export default async function Courses({
                         </div>
                     </div>
 
-                    <div>
+                    <div className="w-2/5">
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Your Progress
+                            </h3>
+                            <ProgressBar />
+                        </div>
+
+                        {isEnrolled && (
+                            <div className="">
+                                <video
+                                    controls
+                                    className="rounded-lg shadow-sm w-full mb-4"
+                                >
+                                    <source src={course.introVideoUrl} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+
+                                {/* Course Description */}
+                                <p className="text-sm text-gray-700 mb-6">
+                                    {course.description}
+                                </p>
+                            </div>
+                        )}
+                        <hr className="my-4"/>
                         <div className="">
                             {/* Certificate */}
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -132,9 +155,6 @@ export default async function Courses({
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                        <div className="mt-4">
-                            <ProgressBar />
                         </div>
                     </div>
                 </div>
