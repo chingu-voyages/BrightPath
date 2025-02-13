@@ -2,7 +2,6 @@ import { type Course } from "@/types";
 import CourseCard from "./courses/CourseCard";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowCircleRight } from "@mui/icons-material";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -15,6 +14,7 @@ const getPopularCourses = async () => {
 };
 
 export const dynamic = "force-dynamic";
+
 export default async function Home() {
     const popularCourses = await getPopularCourses();
 
@@ -34,8 +34,7 @@ export default async function Home() {
                         Learn by doing, with hands-on, project-based exercises, and stand out from the crowd with specialized knowledge and skills.
                     </p>
                     <Link href="/courses">
-                       Start learning
-                       <ArrowCircleRight />
+                        Start learning
                     </Link>
                 </div>
             </section>
@@ -47,6 +46,11 @@ export default async function Home() {
                     {popularCourses.map((course: Course) => (
                         <CourseCard key={course.id} course={course} />
                     ))}
+                </div>
+                <div className="flex items-center justify-center mt-6">
+                    <Link href="/courses" className="">
+                        View all courses
+                    </Link>
                 </div>
             </section>
 
