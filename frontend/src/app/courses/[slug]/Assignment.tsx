@@ -279,10 +279,9 @@ export default function AssignmentComponent({
                                 timed={false}
                                 assignment={assignment}
                             />
-                            )}
-                        
-                        {assignment.type ===
-                            AssignmentType.INTERACTIVE && (
+                        )}
+
+                        {assignment.type === AssignmentType.INTERACTIVE && (
                             <InteractiveAssigment
                                 complete={completeAssignment}
                                 timed={false}
