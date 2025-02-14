@@ -6,6 +6,19 @@ import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Tag as AntdTag, Avatar } from "antd";
 
+type Tag = {
+    id: string;
+    name: string;
+};
+
+const tempTags: Tag[] = [
+    { id: "1", name: "Tailwind" },
+    { id: "2", name: "Code" },
+    { id: "3", name: "Design" },
+    { id: "4", name: "Scrum" },
+    { id: "5", name: "Soft Skills" },
+];
+
 export default function CourseCard({ course }: { course: Course }) {
     return (
         <Link
@@ -52,12 +65,21 @@ export default function CourseCard({ course }: { course: Course }) {
                             Updated
                         </AntdTag>
                     )}
-                    {course.tags.map((tag) => (
+                    {/* {course.tags.map((tag) => (
                         <AntdTag
                             key={tag.tag.id}
                             className="mb-2 bg-sky-100 border-none dark:border-solid dark:bg-gray-800 dark:text-gray-400"
                         >
                             {tag.tag.name}
+                        </AntdTag>
+                    ))} */}
+
+                    {tempTags.map((tag) => (
+                        <AntdTag
+                            key={tag.id}
+                            className="mb-2 bg-sky-100 border-none dark:border-solid dark:bg-gray-800 dark:text-gray-400"
+                        >
+                            {tag.name}
                         </AntdTag>
                     ))}
                 </div>
