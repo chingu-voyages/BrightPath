@@ -1,10 +1,11 @@
-import { auth } from "@/auth";
+'use client'
 import Image from "next/image";
 import Avatar from "antd/es/avatar/avatar";
 import { UserOutlined } from "@ant-design/icons";
+import { useSession } from "next-auth/react";
 
-export default async function UserAvatar() {
-    const session = await auth();
+export default function UserAvatar() {
+    const { data: session } = useSession();
     const name = session?.user?.name;
 
     if (!session?.user?.image) return <UserOutlined />;

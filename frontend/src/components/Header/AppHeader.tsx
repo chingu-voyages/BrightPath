@@ -1,59 +1,97 @@
+'use client'
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "antd/es/layout/layout";
 import Image from "next/image";
-import UserAvatar from "../UserAvatar";
 import UserMenu from "../UserMenu";
-import { auth } from "@/auth";
+import { Menu } from "antd";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-export default async function AppHeader() {
-    const session = await auth();
+const scrollHandler = () => {
+    const header = document.querySelector(".ant-layout-header");
+    const logo = document.querySelector(".ant-layout-header .logo");
+    if (header && window.location.pathname === "/") {
+        if (window.scrollY > 10) {
+            header.classList.add("bg-white");
+            header.classList.remove("bg-transparent");
+            logo?.classList.remove("invisible");
+        } else {
+            header.classList.remove("bg-white");
+            header.classList.add("bg-transparent");
+            logo?.classList.add("invisible");
+        }
+    }
+}
+
+export default function AppHeader() {
+    const { data: session } = useSession();
+    const pathname = usePathname();
+    const [isHomepage, setIsHomepage] = useState(true);
+
+    useEffect(() => {
+        setIsHomepage(pathname === "/");
+
+        if (isHomepage) {
+            window.addEventListener("scroll", scrollHandler);
+        } else {
+            window.removeEventListener("scroll", scrollHandler);
+        }
+    }, [pathname]);
+
+
+    const menuItems = useMemo(() => {
+        const items = [
+            {
+                key: "home",
+                label: (<Link href="/">Home</Link>),
+            },
+            {
+                key: "courses",
+                label: (<Link href="/courses">Courses</Link>),
+            },
+            {
+                key: "team",
+                label: (<Link href="/our-team">Team</Link>),
+            },
+        ];
+
+        if (session) {
+            items.push({
+                key: "user",
+                label: <UserMenu />,
+            });
+        } else {
+            items.push({
+                key: "signin",
+                label: <Link href="/auth/signin">Sign In</Link>,
+            });
+        }
+
+        return items;
+    }, [session]);
 
     return (
-        <Header className="flex justify-between text-lg md:text-2xl items-center w-full p-6 md:p-12 lg:px-28 xl:px-48 2xl:px-72 shadow-sm bg-white dark:bg-slate-800 fixed top-0 left-0 z-50">
-            <Link href={"/"} className="font-semibold ">
-                <Image
-                    src="/Logo_DarkM.png"
-                    alt="Logo"
-                    width={225}
-                    height={75}
-                />
-            </Link>
-            <nav className="flex justify-center items-center gap-6 ">
-                <Link
-                    href={"/"}
-                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500 hidden md:block"
-                >
-                    Home
-                </Link>
-
-                <Link
-                    href={"/courses"}
-                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
-                >
-                    Courses
-                </Link>
-
-                <Link
-                    href="/our-team"
-                    className="text-slate-700 dark:text-slate-100 hover:opacity-75 hover:underline delay-500"
-                >
-                    Team
-                </Link>
-
-                {session?.user ? (
-                    <div className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500">
-                        <UserMenu />
-                    </div>
-                ) : (
-                    <Link
-                        href={"/auth/signin"}
-                        className="text-slate-700 dark:text-slate-100 hover:opacity-75 delay-500"
-                    >
-                        <UserAvatar />
+        <>
+            <Header className={`w-full fixed top-0 inset-x-0 z-50 h-fit py-2 ${isHomepage ? "bg-transparent" : "bg-white shadow-sm"}`}>
+                <div className="lg:container mx-auto flex items-center justify-between">
+                    <Link href={"/"} className={`logo ${isHomepage ? "invisible" : ""}`}>
+                        <Image
+                            src="/Logo_DarkM.png"
+                            alt="Logo"
+                            width={225}
+                            height={75}
+                        />
                     </Link>
-                )}
-            </nav>
-        </Header>
+
+                    <Menu
+                        mode="horizontal"
+                        items={menuItems}
+                        className={`bg-transparent flex items-center justify-end border-none text-xl ${isHomepage ? "text-white" : "text-black"}`}
+                        style={{ flex: 1, minWidth: 0 }}
+                    />
+                </div>
+            </Header >
+        </>
     );
 }

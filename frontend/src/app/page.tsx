@@ -21,7 +21,7 @@ export default async function Home() {
     return (
         <>
             {/* Hero Section */}
-            <section className="hero relative grid min-h-[50vh] text-black overflow-hidden">
+            <section className="absolute inset-x-0 hero grid min-h-[60vh] text-black overflow-hidden">
                 <img
                     src="/hero-image.jpg"
                     alt="Hero"
@@ -29,25 +29,27 @@ export default async function Home() {
                 />
                 <div className="absolute inset-0 hero-gradient h-full w-full" />
 
-                <div className="relative flex items-start justify-center flex-col px-6 pb-24 h-full w-full sm:w-1/2 md:w-2/5">
-                    <Image
-                        src="/logo.svg"
-                        alt="BrightPath"
-                        width={300}
-                        height={300}
-                    />
-                    <p className="text-gray-700 mb-4">
-                        Ready to take your dev journey deeper?
-                    </p>
-                    <p className="text-gray-700">
-                        Learn by doing, with hands-on, project-based exercises,
-                        and stand out from the crowd with specialized knowledge
-                        and skills.
-                    </p>
-                    <Link href="/courses">Start learning</Link>
+                <div className="container mx-auto">
+                    <div className="relative flex items-start justify-center flex-col gap-6 px-6 pb-24 h-full w-full sm:w-1/2 md:w-2/5 text-xl">
+                        <Image
+                            src="/Logo_WithTagline.png"
+                            alt="BrightPath"
+                            width={360}
+                            height={112}
+                        />
+                        <p className="-mb-3">
+                            Ready to take your dev journey deeper?
+                        </p>
+                        <p className="">
+                            Learn by doing, with hands-on, project-based exercises,
+                            and stand out from the crowd with specialized knowledge
+                            and skills.
+                        </p>
+                        <Link href="/courses" className="button">Start learning</Link>
+                    </div>
                 </div>
             </section>
-
+            <div className="h-[60vh]" />
             {/* Courses Section */}
             <section className="mt-12">
                 <h2 className="text-3xl font-bold mb-6">BrightPath Courses</h2>

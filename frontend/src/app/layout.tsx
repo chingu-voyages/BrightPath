@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import { Noto_Sans, Josefin_Sans } from "next/font/google";
 import { Layout } from "antd";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
@@ -9,12 +10,17 @@ import AppHeader from "@/components/Header/AppHeader";
 
 import "./globals.css";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
+const notoSans = Noto_Sans({
+    variable: "--font-noto-sans",
     subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const josefinSans = Josefin_Sans({
+    variable: "--font-josefin-sans",
+    subsets: ["latin"],
+});
+
+const geistMono = ({
     variable: "--font-geist-mono",
     subsets: ["latin"],
 });
@@ -36,22 +42,22 @@ export default async function RootLayout({
         <html lang="en">
             <body>
                 <Providers>
-                    <Layout
-                        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col justify-start items-start text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 font-medium font-mono min-h-screen`}
+                    <SessionProvider
+                        basePath={"/auth"}
+                        session={session}
                     >
-                        <AppHeader />
-                        {/* main contents */}
-                        <main className="lg:container lg:mx-auto mt-32">
-                            <SessionProvider
-                                basePath={"/auth"}
-                                session={session}
-                            >
+                        <Layout
+                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
+                        >
+                            <AppHeader />
+                            {/* main contents */}
+                            <main className="lg:container mx-auto mt-24">
                                 {children}
-                            </SessionProvider>
-                        </main>
+                            </main>
 
-                        <AppFooter />
-                    </Layout>
+                            <AppFooter />
+                        </Layout>
+                    </SessionProvider>
                 </Providers>
             </body>
         </html>

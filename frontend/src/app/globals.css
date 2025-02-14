@@ -29,6 +29,14 @@ body.modal-open {
     overflow: hidden;
 }
 
+.button {
+    @apply px-8 py-3 text-white bg-subtle-blue rounded-lg;
+}
+
+.button:hover {
+    @apply bg-blue-500;
+}
+
 .hero {
     clip-path: polygon(
         0% 0%,
