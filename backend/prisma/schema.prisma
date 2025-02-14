@@ -66,7 +66,6 @@ model Course {
   units            Unit[]
   enrollments      Enrollment[]
   tags             CourseTag[]
-  certificate      Certificate[]
 
   @@index([title])
 }
@@ -95,14 +94,15 @@ model Assignment {
 }
 
 model Certificate {
-  id       Int      @id @default(autoincrement())
-  courseId Int
+  id       String      @id @default(cuid())
+  enrollmentId Int     @unique
   userId   String
   issuedAt DateTime @default(now())
   url      String
 
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  @@unique([userId, enrollmentId])
 }
 
 model ReadingAssignment {
@@ -153,6 +153,7 @@ model Enrollment {
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   courseId         Int
   course           Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  certificate      Certificate?
 
   @@unique([userId, courseId]) // a user can only enroll in a course once
 }
