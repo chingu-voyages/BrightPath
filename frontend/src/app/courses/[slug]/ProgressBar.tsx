@@ -4,6 +4,7 @@ import moment from "moment";
 import { useContext } from "react";
 import { CoursePageContext } from "./Course";
 import { Progress } from "antd";
+import { EnrollmentStatus } from "@prisma/client";
 
 export default function ProgressBar() {
     const { course, enrolled } = useContext(CoursePageContext);
@@ -23,9 +24,11 @@ export default function ProgressBar() {
         <div className="flex items-center">
             <Progress percent={progress} />
 
-            <p className="pl-4 text-sm tracking-tight text-nowrap">
-                {currentDuration}
-            </p>
+            {enrolled.status === EnrollmentStatus.ACTIVE && (
+                <p className="pl-4 pt-1 text-sm tracking-tight text-nowrap">
+                    {currentDuration}
+                </p>
+            )}
         </div>
     );
 }

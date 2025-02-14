@@ -1,5 +1,7 @@
 import { type Course } from "@/types";
 import CourseCard from "./courses/CourseCard";
+import Image from "next/image";
+import Link from "next/link";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -12,35 +14,37 @@ const getPopularCourses = async () => {
 };
 
 export const dynamic = "force-dynamic";
+
 export default async function Home() {
     const popularCourses = await getPopularCourses();
 
     return (
         <>
             {/* Hero Section */}
-            <section className="text-black grid md:grid-cols-2 gap-8 bg-gray-100 p-6 rounded-lg">
-                <div>
-                    <h1 className="text-4xl font-bold mb-4">
-                        Welcome to BrightPath!
-                    </h1>
+            <section className="hero relative grid min-h-[50vh] text-black overflow-hidden">
+                <img
+                    src="/hero-image.jpg"
+                    alt="Hero"
+                    className="absolute inset-0 h-full w-full"
+                />
+                <div className="absolute inset-0 hero-gradient h-full w-full" />
+
+                <div className="relative flex items-start justify-center flex-col px-6 pb-24 h-full w-full sm:w-1/2 md:w-2/5">
+                    <Image
+                        src="/logo.svg"
+                        alt="BrightPath"
+                        width={300}
+                        height={300}
+                    />
                     <p className="text-gray-700 mb-4">
-                        Ready to take your dev journey deeper? Learn by doing,
-                        with hands-on project-based exercises, and stand out
-                        from the crowd with specialized knowledge and skills.
+                        Ready to take your dev journey deeper?
                     </p>
                     <p className="text-gray-700">
-                        The <strong>BrightPath</strong> platform and courses
-                        were created by a multidisciplinary team of software
-                        development professionals in order to give back to our
-                        community as we learn in public.
+                        Learn by doing, with hands-on, project-based exercises,
+                        and stand out from the crowd with specialized knowledge
+                        and skills.
                     </p>
-                </div>
-                <div className="flex justify-center items-center">
-                    <img
-                        src="/hero-placeholder.png"
-                        alt="Hero"
-                        className="rounded-lg"
-                    />
+                    <Link href="/courses">Start learning</Link>
                 </div>
             </section>
 
@@ -51,6 +55,11 @@ export default async function Home() {
                     {popularCourses.map((course: Course) => (
                         <CourseCard key={course.id} course={course} />
                     ))}
+                </div>
+                <div className="flex items-center justify-center mt-6">
+                    <Link href="/courses" className="">
+                        View all courses
+                    </Link>
                 </div>
             </section>
 
