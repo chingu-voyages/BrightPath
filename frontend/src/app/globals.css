@@ -29,6 +29,33 @@ body.modal-open {
     overflow: hidden;
 }
 
+.hero {
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 80%,
+        94.5% 88.9%,
+        85.5% 86.9%,
+        77% 97.2%,
+        0% 82.2%
+    );
+}
+
+.hero-gradient {
+    background: linear-gradient(
+            281.02deg,
+            rgba(226, 219, 185, 0) 43.16%,
+            #f8f7f2 56.23%
+        ),
+        linear-gradient(
+            89.95deg,
+            #fb3030 0.05%,
+            rgba(255, 255, 255, 0.75) 17.29%,
+            rgba(255, 255, 255, 0.703717) 37.37%,
+            rgba(255, 255, 255, 0) 50.24%
+        );
+}
+
 .ant-modal,
 .ant-modal-content {
     height: 100vh;

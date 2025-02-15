@@ -17,6 +17,8 @@ import { type Assignment } from "@/types";
 import { CoursePageContext } from "./Course";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { AssignmentIcon } from "./AssignmentIcon";
+import QuizAssigmentModal from "./QuizAssigmentModal";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -96,16 +98,7 @@ export default function AssignmentComponent({
                 onClick={handleEnroll}
             >
                 <div className="">
-                    {assignment.type === AssignmentType.READING && <Book />}
-                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
-                    {assignment.type === AssignmentType.INTERACTIVE && (
-                        <AdsClick />
-                    )}
-                    {(assignment.type === AssignmentType.QUIZ ||
-                        assignment.type ===
-                            AssignmentType.TIMED_ASSESSMENT) && (
-                        <ChecklistRtl />
-                    )}
+                    <AssignmentIcon type={assignment.type} />
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -204,16 +197,7 @@ export default function AssignmentComponent({
                 className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
             >
                 <div className="">
-                    {assignment.type === AssignmentType.READING && <Book />}
-                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
-                    {assignment.type === AssignmentType.INTERACTIVE && (
-                        <AdsClick />
-                    )}
-                    {(assignment.type === AssignmentType.QUIZ ||
-                        assignment.type ===
-                            AssignmentType.TIMED_ASSESSMENT) && (
-                        <ChecklistRtl />
-                    )}
+                    <AssignmentIcon type={assignment.type} />
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -252,13 +236,31 @@ export default function AssignmentComponent({
                 footer={footer}
                 getContainer={false}
             >
-                <div className="container mx-auto h-full p-6 bg-white">
+                <div className="container mx-auto lg:max-w-6xl  p-6 bg-white">
                     <header className="flex items-center justify-between mb-6">
                         <Breadcrumb separator=">" items={breadcrumb} />
                     </header>
-                    <div className="overflow-y h-[200px]">
+                    <div className="overflow-y h-full">
                         {assignment.type === AssignmentType.READING && (
                             <ReadingAssignmentModal assignment={assignment} />
+                        )}
+
+                        {/* quiz ?? */}
+                        {assignment.type === AssignmentType.QUIZ && (
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                assignment={assignment}
+                            />
+                        )}
+
+                        {/* timed */}
+                        {assignment.type ===
+                            AssignmentType.TIMED_ASSESSMENT && (
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                timed={false}
+                                assignment={assignment}
+                            />
                         )}
                     </div>
                 </div>
