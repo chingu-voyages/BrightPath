@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 const scrollHandler = () => {
     const header = document.querySelector(".ant-layout-header");
     const logo = document.querySelector(".ant-layout-header .logo");
-    if (header && window.location.pathname === "/") {
+    if (header) {
         if (window.scrollY > 10) {
             header.classList.add("bg-white");
             header.classList.remove("bg-transparent");
@@ -27,7 +27,13 @@ const scrollHandler = () => {
 export default function AppHeader() {
     const { data: session } = useSession();
     const pathname = usePathname();
-    const [isHomepage, setIsHomepage] = useState(true);
+    const [isHomepage, setIsHomepage] = useState(pathname === "/");
+
+    if(isHomepage) {
+        document.querySelector("main")?.classList.remove("pt-24");
+    } else {
+        document.querySelector("main")?.classList.add("pt-24");
+    }
 
     useEffect(() => {
         setIsHomepage(pathname === "/");
