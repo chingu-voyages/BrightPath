@@ -90,6 +90,13 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
 
         if (totalAssignments === completedAssignments) {
             enrollmentStatus = EnrollmentStatus.COMPLETED;
+
+            await ctx.prisma.certificate.create({
+                data: {
+                    enrollmentId: enrollmentId,
+                    userId: enrollment.userId,
+                },
+            });
         }
 
         enrollment = await ctx.prisma.enrollment.update({
@@ -98,6 +105,9 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
                 granularProgress: granularProgress,
                 progress: overallProgress,
                 status: enrollmentStatus,
+            },
+            include: {
+                certificate: true,
             },
         });
 
