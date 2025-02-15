@@ -16,6 +16,8 @@ import {
 } from "../factories/assignment";
 
 export const cleanDatabase = async (ctx: Context) => {
+    const deleteCertificates = ctx.prisma.certificate.deleteMany();
+    const deleteEnrollments = ctx.prisma.enrollment.deleteMany();
     const deleteQuizzes = ctx.prisma.quizAssignment.deleteMany();
     const deleteInteractiveAssignments =
         ctx.prisma.interactiveAssignment.deleteMany();
@@ -28,6 +30,8 @@ export const cleanDatabase = async (ctx: Context) => {
     const deleteUsers = ctx.prisma.user.deleteMany();
 
     await ctx.prisma.$transaction([
+        deleteCertificates,
+        deleteEnrollments,
         deleteQuizzes,
         deleteInteractiveAssignments,
         deleteVideoAssignments,

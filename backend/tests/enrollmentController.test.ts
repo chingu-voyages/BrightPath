@@ -69,6 +69,11 @@ describe("getEnrollmentsByUserId", () => {
                         units: { include: { assignments: true } },
                     },
                 },
+                certificate: {
+                    include: {
+                        user: true,
+                    },
+                },
             },
         });
     });
@@ -87,6 +92,11 @@ describe("getEnrollmentsByUserId", () => {
                     include: {
                         instructor: true,
                         units: { include: { assignments: true } },
+                    },
+                },
+                certificate: {
+                    include: {
+                        user: true,
                     },
                 },
             },
