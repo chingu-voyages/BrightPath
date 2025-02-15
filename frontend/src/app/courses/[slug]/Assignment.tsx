@@ -17,6 +17,7 @@ import { type Assignment } from "@/types";
 import { CoursePageContext } from "./Course";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { AssignmentIcon } from "./AssignmentIcon";
 import QuizAssigmentModal from "./QuizAssigmentModal";
 
 // format assignmetn types names to be displayed
@@ -97,16 +98,7 @@ export default function AssignmentComponent({
                 onClick={handleEnroll}
             >
                 <div className="">
-                    {assignment.type === AssignmentType.READING && <Book />}
-                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
-                    {assignment.type === AssignmentType.INTERACTIVE && (
-                        <AdsClick />
-                    )}
-                    {(assignment.type === AssignmentType.QUIZ ||
-                        assignment.type ===
-                            AssignmentType.TIMED_ASSESSMENT) && (
-                        <ChecklistRtl />
-                    )}
+                    <AssignmentIcon type={assignment.type} />
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">
@@ -205,16 +197,7 @@ export default function AssignmentComponent({
                 className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
             >
                 <div className="">
-                    {assignment.type === AssignmentType.READING && <Book />}
-                    {assignment.type === AssignmentType.VIDEO && <Monitor />}
-                    {assignment.type === AssignmentType.INTERACTIVE && (
-                        <AdsClick />
-                    )}
-                    {(assignment.type === AssignmentType.QUIZ ||
-                        assignment.type ===
-                            AssignmentType.TIMED_ASSESSMENT) && (
-                        <ChecklistRtl />
-                    )}
+                    <AssignmentIcon type={assignment.type} />
                 </div>
                 <div className="flex-1 ml-4">
                     <div className="flex items-center">

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { createContext } from "../context";
-import { Prisma } from "@prisma/client";
+import { EnrollmentStatus, Prisma } from "@prisma/client";
 import {
     createEnrollment,
     deleteEnrollment,
@@ -86,12 +86,18 @@ router.post("/:id/complete-assignment", async (req: Request, res: Response) => {
         }
 
         const overallProgress = completedAssignments / totalAssignments;
+        let enrollmentStatus: EnrollmentStatus = EnrollmentStatus.ACTIVE;
+
+        if (totalAssignments === completedAssignments) {
+            enrollmentStatus = EnrollmentStatus.COMPLETED;
+        }
 
         enrollment = await ctx.prisma.enrollment.update({
             where: { id: enrollmentId },
             data: {
                 granularProgress: granularProgress,
                 progress: overallProgress,
+                status: enrollmentStatus,
             },
         });
 
