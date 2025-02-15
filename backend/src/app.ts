@@ -6,6 +6,7 @@ import path from "path";
 import courseRouter from "./routes/courses";
 import userRouter from "./routes/users";
 import enrollmentRouter from "./routes/enrollments";
+import certificateRouter from "./routes/certificates";
 import teamMembers from "./data/teamMembers";
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use(
 app.use("/courses", courseRouter);
 app.use("/user", userRouter);
 app.use("/enrollments", enrollmentRouter);
+app.use("/certificates", certificateRouter);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("API is working!");

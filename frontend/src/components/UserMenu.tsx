@@ -1,10 +1,9 @@
+"use client";
 import { Dropdown, MenuProps } from "antd";
 import {
     UserOutlined,
     LogoutOutlined,
     SettingOutlined,
-    LoginOutlined,
-    UserAddOutlined,
     PieChartOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";

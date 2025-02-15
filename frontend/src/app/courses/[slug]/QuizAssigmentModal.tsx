@@ -17,11 +17,13 @@ const QuizAssigmentModal = ({
     const router = useRouter();
 
     // for later fix ...
+    const [started, setStarted] = useState(false);
     const [current, setCurrent] = useState<number>(0);
     const [submited, setSubmited] = useState(false);
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState<number>(null!);
     const [completed, setCompleted] = useState(false);
     const [points, setPoints] = useState(0);
+    const [error, setError] = useState(false);
 
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
@@ -32,17 +34,22 @@ const QuizAssigmentModal = ({
         title: "",
     }));
     function submitAnswer() {
-        if (value == Number(answer)) {
-            setPoints((p) => p + 1);
+        if (!value && value !== 0) {
+            setError(true);
+        } else {
+            if (value === Number(answer)) {
+                setPoints((p) => p + 1);
+            }
+            setSubmited(true);
+            setError(false);
         }
-        setSubmited(true);
     }
 
     function next() {
+        setValue(null!);
         if (current < items.length - 1) {
             setCurrent(current + 1);
             setSubmited(false);
-            setValue(null!);
         } else {
             setCompleted(true);
         }
@@ -50,12 +57,22 @@ const QuizAssigmentModal = ({
         // complete();
     }
 
+    // retake
+    function retake() {
+        setPoints(0);
+        setCurrent(0);
+        setValue(null!);
+        setCompleted(false);
+        setStarted(false);
+        setSubmited(false);
+    }
+
     const { question, answer, options } = questions[current] as Record<
         string,
         any
     >;
 
-    return (
+    return started ? (
         <>
             <article className="w-full h-full">
                 <div className="flex justify-between items-center gap-3 ">
@@ -84,6 +101,12 @@ const QuizAssigmentModal = ({
                         <p className="text-lg italic">{question}</p>
                     </div>
 
+                    {error && (
+                        <div className="text-red-500">
+                            must select same thing first
+                        </div>
+                    )}
+
                     {!completed && (
                         <form
                             onSubmit={submitAnswer}
@@ -99,15 +122,18 @@ const QuizAssigmentModal = ({
                                         <input
                                             onChange={(
                                                 e: React.ChangeEvent<HTMLInputElement>,
-                                            ) =>
-                                                setValue(Number(e.target.value))
-                                            }
+                                            ) => {
+                                                console.log(e.target.value);
+                                                setValue(
+                                                    Number(e.target.value),
+                                                );
+                                            }}
+                                            checked={value === i}
                                             value={i}
                                             type="radio"
                                             name="option"
                                             id={option}
-                                            placeholder="hh"
-                                            className=""
+                                            disabled={submited}
                                         />
                                         <span className="font-normal">
                                             {option}
@@ -136,20 +162,21 @@ const QuizAssigmentModal = ({
             </article>
             {completed ? (
                 <div className="w-full flex justify-between items-center mt-6  py-6 border-t-2 border-slate-100">
-                    {points / items.length > 0.5 ? (
-                        <span className="text-xl font-normal">😎 not bad</span>
-                    ) : (
-                        <span className="text-xl font-normal">
-                            😔 maybe next time !
-                        </span>
-                    )}
-
+                    <span className="text-xl font-normal">
+                        {points / items.length > 0.5
+                            ? "😎 not bad"
+                            : "😔 maybe next time !"}
+                    </span>
                     <button
                         className="p-4 rounded-md capitalize border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 text-lg font-thin"
                         type="button"
-                        onClick={complete}
+                        onClick={
+                            points / items.length > 0.5 ? complete : retake
+                        }
                     >
-                        next unit/assigment
+                        {points / items.length > 0.5
+                            ? "Next Unit/ Assigment "
+                            : "Redo 💁"}
                     </button>
                 </div>
             ) : (
@@ -183,6 +210,29 @@ const QuizAssigmentModal = ({
                 </div>
             )}
         </>
+    ) : (
+        <article className="h-full min-h-72 md:min-h-96 w-full flex flex-col justify-between md:py-8">
+            <div>
+                <h1 className="capitalize text-xl">{assignment.title}</h1>
+                <p className="lowercase ">Type: {assignment.type}</p>
+                <p>
+                    {assignment.QuizAssignment?.timeLimit &&
+                        (
+                            assignment.QuizAssignment?.timeLimit /
+                            (3600 * 60)
+                        ).toFixed(1) + "mins"}
+                </p>
+            </div>
+            <div className="w-full flex justify-end py-4">
+                <button
+                    className="p-4 rounded-md capitalize border-slate-200 dark:border-slate-700 bg-slate-700 dark:bg-slate-100 text-slate-100 dark:text-slate-700 cursor-pointer hover:bg-slate-600 text-lg font-thin"
+                    type="button"
+                    onClick={() => setStarted(true)}
+                >
+                    Start Assigment
+                </button>
+            </div>
+        </article>
     );
 };
 

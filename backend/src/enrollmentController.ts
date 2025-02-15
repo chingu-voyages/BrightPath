@@ -21,6 +21,9 @@ export async function getEnrollmentsByUserId(ctx: Context, userId: string) {
                     units: { include: { assignments: true } },
                 },
             },
+            certificate: {
+                include: { user: true },
+            },
         },
     });
 }
