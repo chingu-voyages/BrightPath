@@ -9,6 +9,15 @@ export default {
     ],
     theme: {
         extend: {
+            fontSize: {
+                "headline-4xl": ["72px", { lineHeight: "80px", letterSpacing: "0%" }],
+                "headline-xxxl": ["64px", { lineHeight: "72px", letterSpacing: "0%" }],
+                "headline-xxl": ["56px", { lineHeight: "64px", letterSpacing: "0%" }],
+                "headline-xl": ["48px", { lineHeight: "56px", letterSpacing: "0%" }],
+                "headline-l": ["40px", { lineHeight: "48px", letterSpacing: "0%" }],
+                "headline-m": ["32px", { lineHeight: "40px", letterSpacing: "0%" }],
+                "headline-s": ["24px", { lineHeight: "32px", letterSpacing: "0%" }],
+            },
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
