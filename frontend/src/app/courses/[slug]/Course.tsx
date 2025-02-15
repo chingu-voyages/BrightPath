@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { createContext } from "react";
-import { type Course } from "@/types";
-import { Enrollment } from "@prisma/client";
+import { type Course, type Enrollment } from "@/types";
 
 export interface ContextType {
     course: Course | null;

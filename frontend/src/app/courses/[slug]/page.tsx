@@ -7,6 +7,9 @@ import CoursePage from "./Course";
 import ProgressBar from "./ProgressBar";
 import { Course, Unit } from "@/types";
 import { UnitComponent } from "./Unit";
+import { EnrollmentStatus } from "@prisma/client";
+import { CertificateComponent } from "@/app/certificates/[slug]/CertificateComponent";
+import { isBuiltin } from "module";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +38,10 @@ export default async function Courses({
             (enrollment: any) => enrollment.courseId === course.id,
         );
         isEnrolled = !!enrollment;
+
+        if (enrollment && enrollment.certificate) {
+            enrollment.certificate.enrollment = enrollment;
+        }
     }
 
     return (
@@ -113,12 +120,14 @@ export default async function Courses({
                     </div>
 
                     <div className="w-2/5">
-                        <div className="mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">
-                                Your Progress
-                            </h3>
-                            <ProgressBar />
-                        </div>
+                        {isEnrolled && enrollment.status === EnrollmentStatus.ACTIVE && (
+                            <div className="mb-4">
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                    Your Progress
+                                </h3>
+                                <ProgressBar />
+                            </div>
+                        )}
 
                         {isEnrolled && (
                             <div className="">
@@ -142,25 +151,39 @@ export default async function Courses({
                         <hr className="my-4" />
                         <div className="">
                             {/* Certificate */}
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                                Complete this course to earn your verified
-                                certificate
-                            </h3>
+                            {isEnrolled && enrollment.status === EnrollmentStatus.COMPLETED && (
 
-                            <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
-                                <div className="p-4">
-                                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                                        Certificate of Completion
-                                    </h4>
-                                    <p className="text-sm text-gray-600">
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Sed pellentesque, purus
-                                        sit amet luctus venenatis, elit erat
-                                        pretium enim, nec ultricies lacus nunc
-                                        nec nulla. Nullam nec est ut sapien.
-                                    </p>
-                                </div>
-                            </div>
+                                <>
+                                    <h3 className="font-brand text-2xl font-semibold text-gray-900 mb-4">
+                                        Here’s your verified certificate
+                                    </h3>
+                                    <CertificateComponent certificate={enrollment.certificate} />
+                                </>
+                            )}
+
+                            {(!isEnrolled || enrollment.status === EnrollmentStatus.ACTIVE) && (
+                                <>
+                                    <h3 className="font-brand text-lg font-semibold text-gray-900 mb-4">
+                                        Complete this course to earn your verified
+                                        certificate
+                                    </h3>
+                                    <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+                                        <div className="p-4">
+                                            <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                                                Certificate of Completion
+                                            </h4>
+                                            <p className="text-sm text-gray-600">
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipiscing elit. Sed pellentesque, purus
+                                                sit amet luctus venenatis, elit erat
+                                                pretium enim, nec ultricies lacus nunc
+                                                nec nulla. Nullam nec est ut sapien.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
                         </div>
                     </div>
                 </div>
