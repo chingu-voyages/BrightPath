@@ -2,6 +2,7 @@ import { type Course } from "@/types";
 import CourseCard from "./courses/CourseCard";
 import Image from "next/image";
 import Link from "next/link";
+import { computeCourseDuration } from "@/lib/utils";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -32,6 +33,10 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
     const popularCourses = await getPopularCourses();
+
+    for (const course of popularCourses) {
+        computeCourseDuration(course);
+    }
 
     return (
         <>
@@ -76,7 +81,7 @@ export default async function Home() {
                     ))}
                 </div>
                 <div className="flex items-center justify-center mt-6">
-                    <Link href="/courses" className="">
+                    <Link href="/courses" className="button">
                         View all courses
                     </Link>
                 </div>
