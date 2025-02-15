@@ -5,21 +5,13 @@ import { type Course } from "@/types";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Tag as AntdTag, Avatar } from "antd";
+import { capitalize } from "@/lib/utils";
 
-type Tag = {
-    id: string;
-    name: string;
-};
-
-const tempTags: Tag[] = [
-    { id: "1", name: "Tailwind" },
-    { id: "2", name: "Code" },
-    { id: "3", name: "Design" },
-    { id: "4", name: "Scrum" },
-    { id: "5", name: "Soft Skills" },
-];
 
 export default function CourseCard({ course }: { course: Course }) {
+    const isNew = moment(course.createdAt).isAfter(moment().subtract(30, "days"));
+    const isUpdated = course.updatedAt !== course.createdAt && moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
+
     return (
         <Link
             key={course.id}
@@ -41,57 +33,45 @@ export default function CourseCard({ course }: { course: Course }) {
                         {moment.duration(course.duration).humanize()}
                         <SignalCellularAltIcon />
 
-                        {course.difficulty}
+                        {capitalize(course.difficulty)}
                     </div>
                 </AntdTag>
-                <h2 className="absolute bottom-1 left-2 text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                <h2 className="absolute bottom-0 inset-x-0 p-4 text-lg font-semibold text-white bg-gradient-to-t from-black to-transparent">
                     {course.title}
                 </h2>
             </div>
 
-            <div className="grid flex-col grow px-2 pb-2 min-h-[175px]">
-                <div className="flex-wrap items-center ml-2">
-                    {(Date.now() - new Date(course.createdAt).getTime()) /
-                        (1000 * 60 * 60 * 24 * 30) <
-                        3 && (
-                        <AntdTag className="mb-2 bg-cyan-600 border-none text-white dark:border-solid dark:bg-gray-800 dark:text-gray-400">
+            <div className="grid flex-col grow px-4 py-2 min-h-[175px]">
+                <p className="text-black dark:text-gray-400 mb-2">
+                    {course.shortDescription}
+                </p>
+
+                <div className="flex-wrap items-center">
+                    {isNew && (
+                        <AntdTag className="mb-2 bg-brightpath-blue-light border-none text-white dark:border-solid dark:bg-gray-800 dark:text-gray-400">
                             New
                         </AntdTag>
                     )}
-                    {(Date.now() - new Date(course.updatedAt).getTime()) /
-                        (1000 * 60 * 60 * 24 * 30) <
-                        3 && (
+                    {isUpdated && (
                         <AntdTag className="mb-2 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                             Updated
                         </AntdTag>
                     )}
-                    {/* {course.tags.map((tag) => (
+                    {course.tags.map((tag) => (
                         <AntdTag
                             key={tag.tag.id}
                             className="mb-2 bg-sky-100 border-none dark:border-solid dark:bg-gray-800 dark:text-gray-400"
                         >
                             {tag.tag.name}
                         </AntdTag>
-                    ))} */}
-
-                    {tempTags.map((tag) => (
-                        <AntdTag
-                            key={tag.id}
-                            className="mb-2 bg-sky-100 border-none dark:border-solid dark:bg-gray-800 dark:text-gray-400"
-                        >
-                            {tag.name}
-                        </AntdTag>
                     ))}
                 </div>
 
-                <p className="text-sm dark:text-gray-400 mb-2">
-                    {course.shortDescription}
-                </p>
 
                 <div className="flex justify-end self-end">
-                    <AntdTag className="mb-2 p-1 bg-sky-100 dark:bg-gray-800 dark:text-gray-400 rounded-2xl">
+                    <AntdTag className="mb-2 p-1 bg-white dark:bg-gray-800 dark:text-gray-400 rounded-2xl">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                            Course by {course?.instructor?.name}
+                            Course by <span className="underline">{course?.instructor?.name}</span>
                             <Avatar
                                 size={25}
                                 className="ml-2"
