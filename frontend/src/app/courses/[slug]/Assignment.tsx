@@ -18,6 +18,9 @@ import { CoursePageContext } from "./Course";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { AssignmentIcon } from "./AssignmentIcon";
+import InteractiveAssigment from "./InteractiveAssigment";
+import VideoAssigmentModal from "./VideoAssigmentModal";
+import QuizAssigmentModal from "./QuizAssigmentModal";
 
 // format assignmetn types names to be displayed
 const types = {
