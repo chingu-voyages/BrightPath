@@ -44,7 +44,7 @@ export default async function RootLayout({
                 <Providers>
                     <SessionProvider basePath={"/auth"} session={session}>
                         <Layout
-                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
+                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white  text-slate-700 dark:text-slate-200`}
                         >
                             <AppHeader />
                             {/* main contents */}

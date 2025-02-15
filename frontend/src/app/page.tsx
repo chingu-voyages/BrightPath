@@ -84,8 +84,8 @@ export default async function Home() {
 
             <div className="text-headline-m font-light border-y py-4 my-8 text-center">
                 The BrightPath platform and courses were created by a
-                multidisciplinary team of software development professionals
-                who want to give back to our community as we learn in public.
+                multidisciplinary team of software development professionals who
+                want to give back to our community as we learn in public.
             </div>
 
             {/* Testimonials */}
