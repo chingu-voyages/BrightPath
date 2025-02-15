@@ -94,11 +94,11 @@ model Assignment {
 }
 
 model Certificate {
-  id       String      @id @default(cuid())
+  id       String      @id @default(uuid())
   enrollmentId Int     @unique
   userId   String
   issuedAt DateTime @default(now())
-  url      String
+  url      String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
