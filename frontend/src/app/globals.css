@@ -95,7 +95,7 @@ Footer section {
 /* Components */
 
 .button {
-    @apply px-8 py-3 text-white bg-subtle-blue rounded-lg;
+    @apply px-8 py-3 text-white font-semibold bg-subtle-blue rounded-lg;
 }
 
 .button:hover {
@@ -103,7 +103,7 @@ Footer section {
 }
 
 .heading {
-    @apply relative text-headline-4xl mb-4;
+    @apply relative text-headline-4xl mb-6;
 }
 
 .heading::after {
