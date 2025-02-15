@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import QuizAssigmentModal from "./QuizAssigmentModal";
 import InteractiveAssigment from "./InteractiveAssigment";
+import VideoAssigmentModal from "./VideoAssigmentModal";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -285,6 +286,13 @@ export default function AssignmentComponent({
                             <InteractiveAssigment
                                 complete={completeAssignment}
                                 timed={false}
+                                assignment={assignment}
+                            />
+                        )}
+
+                        {assignment.type === AssignmentType.VIDEO && (
+                            <VideoAssigmentModal
+                                complete={completeAssignment}
                                 assignment={assignment}
                             />
                         )}
