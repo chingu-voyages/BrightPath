@@ -20,10 +20,10 @@ const josefinSans = Josefin_Sans({
     subsets: ["latin"],
 });
 
-const geistMono = ({
+const geistMono = {
     variable: "--font-geist-mono",
     subsets: ["latin"],
-});
+};
 
 export const metadata: Metadata = {
     title: "BrightPath",
@@ -42,10 +42,7 @@ export default async function RootLayout({
         <html lang="en">
             <body>
                 <Providers>
-                    <SessionProvider
-                        basePath={"/auth"}
-                        session={session}
-                    >
+                    <SessionProvider basePath={"/auth"} session={session}>
                         <Layout
                             className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
                         >

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "antd/es/layout/layout";
@@ -22,14 +22,14 @@ const scrollHandler = () => {
             logo?.classList.add("invisible");
         }
     }
-}
+};
 
 export default function AppHeader() {
     const { data: session } = useSession();
     const pathname = usePathname();
     const [isHomepage, setIsHomepage] = useState(pathname === "/");
 
-    if(isHomepage) {
+    if (isHomepage) {
         document.querySelector("main")?.classList.remove("pt-24");
     } else {
         document.querySelector("main")?.classList.add("pt-24");
@@ -45,20 +45,19 @@ export default function AppHeader() {
         }
     }, [pathname]);
 
-
     const menuItems = useMemo(() => {
         const items = [
             {
                 key: "home",
-                label: (<Link href="/">Home</Link>),
+                label: <Link href="/">Home</Link>,
             },
             {
                 key: "courses",
-                label: (<Link href="/courses">Courses</Link>),
+                label: <Link href="/courses">Courses</Link>,
             },
             {
                 key: "team",
-                label: (<Link href="/our-team">Team</Link>),
+                label: <Link href="/our-team">Team</Link>,
             },
         ];
 
@@ -79,9 +78,14 @@ export default function AppHeader() {
 
     return (
         <>
-            <Header className={`w-full fixed top-0 inset-x-0 z-50 h-fit py-2 ${isHomepage ? "bg-transparent" : "bg-white shadow-sm"}`}>
+            <Header
+                className={`w-full fixed top-0 inset-x-0 z-50 h-fit py-2 ${isHomepage ? "bg-transparent" : "bg-white shadow-sm"}`}
+            >
                 <div className="lg:container mx-auto flex items-center justify-between">
-                    <Link href={"/"} className={`logo ${isHomepage ? "invisible" : ""}`}>
+                    <Link
+                        href={"/"}
+                        className={`logo ${isHomepage ? "invisible" : ""}`}
+                    >
                         <Image
                             src="/Logo_DarkM.png"
                             alt="Logo"
@@ -97,7 +101,7 @@ export default function AppHeader() {
                         style={{ flex: 1, minWidth: 0 }}
                     />
                 </div>
-            </Header >
+            </Header>
         </>
     );
 }

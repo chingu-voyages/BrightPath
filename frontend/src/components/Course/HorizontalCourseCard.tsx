@@ -43,7 +43,10 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                         {completed ? (
                             <Link
                                 className="max-w-fit lg:w-full p-6 text-center rounded-md font-semibold text-lg text-slate-100 dark:text-slate-800 bg-slate-700 dark:bg-slate-400"
-                                href={"/certificates/" + enrollment.certificate?.id}
+                                href={
+                                    "/certificates/" +
+                                    enrollment.certificate?.id
+                                }
                             >
                                 View certificate
                             </Link>

@@ -4,7 +4,6 @@ import { createContext } from "../context";
 const router = Router();
 const ctx = createContext();
 
-
 // GET /certificates/:id
 router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
     try {
@@ -23,7 +22,6 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
         });
 
         res.status(200).json(certificate);
-
     } catch (error) {
         res.status(404).json({ error });
     }

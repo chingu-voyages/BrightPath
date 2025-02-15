@@ -120,14 +120,15 @@ export default async function Courses({
                     </div>
 
                     <div className="w-2/5">
-                        {isEnrolled && enrollment.status === EnrollmentStatus.ACTIVE && (
-                            <div className="mb-4">
-                                <h3 className="text-lg font-semibold text-gray-900">
-                                    Your Progress
-                                </h3>
-                                <ProgressBar />
-                            </div>
-                        )}
+                        {isEnrolled &&
+                            enrollment.status === EnrollmentStatus.ACTIVE && (
+                                <div className="mb-4">
+                                    <h3 className="text-lg font-semibold text-gray-900">
+                                        Your Progress
+                                    </h3>
+                                    <ProgressBar />
+                                </div>
+                            )}
 
                         {isEnrolled && (
                             <div className="">
@@ -151,21 +152,26 @@ export default async function Courses({
                         <hr className="my-4" />
                         <div className="">
                             {/* Certificate */}
-                            {isEnrolled && enrollment.status === EnrollmentStatus.COMPLETED && (
+                            {isEnrolled &&
+                                enrollment.status ===
+                                    EnrollmentStatus.COMPLETED && (
+                                    <>
+                                        <h3 className="font-brand text-2xl font-semibold text-gray-900 mb-4">
+                                            Here’s your verified certificate
+                                        </h3>
+                                        <CertificateComponent
+                                            certificate={enrollment.certificate}
+                                        />
+                                    </>
+                                )}
 
-                                <>
-                                    <h3 className="font-brand text-2xl font-semibold text-gray-900 mb-4">
-                                        Here’s your verified certificate
-                                    </h3>
-                                    <CertificateComponent certificate={enrollment.certificate} />
-                                </>
-                            )}
-
-                            {(!isEnrolled || enrollment.status === EnrollmentStatus.ACTIVE) && (
+                            {(!isEnrolled ||
+                                enrollment.status ===
+                                    EnrollmentStatus.ACTIVE) && (
                                 <>
                                     <h3 className="font-brand text-lg font-semibold text-gray-900 mb-4">
-                                        Complete this course to earn your verified
-                                        certificate
+                                        Complete this course to earn your
+                                        verified certificate
                                     </h3>
                                     <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
                                         <div className="p-4">
@@ -173,17 +179,18 @@ export default async function Courses({
                                                 Certificate of Completion
                                             </h4>
                                             <p className="text-sm text-gray-600">
-                                                Lorem ipsum dolor sit amet, consectetur
-                                                adipiscing elit. Sed pellentesque, purus
-                                                sit amet luctus venenatis, elit erat
-                                                pretium enim, nec ultricies lacus nunc
-                                                nec nulla. Nullam nec est ut sapien.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipiscing elit. Sed
+                                                pellentesque, purus sit amet
+                                                luctus venenatis, elit erat
+                                                pretium enim, nec ultricies
+                                                lacus nunc nec nulla. Nullam nec
+                                                est ut sapien.
                                             </p>
                                         </div>
                                     </div>
                                 </>
                             )}
-
                         </div>
                     </div>
                 </div>

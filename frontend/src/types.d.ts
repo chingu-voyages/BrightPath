@@ -9,7 +9,7 @@ export type Unit = Prisma.UnitGetPayload<{
 }> & { duration: number; assignments: Assignment[] };
 
 export type Enrollment = Prisma.EnrollmentGetPayload<{
-    include: { course: true; user: true, certificate: true };
+    include: { course: true; user: true; certificate: true };
 }> & { course: Course; granularProgress: GranularProgress };
 
 export type Assignment = Prisma.AssignmentGetPayload<{

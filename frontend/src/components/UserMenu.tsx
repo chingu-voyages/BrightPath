@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Dropdown, MenuProps } from "antd";
 import {
     UserOutlined,

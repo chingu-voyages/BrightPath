@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Image from "next/image";
 import Avatar from "antd/es/avatar/avatar";
 import { UserOutlined } from "@ant-design/icons";

@@ -50,18 +50,15 @@ export default function EnrollButton() {
     };
 
     if (enrolled) {
-
         if (enrolled.status === EnrollmentStatus.COMPLETED) {
             return (
-                <div
-                >
+                <div>
                     <div className="text-xl font-bold text-right">
-                        <span className="pr-2">
-                            Course complete!
-                        </span>
+                        <span className="pr-2">Course complete!</span>
                         <Check fontSize="large" color="success" />
                     </div>
-                    You finished the course on {moment(enrolled.certificate?.issuedAt).format("LL")}
+                    You finished the course on{" "}
+                    {moment(enrolled.certificate?.issuedAt).format("LL")}
                 </div>
             );
         }

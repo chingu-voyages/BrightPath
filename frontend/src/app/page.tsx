@@ -14,20 +14,18 @@ const getPopularCourses = async () => {
 };
 
 const testimonials = [
-  {
-    quote:
-      "Zuwaira really kept our team on track, with great communication, encouragement, and accountability.",
-    name: "John Doe",
-  },
-  {
-    quote:
-      "Joseph does a great job demonstrating not only how to use tech tools, but also when and why to use them.",
-    name: "Jane Doe",
-  },
-  {
-    quote: "BrightPath is a great place to grow as a professional.",
-    name: "John Doe",
-  },
+    {
+        quote: "Zuwaira really kept our team on track, with great communication, encouragement, and accountability.",
+        name: "John Doe",
+    },
+    {
+        quote: "Joseph does a great job demonstrating not only how to use tech tools, but also when and why to use them.",
+        name: "Jane Doe",
+    },
+    {
+        quote: "BrightPath is a great place to grow as a professional.",
+        name: "John Doe",
+    },
 ];
 
 export const dynamic = "force-dynamic";
@@ -58,11 +56,13 @@ export default async function Home() {
                             Ready to take your dev journey deeper?
                         </p>
                         <p className="">
-                            Learn by doing, with hands-on, project-based exercises,
-                            and stand out from the crowd with specialized knowledge
-                            and skills.
+                            Learn by doing, with hands-on, project-based
+                            exercises, and stand out from the crowd with
+                            specialized knowledge and skills.
                         </p>
-                        <Link href="/courses" className="button">Start learning</Link>
+                        <Link href="/courses" className="button">
+                            Start learning
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -83,12 +83,16 @@ export default async function Home() {
             </section>
 
             <div className="text-headline-m font-light border-y py-4 my-8 text-center">
-                The BrightPath platform and courses were created by a  multidisciplinary team of software development professionals who want to  give back to our community as we learn in public.
+                The BrightPath platform and courses were created by a
+                 multidisciplinary team of software development professionals
+                who want to  give back to our community as we learn in public.
             </div>
 
             {/* Testimonials */}
             <section className="mt-12">
-                <h2 className="heading font-light text-right after:bg-right">Testimonials</h2>
+                <h2 className="heading font-light text-right after:bg-right">
+                    Testimonials
+                </h2>
                 <div className="flex flex-col gap-y-8 px-12">
                     {testimonials.map((testimonial, idx) => (
                         <div
@@ -99,7 +103,9 @@ export default async function Home() {
                             <div className="w-2/3 px-4 py-3">
                                 <p>"{testimonial.quote}"</p>
 
-                                <span className="font-bold italic">{testimonial.name}</span>
+                                <span className="font-bold italic">
+                                    {testimonial.name}
+                                </span>
                             </div>
                         </div>
                     ))}
