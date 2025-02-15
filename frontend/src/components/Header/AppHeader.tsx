@@ -29,21 +29,17 @@ export default function AppHeader() {
     const pathname = usePathname();
     const [isHomepage, setIsHomepage] = useState(pathname === "/");
 
-    if (isHomepage) {
-        document.querySelector("main")?.classList.remove("pt-24");
-    } else {
-        document.querySelector("main")?.classList.add("pt-24");
-    }
-
     useEffect(() => {
         setIsHomepage(pathname === "/");
 
         if (isHomepage) {
+            document.querySelector("main")?.classList.remove("pt-24");
             window.addEventListener("scroll", scrollHandler);
         } else {
+            document.querySelector("main")?.classList.add("pt-24");
             window.removeEventListener("scroll", scrollHandler);
         }
-    }, [pathname]);
+    });
 
     const menuItems = useMemo(() => {
         const items = [
