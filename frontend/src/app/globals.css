@@ -29,39 +29,46 @@ body.modal-open {
     overflow: hidden;
 }
 
-.button {
-    @apply px-8 py-3 text-white bg-subtle-blue rounded-lg;
-}
-
-.button:hover {
-    @apply bg-blue-500;
-}
-
 .hero {
-    clip-path: polygon(
-        0% 0%,
-        100% 0%,
-        100% 80%,
-        94.5% 88.9%,
-        85.5% 86.9%,
-        77% 97.2%,
-        0% 82.2%
-    );
+    clip-path: polygon(0% 0%,
+            100% 0%,
+            100% 80%,
+            94.5% 88.9%,
+            85.5% 86.9%,
+            77% 97.2%,
+            0% 82.2%);
 }
 
 .hero-gradient {
-    background: linear-gradient(
-            281.02deg,
+    background: linear-gradient(281.02deg,
             rgba(226, 219, 185, 0) 43.16%,
-            #f8f7f2 56.23%
-        ),
-        linear-gradient(
-            89.95deg,
+            #f8f7f2 56.23%),
+        linear-gradient(89.95deg,
             #fb3030 0.05%,
             rgba(255, 255, 255, 0.75) 17.29%,
             rgba(255, 255, 255, 0.703717) 37.37%,
-            rgba(255, 255, 255, 0) 50.24%
-        );
+            rgba(255, 255, 255, 0) 50.24%);
+}
+
+
+Footer {
+    clip-path: polygon(0 1.25rem,
+            calc(5rem - 1.79rem) 1.25rem,
+            5rem 0,
+            calc(5rem + 1.79rem) 1.25rem,
+            100% 1.25rem,
+            100% 100%,
+            0 100%);
+}
+
+Footer section {
+    clip-path: polygon(0 1.15rem,
+            calc(5rem - 1.64rem) 1.15rem,
+            5rem 0,
+            calc(5rem + 1.64rem) 1.15rem,
+            100% 1.15rem,
+            100% 100%,
+            0 100%);
 }
 
 .ant-modal,
@@ -76,26 +83,27 @@ body.modal-open {
     height: calc(100vh - 110px);
 }
 
-Footer {
-    clip-path: polygon(
-        0 1.25rem,
-        calc(5rem - 1.79rem) 1.25rem,
-        5rem 0,
-        calc(5rem + 1.79rem) 1.25rem,
-        100% 1.25rem,
-        100% 100%,
-        0 100%
-    );
+/* Components */
+
+.button {
+    @apply px-8 py-3 text-white bg-subtle-blue rounded-lg;
 }
 
-Footer section {
-    clip-path: polygon(
-        0 1.15rem,
-        calc(5rem - 1.64rem) 1.15rem,
-        5rem 0,
-        calc(5rem + 1.64rem) 1.15rem,
-        100% 1.15rem,
-        100% 100%,
-        0 100%
-    );
+.button:hover {
+    @apply bg-blue-500;
+}
+
+.heading {
+  @apply relative text-headline-4xl mb-4;
+}
+
+.heading::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 11px;
+  background-image: url("data:image/svg+xml,%3Csvg width='549' height='11' viewBox='0 0 549 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.15222 0.0635376L541.504 0.934875L549 10.1797L0 9.94014L17.7214 1.71093L2.15222 0.0635376Z' fill='%23FFD700' fill-opacity='0.66'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-top: 5px;
 }

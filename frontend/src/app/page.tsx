@@ -13,6 +13,23 @@ const getPopularCourses = async () => {
     return await res.json();
 };
 
+const testimonials = [
+  {
+    quote:
+      "Zuwaira really kept our team on track, with great communication, encouragement, and accountability.",
+    name: "John Doe",
+  },
+  {
+    quote:
+      "Joseph does a great job demonstrating not only how to use tech tools, but also when and why to use them.",
+    name: "Jane Doe",
+  },
+  {
+    quote: "BrightPath is a great place to grow as a professional.",
+    name: "John Doe",
+  },
+];
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -52,7 +69,7 @@ export default async function Home() {
             <div className="h-[60vh]" />
             {/* Courses Section */}
             <section className="mt-12">
-                <h2 className="text-3xl font-bold mb-6">BrightPath Courses</h2>
+                <h2 className="heading font-light">Featured Courses</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                     {popularCourses.map((course: Course) => (
                         <CourseCard key={course.id} course={course} />
@@ -65,28 +82,33 @@ export default async function Home() {
                 </div>
             </section>
 
+            <div className="text-headline-m font-light border-y py-4 my-8 text-center">
+                The BrightPath platform and courses were created by a  multidisciplinary team of software development professionals who want to  give back to our community as we learn in public.
+            </div>
+
             {/* Testimonials */}
             <section className="mt-12">
-                <h2 className="text-3xl font-bold mb-6">Testimonials</h2>
-                <div className="grid md:grid-cols-3 gap-6">
-                    {[
-                        "Zuaida really kept our team on track.",
-                        "Joseph does a great job demonstrating tech tools.",
-                        "BrightPath is a great place to grow as a developer.",
-                    ].map((testimonial, idx) => (
+                <h2 className="heading font-light text-right after:bg-right">Testimonials</h2>
+                <div className="flex flex-col gap-y-8 px-12">
+                    {testimonials.map((testimonial, idx) => (
                         <div
                             key={idx}
-                            className="border p-6 rounded-lg shadow-md bg-white text-gray-700"
+                            className="border shadow-md bg-white flex odd:mr-auto odd:flex-row-reverse odd:ml-16 even:ml-auto even:mr-16 w-1/2 h-32"
                         >
-                            {testimonial}
+                            <div className="w-1/3 bg-blue-900 h-full"></div>
+                            <div className="w-2/3 px-4 py-3">
+                                <p>"{testimonial.quote}"</p>
+
+                                <span className="font-bold italic">{testimonial.name}</span>
+                            </div>
                         </div>
                     ))}
                 </div>
             </section>
 
             {/* Certification */}
-            <section className="mt-12 bg-gray-100 p-6 rounded-lg text-black">
-                <h2 className="text-3xl font-bold mb-6">Certified learning.</h2>
+            <section className="mt-12">
+                <h2 className="heading font-light">Certified learning.</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="border p-6 rounded-lg bg-white text-center">
                         <h3 className="text-xl font-bold">John Doe</h3>

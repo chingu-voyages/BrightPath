@@ -51,7 +51,7 @@ export default async function RootLayout({
                         >
                             <AppHeader />
                             {/* main contents */}
-                            <main className="lg:container mx-auto mt-24">
+                            <main className="lg:container mx-auto">
                                 {children}
                             </main>
 
