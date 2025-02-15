@@ -36,6 +36,8 @@ export const CompleteAssignmentButton = ({
     if (fetchingEnrollment || !enrolled) {
         return (
             <button
+                type="button"
+                title="enroll"
                 onClick={fetchEnrollment}
                 className="px-4 py-2 text-black rounded disabled:opacity-50"
                 disabled={fetchingEnrollment}
