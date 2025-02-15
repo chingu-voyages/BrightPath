@@ -7,6 +7,9 @@ export async function getAllCourses(ctx: Context) {
             units: {
                 include: { assignments: true },
             },
+            tags: {
+                include: { tag: true },
+            },
         },
     });
 }
