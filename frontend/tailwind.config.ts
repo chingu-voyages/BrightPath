@@ -46,6 +46,7 @@ export default {
                     slate: "#333333",
                     blue: "#319CCA",
                     "blue-light": "#3291ff",
+                    "blue-extra-light": "#DFE9F7",
                     "blue-dark": "#2C8DB7",
                     "blue-xdark": "#0B516F",
                     gold: "#EEC857",
@@ -53,6 +54,7 @@ export default {
                 },
             },
             backgroundImage: {
+                brightpath: "linear-gradient(0deg, #FFFFFF 91%, #F1F6FC 100%)",
                 slate: "linear-gradient(340.02deg, rgba(255, 255, 255, 0) 79.86%, rgba(255, 255, 255, 0.0914255) 85.06%, rgba(255, 255, 255, 0.2) 98.89%), linear-gradient(270deg, #121212 5.41%, #44444C 33.78%, #4E4E55 60%, #333339 100%)",
                 "subtle-blue":
                     "linear-gradient(0deg, rgba(49, 158, 205, 0.75), rgba(49, 158, 205, 0.75)), linear-gradient(185.57deg, rgba(0, 0, 0, 0) 39.76%, rgba(0, 0, 0, 0.2) 86.56%), linear-gradient(272.49deg, #1497CF 20.1%, #39B5DF 58.38%, #319ECD 93.06%) ",
