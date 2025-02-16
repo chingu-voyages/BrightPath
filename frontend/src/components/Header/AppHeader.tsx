@@ -33,10 +33,10 @@ export default function AppHeader() {
         setIsHomepage(pathname === "/");
 
         if (isHomepage) {
-            document.querySelector("main")?.classList.remove("pt-24");
+            document.querySelector(".main-section")?.classList.remove("mt-24");
             window.addEventListener("scroll", scrollHandler);
         } else {
-            document.querySelector("main")?.classList.add("pt-24");
+            document.querySelector(".main-section")?.classList.add("mt-24");
             window.removeEventListener("scroll", scrollHandler);
         }
     });
@@ -83,7 +83,7 @@ export default function AppHeader() {
                         className={`logo ${isHomepage ? "invisible" : ""}`}
                     >
                         <Image
-                            src="/Logo_DarkM.png"
+                            src="/Logo_LightM.png"
                             alt="Logo"
                             width={225}
                             height={75}
