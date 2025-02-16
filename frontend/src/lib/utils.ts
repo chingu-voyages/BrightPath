@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.toLowerCase().slice(1);
+    return str.charAt(0).toUpperCase() + str.toLowerCase().slice(1);
 }
 
 export const computeCourseDuration = (course: any) => {

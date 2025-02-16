@@ -4,7 +4,7 @@ import { userFactory } from "./user";
 import { unitFactory } from "./unit";
 
 type Course = Prisma.CourseGetPayload<{
-    include: { instructor: true; units: true, tags: true };
+    include: { instructor: true; units: true; tags: true };
 }>;
 
 export const courseFactory = (

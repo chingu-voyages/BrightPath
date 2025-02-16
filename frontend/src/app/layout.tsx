@@ -4,7 +4,7 @@ import { Noto_Sans, Josefin_Sans } from "next/font/google";
 import { Layout } from "antd";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import Providers from "@/components/Providers";
 import AppFooter from "@/components/Footer/AppFooter";
 import AppHeader from "@/components/Header/AppHeader";

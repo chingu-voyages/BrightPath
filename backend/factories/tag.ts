@@ -8,7 +8,7 @@ export const tagFactory = (): Tag => {
         id: faker.number.int(),
         ...tagCreateInputFactory(),
     };
-}
+};
 
 export const tagCreateInputFactory = (): Prisma.TagCreateInput => {
     return {

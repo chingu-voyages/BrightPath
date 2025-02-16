@@ -72,11 +72,13 @@ export const createPersistentCourse = async (
 
     const courses = await ctx.prisma.course.createManyAndReturn({
         data: Array.from({ length: amount }, () => {
-            const randomDifficulty = difficultyValues[Math.floor(Math.random() * difficultyValues.length)];
+            const randomDifficulty =
+                difficultyValues[
+                    Math.floor(Math.random() * difficultyValues.length)
+                ];
             return {
                 ...courseCreateInputWithoutInstructorFactory(randomDifficulty),
                 instructorId: instructor.id,
-
             };
         }),
         include: {
@@ -99,7 +101,7 @@ export const createPersistentCourse = async (
                     create: tags.map((tag) => {
                         return {
                             tagId: tag.id,
-                        }
+                        };
                     }),
                 },
             },
@@ -108,7 +110,7 @@ export const createPersistentCourse = async (
                 instructor: true,
             },
         });
-        
+
         const units = await ctx.prisma.unit.createManyAndReturn({
             data: Array.from(
                 { length: Math.floor(Math.random() * 10) + 1 },

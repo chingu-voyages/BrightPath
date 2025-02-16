@@ -22,8 +22,12 @@ export default async function Courses({
     const slug = (await params).slug;
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
-    const isNew = moment(course.createdAt).isAfter(moment().subtract(30, "days"));
-    const isUpdated = course.updatedAt !== course.createdAt && moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
+    const isNew = moment(course.createdAt).isAfter(
+        moment().subtract(30, "days"),
+    );
+    const isUpdated =
+        course.updatedAt !== course.createdAt &&
+        moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
 
     computeCourseDuration(course);
 
@@ -71,7 +75,8 @@ export default async function Courses({
                             className="w-6 h-6 rounded-full"
                         />
                         <span className="text-sm ml-2">
-                            Course by <a href="/our-team">{course.instructor.name}</a>
+                            Course by{" "}
+                            <a href="/our-team">{course.instructor.name}</a>
                         </span>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -90,7 +95,12 @@ export default async function Courses({
                     {/* Course Outline */}
                     <div className="w-3/5 flex flex-col gap-y-8">
                         <div className="flex items-center space-x-4">
-                            <Image src="/Logo_Icon.png" width={20} height={20} alt="BrightPath Logo" />
+                            <Image
+                                src="/Logo_Icon.png"
+                                width={20}
+                                height={20}
+                                alt="BrightPath Logo"
+                            />
                             <p className="text-xl font-semibold">
                                 {course.shortDescription}
                             </p>
@@ -124,9 +134,7 @@ export default async function Courses({
                         </div>
 
                         {!isEnrolled && (
-                            <p className="text-xl">
-                                {course.description}
-                            </p>
+                            <p className="text-xl">{course.description}</p>
                         )}
 
                         {isEnrolled &&
@@ -153,9 +161,7 @@ export default async function Courses({
                                 </video>
 
                                 {/* Course Description */}
-                                <p className="text-xl">
-                                    {course.description}
-                                </p>
+                                <p className="text-xl">{course.description}</p>
                             </div>
                         )}
 
@@ -164,7 +170,7 @@ export default async function Courses({
                             {/* Certificate */}
                             {isEnrolled &&
                                 enrollment.status ===
-                                EnrollmentStatus.COMPLETED && (
+                                    EnrollmentStatus.COMPLETED && (
                                     <>
                                         <h3 className="font-brand text-2xl font-semibold text-gray-900 mb-4">
                                             Here’s your verified certificate
@@ -177,30 +183,30 @@ export default async function Courses({
 
                             {(!isEnrolled ||
                                 enrollment.status ===
-                                EnrollmentStatus.ACTIVE) && (
-                                    <>
-                                        <h3 className="font-brand text-lg font-semibold text-gray-900 mb-4">
-                                            Complete this course to earn your
-                                            verified certificate
-                                        </h3>
-                                        <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
-                                            <div className="p-4">
-                                                <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                                                    Certificate of Completion
-                                                </h4>
-                                                <p className="text-sm text-gray-600">
-                                                    Lorem ipsum dolor sit amet,
-                                                    consectetur adipiscing elit. Sed
-                                                    pellentesque, purus sit amet
-                                                    luctus venenatis, elit erat
-                                                    pretium enim, nec ultricies
-                                                    lacus nunc nec nulla. Nullam nec
-                                                    est ut sapien.
-                                                </p>
-                                            </div>
+                                    EnrollmentStatus.ACTIVE) && (
+                                <>
+                                    <h3 className="font-brand text-lg font-semibold text-gray-900 mb-4">
+                                        Complete this course to earn your
+                                        verified certificate
+                                    </h3>
+                                    <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
+                                        <div className="p-4">
+                                            <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                                                Certificate of Completion
+                                            </h4>
+                                            <p className="text-sm text-gray-600">
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipiscing elit. Sed
+                                                pellentesque, purus sit amet
+                                                luctus venenatis, elit erat
+                                                pretium enim, nec ultricies
+                                                lacus nunc nec nulla. Nullam nec
+                                                est ut sapien.
+                                            </p>
                                         </div>
-                                    </>
-                                )}
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

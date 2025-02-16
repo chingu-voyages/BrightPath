@@ -6,10 +6,13 @@ import { Tag as AntdTag, Avatar } from "antd";
 import { capitalize } from "@/lib/utils";
 import { AccessTime, SignalCellularAlt } from "@mui/icons-material";
 
-
 export default function CourseCard({ course }: { course: Course }) {
-    const isNew = moment(course.createdAt).isAfter(moment().subtract(30, "days"));
-    const isUpdated = course.updatedAt !== course.createdAt && moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
+    const isNew = moment(course.createdAt).isAfter(
+        moment().subtract(30, "days"),
+    );
+    const isUpdated =
+        course.updatedAt !== course.createdAt &&
+        moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
 
     return (
         <Link
@@ -27,9 +30,9 @@ export default function CourseCard({ course }: { course: Course }) {
                 />
                 <AntdTag className="absolute border-none top-2 right-2 bg-black bg-opacity-50 text-white">
                     <div className="flex items-center gap-0.5 text-xs">
-                        <AccessTime fontSize="small"/>
+                        <AccessTime fontSize="small" />
                         {moment.duration(course.duration).humanize()}
-                        <SignalCellularAlt fontSize="small"/>
+                        <SignalCellularAlt fontSize="small" />
 
                         {capitalize(course.difficulty)}
                     </div>
@@ -65,11 +68,13 @@ export default function CourseCard({ course }: { course: Course }) {
                     ))}
                 </div>
 
-
                 <div className="flex justify-end self-end">
                     <AntdTag className="mb-2 p-1 bg-white dark:bg-gray-800 dark:text-gray-400 rounded-2xl">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                            Course by <span className="underline">{course?.instructor?.name}</span>
+                            Course by{" "}
+                            <span className="underline">
+                                {course?.instructor?.name}
+                            </span>
                             <Avatar
                                 size={25}
                                 className="ml-2"

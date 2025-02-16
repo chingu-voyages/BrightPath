@@ -6,13 +6,15 @@ import { cleanup } from "@testing-library/react";
 
 const server = setupServer(...handlers);
 
-global.matchMedia = global.matchMedia || function() {
-    return {
-        matches : false,
-        addListener : function() {},
-        removeListener: function() {}
-    }
-}
+global.matchMedia =
+    global.matchMedia ||
+    function () {
+        return {
+            matches: false,
+            addListener: function () {},
+            removeListener: function () {},
+        };
+    };
 
 beforeAll(() => server.listen());
 afterEach(() => {
