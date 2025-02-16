@@ -51,6 +51,16 @@ const teamMembers = [
         github: "https://github.com/ProgramStuff ",
         // personalWebsite: "https://github.com/ProgramStuff",
     },
+    {
+        id: 6,
+        name: "Robert Varchodi",
+        role: "Software Developer",
+        profilePicture: "green.png",
+        bio: "Varchodi is a Software Developer on a mission.  He's passionate about building practical, real-world applications and constantly honing his skills to tackle even the most challenging problems.  His focus is clear: user-driven solutions, efficient development, and scalable impact.  He's never done learning.",
+        linkedin: "https://www.linkedin.com/in/greenova-rauschen-5131a5326/",
+        github: "https://github.com/varchodi ",
+        // personalWebsite: "https://github.com/ProgramStuff",
+    },
 ];
 
 export default teamMembers;
