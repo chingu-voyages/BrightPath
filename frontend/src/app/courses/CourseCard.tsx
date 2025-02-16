@@ -1,18 +1,12 @@
 import moment from "moment";
 import Link from "next/link";
-import { Link as MUILink } from "@mui/material";
 import { type Course } from "@/types";
 import { Tag as AntdTag, Avatar } from "antd";
 import { capitalize } from "@/lib/utils";
 import { AccessTime, SignalCellularAlt } from "@mui/icons-material";
+import { CourseTags } from "./[slug]/CourseTags";
 
 export default function CourseCard({ course }: { course: Course }) {
-    const isNew = moment(course.createdAt).isAfter(
-        moment().subtract(30, "days"),
-    );
-    const isUpdated =
-        course.updatedAt !== course.createdAt &&
-        moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
 
     return (
         <Link
@@ -47,26 +41,7 @@ export default function CourseCard({ course }: { course: Course }) {
                     {course.shortDescription}
                 </p>
 
-                <div className="flex-wrap items-center">
-                    {isNew && (
-                        <AntdTag className="mb-2 bg-brightpath-blue-light border-none text-white dark:border-solid dark:bg-gray-800 dark:text-gray-400">
-                            New
-                        </AntdTag>
-                    )}
-                    {isUpdated && (
-                        <AntdTag className="mb-2 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                            Updated
-                        </AntdTag>
-                    )}
-                    {course.tags.map((tag) => (
-                        <AntdTag
-                            key={tag.tag.id}
-                            className="mb-2 bg-sky-100 border-none dark:border-solid dark:bg-gray-800 dark:text-gray-400"
-                        >
-                            {tag.tag.name}
-                        </AntdTag>
-                    ))}
-                </div>
+                <CourseTags course={course} />
 
                 <div className="flex justify-end self-end">
                     <AntdTag className="mb-2 p-1 bg-white dark:bg-gray-800 dark:text-gray-400 rounded-2xl">
