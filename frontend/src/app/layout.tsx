@@ -48,7 +48,7 @@ export default async function RootLayout({
                         >
                             <AppHeader />
                             {/* main contents */}
-                            <main className="lg:container mx-auto">
+                            <main className="lg:container lg:max-w-screen-lg mx-auto px-4 lg:px-0">
                                 {children}
                             </main>
 
