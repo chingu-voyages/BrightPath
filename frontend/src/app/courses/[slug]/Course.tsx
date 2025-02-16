@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { createContext } from "react";
-import { type Course } from "@/types";
-import { Enrollment } from "@prisma/client";
+import { type Course, type Enrollment } from "@/types";
 
 export interface ContextType {
+    course: Course | null;
     enrolled: Enrollment | null;
     setEnrolled: (value: Enrollment) => void;
 }
 
 export const CoursePageContext = createContext<ContextType>({
+    course: null,
     enrolled: null,
     setEnrolled: () => {},
 });
@@ -27,7 +28,7 @@ export default function CoursePage({
     const [enrolled, setEnrolled] = useState(enrollment);
 
     return (
-        <CoursePageContext.Provider value={{ enrolled, setEnrolled }}>
+        <CoursePageContext.Provider value={{ course, enrolled, setEnrolled }}>
             {children}
         </CoursePageContext.Provider>
     );

@@ -7,6 +7,9 @@ export async function getAllCourses(ctx: Context) {
             units: {
                 include: { assignments: true },
             },
+            tags: {
+                include: { tag: true },
+            },
         },
     });
 }
@@ -27,6 +30,9 @@ export async function getCourseBySlug(ctx: Context, slug: string) {
                         },
                     },
                 },
+            },
+            tags: {
+                include: { tag: true },
             },
         },
     });

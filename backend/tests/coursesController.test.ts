@@ -72,6 +72,11 @@ describe("getCourseBySlug", () => {
                         },
                     },
                 },
+                tags: {
+                    include: {
+                        tag: true,
+                    },
+                },
             },
         });
     });

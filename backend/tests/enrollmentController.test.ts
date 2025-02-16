@@ -62,7 +62,19 @@ describe("getEnrollmentsByUserId", () => {
 
         expect(mockCtx.prisma.enrollment.findMany).toHaveBeenCalledWith({
             where: { userId },
-            include: { course: true, user: true },
+            include: {
+                course: {
+                    include: {
+                        instructor: true,
+                        units: { include: { assignments: true } },
+                    },
+                },
+                certificate: {
+                    include: {
+                        user: true,
+                    },
+                },
+            },
         });
     });
 
@@ -75,7 +87,19 @@ describe("getEnrollmentsByUserId", () => {
 
         expect(mockCtx.prisma.enrollment.findMany).toHaveBeenCalledWith({
             where: { userId },
-            include: { course: true, user: true },
+            include: {
+                course: {
+                    include: {
+                        instructor: true,
+                        units: { include: { assignments: true } },
+                    },
+                },
+                certificate: {
+                    include: {
+                        user: true,
+                    },
+                },
+            },
         });
     });
 });

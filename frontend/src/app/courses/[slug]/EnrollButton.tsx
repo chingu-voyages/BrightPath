@@ -1,17 +1,27 @@
 "use client";
 
+import moment from "moment";
 import { useContext, useState } from "react";
 import { CoursePageContext } from "./Course";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { Check, KeyboardArrowRight } from "@mui/icons-material";
+import { AssignmentType, EnrollmentStatus } from "@prisma/client";
+import { AssignmentIcon } from "./AssignmentIcon";
 
-type EnrollButtonProps = {
-    userId: string;
-    courseId: number;
-};
-
-export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
+export default function EnrollButton() {
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string>("Enroll");
-    const { setEnrolled } = useContext(CoursePageContext);
+    const [message, setMessage] = useState<string>("Start learning!");
+    const { data: session } = useSession();
+    const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
+
+    if (!session?.user) {
+        return (
+            <Link href="/auth/signin" className="button">
+                Start learning!
+            </Link>
+        );
+    }
 
     const handleEnroll = async () => {
         setLoading(true);
@@ -23,7 +33,10 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ courseId, userId }),
+                    body: JSON.stringify({
+                        courseId: course?.id,
+                        userId: session?.user?.id,
+                    }),
                 },
             );
 
@@ -31,9 +44,6 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
 
             if (response.ok) {
                 setEnrolled(data);
-                setMessage("Enrolled");
-            } else {
-                setMessage("Failed to enroll");
             }
         } catch (err) {
             setMessage("Failed to enroll");
@@ -43,15 +53,87 @@ export default function EnrollButton({ courseId, userId }: EnrollButtonProps) {
         }
     };
 
-    return (
-        <div>
-            <button
-                onClick={handleEnroll}
-                disabled={loading || message === "Enrolled"}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-            >
-                {message}
+    if (enrolled) {
+        if (enrolled.status === EnrollmentStatus.COMPLETED) {
+            return (
+                <div>
+                    <div className="text-xl font-bold text-right">
+                        <span className="pr-2">Course complete!</span>
+                        <Check fontSize="large" className="text-green-500" />
+                    </div>
+                    You finished the course on{" "}
+                    {moment(enrolled.certificate?.issuedAt).format("LL")}
+                </div>
+            );
+        }
+        // todo: refactor finding next assignment
+        const granularProgress = enrolled.granularProgress as Record<
+            string,
+            Record<string, number>
+        >;
+        const nextUnit = Object.entries(granularProgress).find(
+            ([unit, assignments]) => {
+                return Object.entries(assignments).find(
+                    ([id, progress]) => progress === 0,
+                );
+            },
+        );
+
+        const nextAssignment =
+            nextUnit &&
+            Object.entries(nextUnit[1]).find(
+                ([id, progress]) => progress === 0,
+            );
+
+        if (nextAssignment === undefined) {
+            return (
+                <button
+                    disabled
+                    className="button text-white rounded hover:bg-blue-600"
+                >
+                    Continue learning
+                </button>
+            );
+        }
+
+        const actualNextAssignment =
+            nextUnit &&
+            nextAssignment &&
+            course?.units
+                .find((unit) => unit.id === parseInt(nextUnit[0]))
+                ?.assignments.find(
+                    (assignment) =>
+                        assignment.id === parseInt(nextAssignment[0]),
+                );
+
+        return (
+            <button className="text-left button">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <p className="text-sm text-nowrap">Continue learning</p>
+
+                        <div className="flex items-center">
+                            <AssignmentIcon
+                                type={actualNextAssignment?.type || "READING"}
+                            />
+                            <p className="pl-2 text-lg font-bold">
+                                {actualNextAssignment?.title}
+                            </p>
+                        </div>
+                    </div>
+                    <KeyboardArrowRight fontSize="large" />
+                </div>
             </button>
-        </div>
+        );
+    }
+
+    return (
+        <button
+            onClick={handleEnroll}
+            disabled={loading || message === "Enrolled"}
+            className="button"
+        >
+            {message}
+        </button>
     );
 }

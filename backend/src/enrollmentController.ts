@@ -14,7 +14,17 @@ export async function getAllEnrollments(ctx: Context) {
 export async function getEnrollmentsByUserId(ctx: Context, userId: string) {
     return await ctx.prisma.enrollment.findMany({
         where: { userId },
-        include: { course: true, user: true },
+        include: {
+            course: {
+                include: {
+                    instructor: true,
+                    units: { include: { assignments: true } },
+                },
+            },
+            certificate: {
+                include: { user: true },
+            },
+        },
     });
 }
 
