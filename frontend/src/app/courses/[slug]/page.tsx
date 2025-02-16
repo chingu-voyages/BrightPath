@@ -139,14 +139,17 @@ export default async function Courses({
 
                         {!isEnrolled && (
                             <div>
-                                <p className="text-lg mb-2">{course.description}</p>
+                                <p className="text-lg mb-2">
+                                    {course.description}
+                                </p>
                                 <CourseTags course={course} />
                             </div>
                         )}
 
                         <div className="flex flex-col gap-y-8 border rounded-lg bg-white p-5">
                             {isEnrolled &&
-                                enrollment.status === EnrollmentStatus.ACTIVE && (
+                                enrollment.status ===
+                                    EnrollmentStatus.ACTIVE && (
                                     <div className="">
                                         <h3 className="font-brand text-headline-s font-semibold">
                                             Your Progress
@@ -165,11 +168,14 @@ export default async function Courses({
                                             src={course.introVideoUrl}
                                             type="video/mp4"
                                         />
-                                        Your browser does not support the video tag.
+                                        Your browser does not support the video
+                                        tag.
                                     </video>
 
                                     {/* Course Description */}
-                                    <p className="text-lg mb-2">{course.description}</p>
+                                    <p className="text-lg mb-2">
+                                        {course.description}
+                                    </p>
                                     <CourseTags course={course} />
                                 </div>
                             )}
@@ -177,31 +183,39 @@ export default async function Courses({
                             <div className="">
                                 {isEnrolled &&
                                     enrollment.status ===
-                                    EnrollmentStatus.COMPLETED && (
+                                        EnrollmentStatus.COMPLETED && (
                                         <>
                                             <h3 className="font-brand text-headline-s font-semibold mb-4">
                                                 Here’s your verified certificate
                                             </h3>
-                                            <Link href={`/certificates/${enrollment.certificate.id}`}>
+                                            <Link
+                                                href={`/certificates/${enrollment.certificate.id}`}
+                                            >
                                                 <CertificateComponent
-                                                    certificate={enrollment.certificate}
+                                                    certificate={
+                                                        enrollment.certificate
+                                                    }
                                                 />
                                             </Link>
-                                            <ShareButtons url={`https://brightpath.courses/certificates/${enrollment.certificate.id}`} />
+                                            <ShareButtons
+                                                url={`https://brightpath.courses/certificates/${enrollment.certificate.id}`}
+                                            />
                                         </>
                                     )}
 
                                 {(!isEnrolled ||
                                     enrollment.status ===
-                                    EnrollmentStatus.ACTIVE) && (
-                                        <>
-                                            <h3 className="font-brand text-headline-s font-semibold mb-4">
-                                                Complete this course to earn your
-                                                verified certificate
-                                            </h3>
-                                            <CertificateComponent certificate={null} />
-                                        </>
-                                    )}
+                                        EnrollmentStatus.ACTIVE) && (
+                                    <>
+                                        <h3 className="font-brand text-headline-s font-semibold mb-4">
+                                            Complete this course to earn your
+                                            verified certificate
+                                        </h3>
+                                        <CertificateComponent
+                                            certificate={null}
+                                        />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -16,7 +16,11 @@ export default function EnrollButton() {
     const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
 
     if (!session?.user) {
-        return <Link href="/auth/signin" className="button">Start learning!</Link>;
+        return (
+            <Link href="/auth/signin" className="button">
+                Start learning!
+            </Link>
+        );
     }
 
     const handleEnroll = async () => {

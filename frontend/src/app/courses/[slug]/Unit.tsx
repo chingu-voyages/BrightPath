@@ -28,7 +28,9 @@ export const UnitComponent = ({ unit, n }: { unit: Unit; n: number }) => {
                         <span className="mx-1 text-brightpath-blue">•</span>
                         {moment.duration(unit.duration).humanize()}
                     </h4>
-                    <h3 className="font-brand font-bold text-2xl mb-2">{unit.title}</h3>
+                    <h3 className="font-brand font-bold text-2xl mb-2">
+                        {unit.title}
+                    </h3>
                 </div>
                 <div className="cursor-pointer px-4">
                     {isCollapsed ? (

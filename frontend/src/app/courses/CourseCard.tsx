@@ -7,7 +7,6 @@ import { AccessTime, SignalCellularAlt } from "@mui/icons-material";
 import { CourseTags } from "./[slug]/CourseTags";
 
 export default function CourseCard({ course }: { course: Course }) {
-
     return (
         <Link
             className="grid border bg-white dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 dark:bg-gray-800 bg-white"

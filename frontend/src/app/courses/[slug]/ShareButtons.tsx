@@ -1,6 +1,6 @@
 import { Facebook, LinkedIn } from "@mui/icons-material";
 
-export const ShareButtons = ({ url }:{ url: string}) => {
+export const ShareButtons = ({ url }: { url: string }) => {
     return (
         <div className="flex justify-between items-center space-x-4 my-4">
             <a
@@ -23,4 +23,4 @@ export const ShareButtons = ({ url }:{ url: string}) => {
             </a>
         </div>
     );
-}
+};

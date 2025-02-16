@@ -161,18 +161,19 @@ export default function AssignmentComponent({
 
     const breadcrumb = [
         {
-            title: (<Link href="/">
-                <Image
-                    src="/Logo_LightM.png"
-                    alt="Logo"
-                    width={142}
-                    height={31}
-                />
-            </Link>),
-
+            title: (
+                <Link href="/">
+                    <Image
+                        src="/Logo_LightM.png"
+                        alt="Logo"
+                        width={142}
+                        height={31}
+                    />
+                </Link>
+            ),
         },
         {
-            title: (<Link href={`/courses/${course?.id}`}>{course?.title}</Link>),
+            title: <Link href={`/courses/${course?.id}`}>{course?.title}</Link>,
         },
         {
             title: currentUnit?.title,
@@ -191,10 +192,7 @@ export default function AssignmentComponent({
                 Back to course overview
             </button>
 
-            <button
-                onClick={completeAssignment}
-                className="button"
-            >
+            <button onClick={completeAssignment} className="button">
                 Continue
             </button>
         </div>
@@ -202,7 +200,9 @@ export default function AssignmentComponent({
 
     return (
         <>
-            <div className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : "border-brightpath-slate"}`}>
+            <div
+                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : "border-brightpath-slate"}`}
+            >
                 <div className="font-semibold">
                     <AssignmentIcon type={assignment.type} />
                 </div>
@@ -215,12 +215,15 @@ export default function AssignmentComponent({
 
                     <div className="flex items-center justify-between">
                         <h4
-                            onClick={isAssignmentUnlocked(assignment) ? onOpen : undefined}
+                            onClick={
+                                isAssignmentUnlocked(assignment)
+                                    ? onOpen
+                                    : undefined
+                            }
                             className="text-lg font-semibold cursor-pointer hover:underline"
                         >
                             {assignment.title}
                         </h4>
-
                     </div>
                 </div>
                 {isAssignmentUnlocked(assignment) && (
@@ -263,12 +266,12 @@ export default function AssignmentComponent({
                         {/* timed */}
                         {assignment.type ===
                             AssignmentType.TIMED_ASSESSMENT && (
-                                <QuizAssigmentModal
-                                    complete={completeAssignment}
-                                    timed={false}
-                                    assignment={assignment}
-                                />
-                            )}
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                timed={false}
+                                assignment={assignment}
+                            />
+                        )}
 
                         {assignment.type === AssignmentType.VIDEO && (
                             <VideoAssigmentModal
