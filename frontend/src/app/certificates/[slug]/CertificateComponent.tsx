@@ -5,8 +5,23 @@ import Image from "next/image";
 export const CertificateComponent = ({
     certificate,
 }: {
-    certificate: Certificate;
+    certificate: Certificate | null;
 }) => {
+    if (!certificate) {
+        certificate = {
+            id: "00000000-0000-0000",
+            issuedAt: new Date(),
+            enrollment: {
+                course: {
+                    title: "Bring Your App to Life with Tailwind Motion",
+                },
+            },
+            user: {
+                name: "John Doe",
+            },
+        } as Certificate;
+    }
+
     return (
         <article className="border rounded shadow p-8 text-center">
             <div className="flex items-center justify-end">
