@@ -1,5 +1,5 @@
 import { Context } from "./context";
-import { AssignmentType, Role } from "@prisma/client";
+import { AssignmentType, Difficulty, Role } from "@prisma/client";
 import { userFactory, userCreateInputFactory } from "../factories/user";
 import {
     courseFactory,
@@ -14,6 +14,9 @@ import {
     timedAssesmentAssignmentCreateInputFactory,
     videoAssignmentCreateInputFactory,
 } from "../factories/assignment";
+import { tagCreateInputFactory } from "../factories/tag";
+
+const difficultyValues = Object.values(Difficulty);
 
 export const cleanDatabase = async (ctx: Context) => {
     const deleteCertificates = ctx.prisma.certificate.deleteMany();
@@ -24,6 +27,8 @@ export const cleanDatabase = async (ctx: Context) => {
     const deleteVideoAssignments = ctx.prisma.videoAssignment.deleteMany();
     const deleteReadingAssignments = ctx.prisma.readingAssignment.deleteMany();
     const deleteAssignments = ctx.prisma.assignment.deleteMany();
+    const deleteTags = ctx.prisma.tag.deleteMany();
+    const deleteCourseTags = ctx.prisma.courseTag.deleteMany();
     const deleteUnits = ctx.prisma.unit.deleteMany();
     const deleteCourses = ctx.prisma.course.deleteMany();
     const deleteAccounts = ctx.prisma.account.deleteMany();
@@ -37,6 +42,8 @@ export const cleanDatabase = async (ctx: Context) => {
         deleteVideoAssignments,
         deleteReadingAssignments,
         deleteAssignments,
+        deleteCourseTags,
+        deleteTags,
         deleteUnits,
         deleteCourses,
         deleteAccounts,
@@ -57,10 +64,20 @@ export const createPersistentCourse = async (
     const instructor =
         instructors[Math.floor(Math.random() * instructors.length)];
 
+    const tags = await ctx.prisma.tag.createManyAndReturn({
+        data: Array.from({ length: 5 }, () => {
+            return tagCreateInputFactory();
+        }),
+    });
+
     const courses = await ctx.prisma.course.createManyAndReturn({
         data: Array.from({ length: amount }, () => {
+            const randomDifficulty =
+                difficultyValues[
+                    Math.floor(Math.random() * difficultyValues.length)
+                ];
             return {
-                ...courseCreateInputWithoutInstructorFactory(),
+                ...courseCreateInputWithoutInstructorFactory(randomDifficulty),
                 instructorId: instructor.id,
             };
         }),
@@ -74,7 +91,26 @@ export const createPersistentCourse = async (
         (type) => type !== AssignmentType.TIMED_ASSESSMENT,
     );
 
-    for (const course of courses) {
+    for (let course of courses) {
+        course = await ctx.prisma.course.update({
+            where: {
+                id: course.id,
+            },
+            data: {
+                tags: {
+                    create: tags.map((tag) => {
+                        return {
+                            tagId: tag.id,
+                        };
+                    }),
+                },
+            },
+            include: {
+                tags: true,
+                instructor: true,
+            },
+        });
+
         const units = await ctx.prisma.unit.createManyAndReturn({
             data: Array.from(
                 { length: Math.floor(Math.random() * 10) + 1 },

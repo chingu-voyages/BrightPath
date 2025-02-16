@@ -16,7 +16,11 @@ export default function EnrollButton() {
     const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
 
     if (!session?.user) {
-        return <Link href="/auth/signin">Enroll</Link>;
+        return (
+            <Link href="/auth/signin" className="button">
+                Start learning!
+            </Link>
+        );
     }
 
     const handleEnroll = async () => {
@@ -55,7 +59,7 @@ export default function EnrollButton() {
                 <div>
                     <div className="text-xl font-bold text-right">
                         <span className="pr-2">Course complete!</span>
-                        <Check fontSize="large" color="success" />
+                        <Check fontSize="large" className="text-green-500" />
                     </div>
                     You finished the course on{" "}
                     {moment(enrolled.certificate?.issuedAt).format("LL")}
@@ -85,7 +89,7 @@ export default function EnrollButton() {
             return (
                 <button
                     disabled
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="button text-white rounded hover:bg-blue-600"
                 >
                     Continue learning
                 </button>
@@ -103,7 +107,7 @@ export default function EnrollButton() {
                 );
 
         return (
-            <button className="text-left px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <button className="text-left button">
                 <div className="flex items-center justify-between">
                     <div>
                         <p className="text-sm text-nowrap">Continue learning</p>
@@ -127,7 +131,7 @@ export default function EnrollButton() {
         <button
             onClick={handleEnroll}
             disabled={loading || message === "Enrolled"}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+            className="button"
         >
             {message}
         </button>

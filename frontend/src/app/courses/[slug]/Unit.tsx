@@ -23,12 +23,14 @@ export const UnitComponent = ({ unit, n }: { unit: Unit; n: number }) => {
         <div className={`${n !== 0 ? "pt-4 border-t border-gray-200" : ""}`}>
             <div className="flex justify-between items-center">
                 <div>
-                    <h4 className="text-gray-500">
+                    <h4 className="font-semibold">
                         Unit {n + 1}
-                        <span className="mx-1">•</span>
+                        <span className="mx-1 text-brightpath-blue">•</span>
                         {moment.duration(unit.duration).humanize()}
                     </h4>
-                    <h3 className="text-xl font-bold mb-2">{unit.title}</h3>
+                    <h3 className="font-brand font-bold text-2xl mb-2">
+                        {unit.title}
+                    </h3>
                 </div>
                 <div className="cursor-pointer px-4">
                     {isCollapsed ? (

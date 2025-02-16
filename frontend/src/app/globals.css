@@ -29,6 +29,14 @@ body.modal-open {
     overflow: hidden;
 }
 
+.main-section {
+    background-image: url("/bg-gradient.svg"), url("/bg-gradient.svg");
+    background-repeat: no-repeat, no-repeat;
+    background-position:
+        -20% 100%,
+        120% 30%;
+}
+
 .hero {
     clip-path: polygon(
         0% 0%,
@@ -92,18 +100,44 @@ Footer section {
     height: calc(100vh - 110px);
 }
 
+.ant-breadcrumb-link {
+    @apply text-brightpath-slate font-semibold;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.ant-breadcrumb-link > a {
+    @apply text-brightpath-slate font-semibold;
+    display: block;
+    height: fit-content;
+}
+
+.ant-breadcrumb-separator {
+    @apply text-brightpath-slate font-semibold;
+    display: flex;
+    align-items: center;
+}
+
 /* Components */
+.button-ghost {
+    @apply px-4 py-3 text-brightpath-slate font-semibold bg-gray-300 rounded-lg;
+}
 
 .button {
-    @apply px-8 py-3 text-white bg-subtle-blue rounded-lg;
+    @apply px-8 py-3 text-white font-semibold bg-subtle-blue rounded-lg;
 }
 
 .button:hover {
-    @apply bg-blue-500;
+    @apply bg-pronounced-blue;
+}
+
+.button:focus-visible {
+    @apply border-4 border-gray-200 shadow outline-none;
 }
 
 .heading {
-    @apply relative text-headline-4xl mb-4;
+    @apply relative text-headline-4xl mb-6;
 }
 
 .heading::after {

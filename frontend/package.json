@@ -25,6 +25,9 @@
         "zod": "^3.24.1"
     },
     "devDependencies": {
+        "@emotion/cache": "^11.14.0",
+        "@mui/material": "^6.4.4",
+        "@mui/material-nextjs": "^6.4.3",
         "@prisma/client": "^6.2.1",
         "@tailwindcss/typography": "^0.5.16",
         "@testing-library/dom": "^10.4.0",

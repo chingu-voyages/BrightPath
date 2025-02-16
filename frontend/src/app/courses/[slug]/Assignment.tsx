@@ -4,13 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { Modal, Breadcrumb } from "antd";
 import { Prisma, AssignmentType } from "@prisma/client";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
-import {
-    AdsClick,
-    Book,
-    ChecklistRtl,
-    Lock,
-    Monitor,
-} from "@mui/icons-material";
+import { Lock } from "@mui/icons-material";
 import { ReadingAssignmentModal } from "./ReadingAssignment";
 
 import { type Assignment } from "@/types";
@@ -20,6 +14,8 @@ import { redirect } from "next/navigation";
 import { AssignmentIcon } from "./AssignmentIcon";
 import QuizAssigmentModal from "./QuizAssigmentModal";
 import VideoAssigmentModal from "./VideoAssigmentModal";
+import Link from "next/link";
+import Image from "next/image";
 
 // format assignmetn types names to be displayed
 const types = {
@@ -47,6 +43,7 @@ export default function AssignmentComponent({
 }) {
     const [loading, setLoading] = useState(false);
     const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
+    const currentUnit = course?.units.find((unit) => unit.id === unitId);
 
     const { data: session, update } = useSession();
 
@@ -95,7 +92,7 @@ export default function AssignmentComponent({
     if (!enrolled) {
         return (
             <div
-                className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
+                className="flex items-center mb-4 border-4 rounded-lg p-4 cursor-pointer border-brightpath-slate"
                 onClick={handleEnroll}
             >
                 <div className="">
@@ -130,6 +127,8 @@ export default function AssignmentComponent({
             .every(([, completed]) => completed === true); // Check if all others are true
     };
 
+    const isCompleted = unitProgress?.[`${assignment.id}`] === true;
+
     const completeAssignment = async () => {
         setLoading(true);
 
@@ -162,10 +161,22 @@ export default function AssignmentComponent({
 
     const breadcrumb = [
         {
-            title: "Course Overview",
+            title: (
+                <Link href="/">
+                    <Image
+                        src="/Logo_LightM.png"
+                        alt="Logo"
+                        width={142}
+                        height={31}
+                    />
+                </Link>
+            ),
         },
         {
-            title: "Unit 1",
+            title: <Link href={`/courses/${course?.id}`}>{course?.title}</Link>,
+        },
+        {
+            title: currentUnit?.title,
         },
         {
             title: assignment.title,
@@ -176,15 +187,12 @@ export default function AssignmentComponent({
         <div className="flex items-center justify-between">
             <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm text-white bg-gray-400 rounded-lg"
+                className="px-4 py-2 text-sm text-brightpath-blue hover:underline"
             >
                 Back to course overview
             </button>
 
-            <button
-                onClick={completeAssignment}
-                className="px-4 py-2 text-sm text-white bg-gray-400 rounded-lg"
-            >
+            <button onClick={completeAssignment} className="button">
                 Continue
             </button>
         </div>
@@ -192,42 +200,43 @@ export default function AssignmentComponent({
 
     return (
         <>
-            {/* Assignment Preview */}
             <div
-                key={assignment.id}
-                className="flex items-center mb-4 border-2 rounded-lg py-3 px-4 cursor-pointer"
+                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : "border-brightpath-slate"}`}
             >
-                <div className="">
+                <div className="font-semibold">
                     <AssignmentIcon type={assignment.type} />
                 </div>
                 <div className="flex-1 ml-4">
-                    <div className="flex items-center">
+                    <div className="flex items-center text-sm font-semibold">
                         <p>{types[assignment.type]}</p>
-                        <span className="mx-2">•</span>
+                        <span className="mx-2 text-brightpath-blue">•</span>
                         <p>{moment.duration(assignment.duration).humanize()}</p>
                     </div>
 
                     <div className="flex items-center justify-between">
                         <h4
-                            onClick={onOpen}
-                            className="cursor-pointer hover:underline"
+                            onClick={
+                                isAssignmentUnlocked(assignment)
+                                    ? onOpen
+                                    : undefined
+                            }
+                            className="text-lg font-semibold cursor-pointer hover:underline"
                         >
                             {assignment.title}
                         </h4>
-
-                        {isAssignmentUnlocked(assignment) && (
-                            <CompleteAssignmentButton
-                                assignmentId={assignment.id}
-                                unitId={unitId}
-                            />
-                        )}
-                        {!isAssignmentUnlocked(assignment) && (
-                            <div className="px-3 py-2">
-                                <Lock fontSize="large" />
-                            </div>
-                        )}
                     </div>
                 </div>
+                {isAssignmentUnlocked(assignment) && (
+                    <CompleteAssignmentButton
+                        assignmentId={assignment.id}
+                        unitId={unitId}
+                    />
+                )}
+                {!isAssignmentUnlocked(assignment) && (
+                    <div className="px-3 py-2">
+                        <Lock fontSize="large" />
+                    </div>
+                )}
             </div>
 
             {/* Full-Screen Modal */}

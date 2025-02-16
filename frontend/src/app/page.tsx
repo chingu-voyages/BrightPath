@@ -2,6 +2,9 @@ import { type Course } from "@/types";
 import CourseCard from "./courses/CourseCard";
 import Image from "next/image";
 import Link from "next/link";
+import { computeCourseDuration } from "@/lib/utils";
+import { CertificateComponent } from "./certificates/[slug]/CertificateComponent";
+import { Article, Star } from "@mui/icons-material";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -33,6 +36,10 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
     const popularCourses = await getPopularCourses();
 
+    for (const course of popularCourses) {
+        computeCourseDuration(course);
+    }
+
     return (
         <>
             {/* Hero Section */}
@@ -42,7 +49,7 @@ export default async function Home() {
                     alt="Hero"
                     className="absolute inset-0 h-full w-full"
                 />
-                <div className="absolute inset-0 hero-gradient h-full w-full" />
+                <div className="absolute inset-0 hero-gradient h-full w-full"></div>
 
                 <div className="container mx-auto">
                     <div className="relative flex items-start justify-center flex-col gap-6 px-6 pb-24 h-full w-full sm:w-1/2 md:w-2/5 text-xl">
@@ -76,7 +83,7 @@ export default async function Home() {
                     ))}
                 </div>
                 <div className="flex items-center justify-center mt-6">
-                    <Link href="/courses" className="">
+                    <Link href="/courses" className="button">
                         View all courses
                     </Link>
                 </div>
@@ -115,21 +122,21 @@ export default async function Home() {
             {/* Certification */}
             <section className="mt-12">
                 <h2 className="heading font-light">Certified learning.</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="border p-6 rounded-lg bg-white text-center">
-                        <h3 className="text-xl font-bold">John Doe</h3>
-                        <p className="text-gray-700 text-sm mt-2">
-                            Has successfully completed all coursework and
-                            assignments for the course
-                        </p>
-                        <p className="text-lg font-bold mt-2">
-                            Bring Your App to Life with Tailwind Motion
+                <div className="flex">
+                    <div className="w-1/5 p-5 lg:mt-24 rounded-md border-y border-l h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
+                        <Article fontSize="large" className="mb-2" />
+                        <p>
+                            Share your certificate on LinkedIn, your portfolio,
+                            and more
                         </p>
                     </div>
-                    <div className="p-6">
-                        <p className="text-gray-700 text-lg">
-                            Our verified certificates highlight your
-                            specialization and skills.
+                    <CertificateComponent certificate={null} />
+
+                    <div className="w-1/5 p-5 lg:mt-auto lg:mb-12 rounded-md border-y border-r h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
+                        <Star fontSize="large" className="mb-2" />
+                        <p>
+                            Verified certificates highlight your specialization
+                            and skills
                         </p>
                     </div>
                 </div>

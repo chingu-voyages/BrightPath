@@ -31,6 +31,9 @@ export async function getCourseBySlug(ctx: Context, slug: string) {
                     },
                 },
             },
+            tags: {
+                include: { tag: true },
+            },
         },
     });
 }

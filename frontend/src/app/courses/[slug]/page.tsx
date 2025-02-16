@@ -1,6 +1,6 @@
 import moment from "moment";
 import { auth } from "@/auth";
-import { computeCourseDuration } from "@/lib/utils";
+import { capitalize, computeCourseDuration } from "@/lib/utils";
 import Link from "next/link";
 import EnrollButton from "./EnrollButton";
 import CoursePage from "./Course";
@@ -9,7 +9,10 @@ import { Course, Unit } from "@/types";
 import { UnitComponent } from "./Unit";
 import { EnrollmentStatus } from "@prisma/client";
 import { CertificateComponent } from "@/app/certificates/[slug]/CertificateComponent";
-import { isBuiltin } from "module";
+import { AccessTime, SignalCellularAlt } from "@mui/icons-material";
+import Image from "next/image";
+import { CourseTags } from "./CourseTags";
+import { ShareButtons } from "./ShareButtons";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +24,12 @@ export default async function Courses({
     const slug = (await params).slug;
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/" + slug);
     const course: Course = await res.json();
+    const isNew = moment(course.createdAt).isAfter(
+        moment().subtract(30, "days"),
+    );
+    const isUpdated =
+        course.updatedAt !== course.createdAt &&
+        moment(course.updatedAt).isAfter(moment().subtract(30, "days"));
 
     computeCourseDuration(course);
 
@@ -46,11 +55,15 @@ export default async function Courses({
 
     return (
         <CoursePage course={course} enrollment={enrollment}>
-            <div className="w-full grid grid-cols-1 gap-y-6 p-6 my-6 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
-                {/* Header Section */}
-                <div className="flex justify-between items-start">
+            <div className="w-full grid grid-cols-1 gap-y-8 p-6 my-6">
+                <div className="flex justify-start items-center">
+                    {isNew && (
+                        <span className="bg-brightpath-blue text-white text-xs font-semibold px-2 py-1 rounded mr-4">
+                            New
+                        </span>
+                    )}
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 className="text-headline-l font-semibold text-brighpath-slate">
                             {course.title}
                         </h2>
                     </div>
@@ -61,54 +74,54 @@ export default async function Courses({
                         <img
                             src={course.instructor?.image || ""}
                             alt={course.instructor?.name || ""}
-                            className="w-8 h-8 rounded-full"
+                            className="w-6 h-6 rounded-full"
                         />
-                        <span className="text-sm text-gray-600 ml-2">
-                            {course.instructor.name}
+                        <span className="text-sm ml-2">
+                            Course by{" "}
+                            <a href="/our-team">{course.instructor.name}</a>
                         </span>
                     </div>
-                    <div className="flex items-center space-x-4 mb-4">
-                        <span className="text-sm text-gray-600">
-                            {course.difficulty}
+                    <div className="flex items-center space-x-4">
+                        <span className="flex items-center text-sm font-semibold">
+                            <SignalCellularAlt />
+                            {capitalize(course.difficulty)}
                         </span>
-                        <span className="text-sm text-gray-600">
-                            {moment.duration(course.duration).humanize()}
+                        <span className="flex items-center space-x-0.5 text-sm font-semibold">
+                            <AccessTime fontSize="small" />
+                            <span>
+                                {moment.duration(course.duration).humanize()}
+                            </span>
                         </span>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600 mt-2">
-                        {course.shortDescription}
-                    </p>
-                    <EnrollButton />
-                </div>
-
-                {/* Video & Description */}
-                {!isEnrolled && (
-                    <div className="grid grid-cols-2">
-                        <video
-                            controls
-                            className="rounded-lg shadow-sm w-full md:w-2/3"
-                        >
-                            <source
-                                src={course.introVideoUrl}
-                                type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
-                        </video>
-
-                        {/* Course Description */}
-                        <p className="text-sm text-gray-700 mb-6">
-                            {course.description}
-                        </p>
-                    </div>
-                )}
-
-                <div className="md:flex gap-x-8 text-black">
+                <div className="md:flex gap-x-8">
                     {/* Course Outline */}
-                    <div className="w-3/5">
-                        <div>
+                    <div className="w-3/5 flex flex-col gap-y-8">
+                        <div className="flex items-center space-x-4">
+                            <Image
+                                src="/Logo_Icon.png"
+                                width={20}
+                                height={20}
+                                alt="BrightPath Logo"
+                            />
+                            <p className="text-xl font-semibold">
+                                {course.shortDescription}
+                            </p>
+                        </div>
+                        {!isEnrolled && (
+                            <video
+                                controls
+                                className="rounded-lg shadow-sm w-full"
+                            >
+                                <source
+                                    src={course.introVideoUrl}
+                                    type="video/mp4"
+                                />
+                                Your browser does not support the video tag.
+                            </video>
+                        )}
+                        <div className="bg-white border rounded-lg p-6">
                             {course.units?.map((unit: Unit, index: number) => (
                                 <UnitComponent
                                     key={unit.id}
@@ -119,78 +132,91 @@ export default async function Courses({
                         </div>
                     </div>
 
-                    <div className="w-2/5">
-                        {isEnrolled &&
-                            enrollment.status === EnrollmentStatus.ACTIVE && (
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900">
-                                        Your Progress
-                                    </h3>
-                                    <ProgressBar />
+                    <div className="w-2/5 flex flex-col gap-y-8">
+                        <div className="flex items-center justify-end">
+                            <EnrollButton />
+                        </div>
+
+                        {!isEnrolled && (
+                            <div>
+                                <p className="text-lg mb-2">
+                                    {course.description}
+                                </p>
+                                <CourseTags course={course} />
+                            </div>
+                        )}
+
+                        <div className="flex flex-col gap-y-8 border rounded-lg bg-white p-5">
+                            {isEnrolled &&
+                                enrollment.status ===
+                                    EnrollmentStatus.ACTIVE && (
+                                    <div className="">
+                                        <h3 className="font-brand text-headline-s font-semibold">
+                                            Your Progress
+                                        </h3>
+                                        <ProgressBar />
+                                    </div>
+                                )}
+
+                            {isEnrolled && (
+                                <div className="">
+                                    <video
+                                        controls
+                                        className="rounded-lg shadow-sm w-full mb-4"
+                                    >
+                                        <source
+                                            src={course.introVideoUrl}
+                                            type="video/mp4"
+                                        />
+                                        Your browser does not support the video
+                                        tag.
+                                    </video>
+
+                                    {/* Course Description */}
+                                    <p className="text-lg mb-2">
+                                        {course.description}
+                                    </p>
+                                    <CourseTags course={course} />
                                 </div>
                             )}
 
-                        {isEnrolled && (
                             <div className="">
-                                <video
-                                    controls
-                                    className="rounded-lg shadow-sm w-full mb-4"
-                                >
-                                    <source
-                                        src={course.introVideoUrl}
-                                        type="video/mp4"
-                                    />
-                                    Your browser does not support the video tag.
-                                </video>
+                                {isEnrolled &&
+                                    enrollment.status ===
+                                        EnrollmentStatus.COMPLETED && (
+                                        <>
+                                            <h3 className="font-brand text-headline-s font-semibold mb-4">
+                                                Here’s your verified certificate
+                                            </h3>
+                                            <Link
+                                                href={`/certificates/${enrollment.certificate.id}`}
+                                            >
+                                                <CertificateComponent
+                                                    certificate={
+                                                        enrollment.certificate
+                                                    }
+                                                />
+                                            </Link>
+                                            <ShareButtons
+                                                url={`https://brightpath.courses/certificates/${enrollment.certificate.id}`}
+                                            />
+                                        </>
+                                    )}
 
-                                {/* Course Description */}
-                                <p className="text-sm text-gray-700 mb-6">
-                                    {course.description}
-                                </p>
-                            </div>
-                        )}
-                        <hr className="my-4" />
-                        <div className="">
-                            {/* Certificate */}
-                            {isEnrolled &&
-                                enrollment.status ===
-                                    EnrollmentStatus.COMPLETED && (
+                                {(!isEnrolled ||
+                                    enrollment.status ===
+                                        EnrollmentStatus.ACTIVE) && (
                                     <>
-                                        <h3 className="font-brand text-2xl font-semibold text-gray-900 mb-4">
-                                            Here’s your verified certificate
+                                        <h3 className="font-brand text-headline-s font-semibold mb-4">
+                                            Complete this course to earn your
+                                            verified certificate
                                         </h3>
                                         <CertificateComponent
-                                            certificate={enrollment.certificate}
+                                            certificate={null}
                                         />
                                     </>
                                 )}
-
-                            {(!isEnrolled ||
-                                enrollment.status ===
-                                    EnrollmentStatus.ACTIVE) && (
-                                <>
-                                    <h3 className="font-brand text-lg font-semibold text-gray-900 mb-4">
-                                        Complete this course to earn your
-                                        verified certificate
-                                    </h3>
-                                    <div className="w-full border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-white">
-                                        <div className="p-4">
-                                            <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                                                Certificate of Completion
-                                            </h4>
-                                            <p className="text-sm text-gray-600">
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipiscing elit. Sed
-                                                pellentesque, purus sit amet
-                                                luctus venenatis, elit erat
-                                                pretium enim, nec ultricies
-                                                lacus nunc nec nulla. Nullam nec
-                                                est ut sapien.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
