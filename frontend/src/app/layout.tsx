@@ -44,11 +44,11 @@ export default async function RootLayout({
                 <Providers>
                     <SessionProvider basePath={"/auth"} session={session}>
                         <Layout
-                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white  text-slate-700 dark:text-slate-200`}
+                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
                         >
                             <AppHeader />
                             {/* main contents */}
-                            <main className="lg:container mx-auto">
+                            <main className="lg:container lg:max-w-screen-lg mx-auto px-4 lg:px-0">
                                 {children}
                             </main>
 
