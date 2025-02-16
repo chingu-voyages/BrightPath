@@ -83,7 +83,7 @@ export const CompleteAssignmentButton = ({
     return (
         <button
             onClick={handle}
-            className="px-4 py-2 text-black rounded disabled:opacity-50"
+            className="px-4 py-2 rounded disabled:opacity-50"
             disabled={loading}
         >
             {status ? (
