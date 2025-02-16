@@ -4,6 +4,7 @@ import { Noto_Sans, Josefin_Sans } from "next/font/google";
 import { Layout } from "antd";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import Providers from "@/components/Providers";
 import AppFooter from "@/components/Footer/AppFooter";
 import AppHeader from "@/components/Header/AppHeader";
@@ -42,19 +43,21 @@ export default async function RootLayout({
         <html lang="en">
             <body>
                 <Providers>
-                    <SessionProvider basePath={"/auth"} session={session}>
-                        <Layout
-                            className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
-                        >
-                            <AppHeader />
-                            {/* main contents */}
-                            <main className="lg:container lg:max-w-screen-lg mx-auto px-4 lg:px-0">
-                                {children}
-                            </main>
+                    <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+                        <SessionProvider basePath={"/auth"} session={session}>
+                            <Layout
+                                className={`${notoSans.variable} ${josefinSans.variable} ${geistMono.variable} antialiased font-sans bg-white h-screen`}
+                            >
+                                <AppHeader />
+                                {/* main contents */}
+                                <main className="lg:container lg:max-w-screen-lg mx-auto px-4 lg:px-0">
+                                    {children}
+                                </main>
 
-                            <AppFooter />
-                        </Layout>
-                    </SessionProvider>
+                                <AppFooter />
+                            </Layout>
+                        </SessionProvider>
+                    </AppRouterCacheProvider>
                 </Providers>
             </body>
         </html>

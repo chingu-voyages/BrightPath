@@ -14,11 +14,9 @@ export default async function Courses() {
     return (
         <div className="my-6">
             <h2 className="heading font-light">Our Courses</h2>
-
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {courses.map((course: Course) => (
-                    <CourseCard key={course.id} course={course} />
+                    <CourseCard key={course.id} course={course}/>
                 ))}
             </div>
         </div>

@@ -1,11 +1,10 @@
 import moment from "moment";
 import Link from "next/link";
+import { Link as MUILink } from "@mui/material";
 import { type Course } from "@/types";
-
-import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Tag as AntdTag, Avatar } from "antd";
 import { capitalize } from "@/lib/utils";
+import { AccessTime, SignalCellularAlt } from "@mui/icons-material";
 
 
 export default function CourseCard({ course }: { course: Course }) {
@@ -14,7 +13,6 @@ export default function CourseCard({ course }: { course: Course }) {
 
     return (
         <Link
-            key={course.id}
             className="grid border bg-white dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 dark:bg-gray-800 bg-white"
             data-testid="course"
             href={`/courses/${course.slug}`}
@@ -29,9 +27,9 @@ export default function CourseCard({ course }: { course: Course }) {
                 />
                 <AntdTag className="absolute border-none top-2 right-2 bg-black bg-opacity-50 text-white">
                     <div className="flex items-center gap-0.5 text-xs">
-                        <AccessTimeIcon fontSize="small" />
+                        <AccessTime fontSize="small"/>
                         {moment.duration(course.duration).humanize()}
-                        <SignalCellularAltIcon />
+                        <SignalCellularAlt fontSize="small"/>
 
                         {capitalize(course.difficulty)}
                     </div>
