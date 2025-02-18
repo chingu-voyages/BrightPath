@@ -14,7 +14,6 @@ const QuizAssigmentModal = ({
     timed?: boolean;
     complete: () => Promise<void>;
 }) => {
-
     const [started, setStarted] = useState(false);
     const [current, setCurrent] = useState<number>(0);
     const [submited, setSubmited] = useState(false);
@@ -214,11 +213,10 @@ const QuizAssigmentModal = ({
                 <h1 className="capitalize text-xl">{assignment.title}</h1>
                 <p className="lowercase ">Type: {assignment.type}</p>
                 <p>
-                    {assignment.QuizAssignment?.timeLimit && (
-                        moment.duration(
-                            assignment.QuizAssignment?.timeLimit,
-                        ).humanize() as string
-                    )}
+                    {assignment.QuizAssignment?.timeLimit &&
+                        (moment
+                            .duration(assignment.QuizAssignment?.timeLimit)
+                            .humanize() as string)}
                 </p>
             </div>
             <div className="w-full flex justify-end py-4">
