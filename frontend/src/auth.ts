@@ -149,11 +149,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: Adapter(),
     session: { strategy: "jwt" },
     callbacks: {
-        async redirect({ url, baseUrl }) {
-            if (url == baseUrl + "/courses") {
-                return baseUrl + "/courses";
-            }
-            return baseUrl + "/user/profile";
+        async redirect(params) {
+            console.log(params);
+            return params.url;
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
@@ -185,6 +183,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return session;
         },
     },
+    pages: {
+        signIn: "/signin",
+    },
     secret: process.env.NEXTAUTH_SECRET,
 });
 
@@ -195,14 +196,14 @@ type AppUser = {
 };
 
 declare module "next-auth" {
-    interface User extends AppUser {}
+    interface User extends AppUser { }
     interface Session {
         accessToken?: string;
     }
 }
 
 declare module "next-auth/adapters" {
-    interface AdapterUser extends AppUser {}
+    interface AdapterUser extends AppUser { }
 }
 
 declare module "next-auth/jwt" {

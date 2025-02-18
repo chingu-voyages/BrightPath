@@ -149,6 +149,7 @@ export default function AppFooter() {
                                 The BrightPath platform{" "}
                             </span>
                             is open source! Find our code on Github.
+
                         </Text>
                     </div>
                     <div className="flex sm:flex-col md:flex-row justify-start items-start gap-2">
@@ -165,6 +166,9 @@ export default function AppFooter() {
                             remain with the instructors - used by permission.
                         </Text>
                     </div>
+                    <Link href={"/privacy-policy"} className="pl-7 text-sm text-white underline">
+                        Privacy Policy
+                    </Link>
                 </div>
             </section>
         </Footer>
