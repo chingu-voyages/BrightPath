@@ -84,7 +84,7 @@ export default async function SignInPage(props: {
                                 // Docs:
                                 // https://nextjs.org/docs/app/api-reference/functions/redirect#server-component
                                 throw error;
-                            }
+                            } 
                         }}
                     >
                         <button
