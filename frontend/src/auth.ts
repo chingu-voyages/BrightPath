@@ -151,12 +151,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     callbacks: {
         async redirect({ url, baseUrl }) {
             // Allows relative callback URLs
-            if (url.startsWith("/")) return `${baseUrl}${url}`
+            if (url.startsWith("/")) return `${baseUrl}${url}`;
 
             // Allows callback URLs on the same origin
-            if (new URL(url).origin === baseUrl) return url
+            if (new URL(url).origin === baseUrl) return url;
 
-            return baseUrl
+            return baseUrl;
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
@@ -201,14 +201,14 @@ type AppUser = {
 };
 
 declare module "next-auth" {
-    interface User extends AppUser { }
+    interface User extends AppUser {}
     interface Session {
         accessToken?: string;
     }
 }
 
 declare module "next-auth/adapters" {
-    interface AdapterUser extends AppUser { }
+    interface AdapterUser extends AppUser {}
 }
 
 declare module "next-auth/jwt" {
