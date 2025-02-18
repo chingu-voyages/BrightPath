@@ -86,6 +86,7 @@ export const assignmentCreateInputWithoutUnitFactory = (
         title: title,
         type: type,
         duration: getRandomTimeInMs(),
+        order: faker.number.int({ min: 1, max: 5 }),
     };
 };
 

@@ -84,6 +84,7 @@ model Assignment {
   title                 String
   type                  AssignmentType // Enum for the base assignment type
   duration              Int               @default(0)
+  order                 Int               @default(0)
   unitId                Int
   unit                  Unit                 @relation(fields: [unitId], references: [id], onDelete: Cascade)
   course                Course[]

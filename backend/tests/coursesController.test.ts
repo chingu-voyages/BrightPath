@@ -69,6 +69,7 @@ describe("getCourseBySlug", () => {
                                 InteractiveAssignment: true,
                                 QuizAssignment: true,
                             },
+                            orderBy: { order: "asc" },
                         },
                     },
                 },
