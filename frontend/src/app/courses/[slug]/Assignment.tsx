@@ -255,7 +255,17 @@ export default function AssignmentComponent({
                             <ReadingAssignmentModal assignment={assignment} />
                         )}
 
-                        {/* quiz ?? */}
+                        {assignment.type === AssignmentType.VIDEO && (
+                            <VideoAssigmentModal
+                                complete={completeAssignment}
+                                assignment={assignment}
+                            />
+                        )}
+
+                        {assignment.type === AssignmentType.INTERACTIVE && (
+                            <ReadingAssignmentModal assignment={assignment} />
+                        )}
+
                         {assignment.type === AssignmentType.QUIZ && (
                             <QuizAssigmentModal
                                 complete={completeAssignment}
@@ -263,19 +273,11 @@ export default function AssignmentComponent({
                             />
                         )}
 
-                        {/* timed */}
                         {assignment.type ===
                             AssignmentType.TIMED_ASSESSMENT && (
                             <QuizAssigmentModal
                                 complete={completeAssignment}
                                 timed={false}
-                                assignment={assignment}
-                            />
-                        )}
-
-                        {assignment.type === AssignmentType.VIDEO && (
-                            <VideoAssigmentModal
-                                complete={completeAssignment}
                                 assignment={assignment}
                             />
                         )}
