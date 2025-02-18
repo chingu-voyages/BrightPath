@@ -37,9 +37,9 @@ const SIGNIN_ERROR_URL = "/signin";
 export default async function SignInPage({
     searchParams,
 }: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-    const { callbackUrl = null, error = null } = await searchParams
+    const { callbackUrl = null, error = null } = await searchParams;
 
     return (
         <div className="max-w-sm mx-auto mt-24">
@@ -64,7 +64,7 @@ export default async function SignInPage({
                             "use server";
                             try {
                                 await signIn(provider.id, {
-                                    redirectTo: callbackUrl as string ?? "",
+                                    redirectTo: (callbackUrl as string) ?? "",
                                 });
                             } catch (error) {
                                 // Signin can fail for a number of reasons, such as the user
