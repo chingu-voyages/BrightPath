@@ -16,8 +16,19 @@ export default function EnrollButton() {
     const { course, enrolled, setEnrolled } = useContext(CoursePageContext);
 
     if (!session?.user) {
+        // whole url
+        const redirectURL = encodeURIComponent(
+            window.location.protocol +
+                "//" +
+                window.location.host +
+                "/courses/" +
+                course?.slug,
+        );
         return (
-            <Link href="/auth/signin" className="button">
+            <Link
+                href={`/signin?callbackUrl=${redirectURL}`}
+                className="button"
+            >
                 Start learning!
             </Link>
         );

@@ -165,6 +165,12 @@ export default function AppFooter() {
                             remain with the instructors - used by permission.
                         </Text>
                     </div>
+                    <Link
+                        href={"/privacy-policy"}
+                        className="pl-7 text-sm text-white underline"
+                    >
+                        Privacy Policy
+                    </Link>
                 </div>
             </section>
         </Footer>

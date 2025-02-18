@@ -33,10 +33,14 @@ export default function AppHeader() {
         setIsHomepage(pathname === "/");
 
         if (isHomepage) {
-            document.querySelector(".main-section")?.classList.remove("mt-24");
+            document
+                .querySelector(".main-section")
+                ?.classList.remove("mt-[84px]");
+            document.querySelector(".main-section")?.classList.remove("pt-12");
             window.addEventListener("scroll", scrollHandler);
         } else {
-            document.querySelector(".main-section")?.classList.add("mt-24");
+            document.querySelector(".main-section")?.classList.add("mt-[84px]");
+            document.querySelector(".main-section")?.classList.add("pt-12");
             window.removeEventListener("scroll", scrollHandler);
         }
     });
@@ -75,7 +79,7 @@ export default function AppHeader() {
     return (
         <>
             <Header
-                className={`w-full fixed top-0 inset-x-0 z-50 h-fit py-2 ${isHomepage ? "bg-transparent" : "bg-white shadow-sm"}`}
+                className={`w-full fixed top-0 inset-x-0 z-50 h-fit ${isHomepage ? "bg-transparent" : "bg-white shadow-sm"}`}
             >
                 <div className="lg:container mx-auto flex items-center justify-between">
                     <Link

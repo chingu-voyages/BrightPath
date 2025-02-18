@@ -150,10 +150,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session: { strategy: "jwt" },
     callbacks: {
         async redirect({ url, baseUrl }) {
-            if (url == baseUrl + "/courses") {
-                return baseUrl + "/courses";
-            }
-            return baseUrl + "/user/profile";
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`;
+
+            // Allows callback URLs on the same origin
+            if (new URL(url).origin === baseUrl) return url;
+
+            return baseUrl;
         },
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl;
@@ -184,6 +187,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             session.user.bio = token.bio as string;
             return session;
         },
+    },
+    pages: {
+        signIn: "/signin",
     },
     secret: process.env.NEXTAUTH_SECRET,
 });

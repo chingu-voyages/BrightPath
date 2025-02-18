@@ -138,6 +138,7 @@ model VideoAssignment {
   assignmentId Int        @unique
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
   videoUrl     String
+  description  String?
   transcript   String?
 }
 

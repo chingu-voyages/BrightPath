@@ -41,12 +41,7 @@ const VideoAssigmentModal = ({
     return (
         <>
             <section className="w-full flex gap-2">
-                <video
-                    className="w-full rounded-lg"
-                    onEnded={() => setCompleted(true)}
-                    controls
-                    src={videoUrl}
-                ></video>
+                <div dangerouslySetInnerHTML={{ __html: videoUrl }}></div>
                 {/* tooltips */}
                 <div className="p-2 py-4 flex flex-col gap-2 border rounded-md max-h-fit border-slate-300 dark:border-slate-700">
                     {videoTools.map((tool) => (
@@ -69,6 +64,14 @@ const VideoAssigmentModal = ({
                     </h1>
                     <p>{transcript}</p>
                 </div>
+                {transcript && (
+                    <div className="w-full ">
+                        <h1 className="text-xl font-semibold overflow-y-auto">
+                            Transcript
+                        </h1>
+                        <p>{transcript}</p>
+                    </div>
+                )}
                 {completed && (
                     <button
                         className="p-2 max-w-fit rounded-md capitalize border-slate-200 dark:border-slate-700  dark:bg-slate-100  text-lg "

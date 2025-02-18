@@ -190,11 +190,13 @@ export default async function Courses({
                                             </h3>
                                             <Link
                                                 href={`/certificates/${enrollment.certificate.id}`}
+                                                className="text-brightpath-slate cursor-pointer"
                                             >
                                                 <CertificateComponent
                                                     certificate={
                                                         enrollment.certificate
                                                     }
+                                                    isCompact={true}
                                                 />
                                             </Link>
                                             <ShareButtons
@@ -213,6 +215,7 @@ export default async function Courses({
                                         </h3>
                                         <CertificateComponent
                                             certificate={null}
+                                            isCompact={true}
                                         />
                                     </>
                                 )}
