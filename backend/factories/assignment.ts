@@ -118,6 +118,10 @@ export const quizAssignmentCreateInputFactory = () => {
 };
 
 export const interactiveAssignmentCreateInputFactory = () => {
+    return {
+        ...readingAssignmentCreateInputFactory(),
+    };
+
     const language = faker.helpers.arrayElement([
         "javascript",
         "python",

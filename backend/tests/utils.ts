@@ -158,7 +158,7 @@ export const createPersistentCourse = async (
                     await ctx.prisma.interactiveAssignment.create({
                         data: {
                             assignmentId: assignment.id,
-                            ...interactiveAssignmentCreateInputFactory(),
+                            ...readingAssignmentCreateInputFactory(),
                         },
                     });
                 }
