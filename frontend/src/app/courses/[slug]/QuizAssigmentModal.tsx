@@ -1,3 +1,4 @@
+import moment from "moment";
 import { type Assignment } from "@/types";
 import { Progress, Steps } from "antd";
 import React, { useState } from "react";
@@ -16,7 +17,6 @@ const QuizAssigmentModal = ({
 }) => {
     const router = useRouter();
 
-    // for later fix ...
     const [started, setStarted] = useState(false);
     const [current, setCurrent] = useState<number>(0);
     const [submited, setSubmited] = useState(false);
@@ -28,11 +28,11 @@ const QuizAssigmentModal = ({
     const questions: Prisma.JsonArray = assignment.QuizAssignment
         ?.questions! as Prisma.JsonArray;
 
-    // const items = questions.map((question,i) => ({ key: question.id, title: "" }))
     const items = Object.keys(questions!).map((q, i) => ({
         key: i,
         title: "",
     }));
+
     function submitAnswer() {
         if (!value && value !== 0) {
             setError(true);
@@ -216,11 +216,11 @@ const QuizAssigmentModal = ({
                 <h1 className="capitalize text-xl">{assignment.title}</h1>
                 <p className="lowercase ">Type: {assignment.type}</p>
                 <p>
-                    {assignment.QuizAssignment?.timeLimit &&
-                        (
-                            assignment.QuizAssignment?.timeLimit /
-                            (3600 * 60)
-                        ).toFixed(1) + "mins"}
+                    {assignment.QuizAssignment?.timeLimit && (
+                        moment.duration(
+                            assignment.QuizAssignment?.timeLimit,
+                        ).humanize() as string
+                    )}
                 </p>
             </div>
             <div className="w-full flex justify-end py-4">
