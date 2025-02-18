@@ -125,13 +125,7 @@ model InteractiveAssignment {
   id           Int        @id @default(autoincrement())
   assignmentId Int        @unique
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
-
-  codeSnippet  String
-  language     String // Programming language
-  testCases    Json // List of test cases to validate input/output
-  maxAttempts  Int?
-  constraints  Json? // Optional: Rules, such as memory limits or input length
-  instructions String?
+  content      String
 }
 
 model VideoAssignment {
