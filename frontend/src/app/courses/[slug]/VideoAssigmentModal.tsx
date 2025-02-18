@@ -58,12 +58,6 @@ const VideoAssigmentModal = ({
                 </div>
             </section>
             <div className="w-full flex flex-col justify-between items-end mt-6  py-6 border-t-2 border-slate-100 md:min-h-80">
-                <div className="w-full ">
-                    <h1 className="text-xl font-semibold overflow-y-auto">
-                        Transcript
-                    </h1>
-                    <p>{transcript}</p>
-                </div>
                 {transcript && (
                     <div className="w-full ">
                         <h1 className="text-xl font-semibold overflow-y-auto">
