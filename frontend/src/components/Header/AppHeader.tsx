@@ -33,7 +33,9 @@ export default function AppHeader() {
         setIsHomepage(pathname === "/");
 
         if (isHomepage) {
-            document.querySelector(".main-section")?.classList.remove("mt-[84px]");
+            document
+                .querySelector(".main-section")
+                ?.classList.remove("mt-[84px]");
             document.querySelector(".main-section")?.classList.remove("pt-12");
             window.addEventListener("scroll", scrollHandler);
         } else {

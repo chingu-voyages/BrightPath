@@ -99,6 +99,7 @@ export const videoAssignmentCreateInputFactory = () => {
     return {
         videoUrl: faker.internet.url(),
         transcript: faker.lorem.paragraph(),
+        description: faker.lorem.paragraph(),
     };
 };
 
