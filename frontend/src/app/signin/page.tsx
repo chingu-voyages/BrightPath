@@ -34,16 +34,13 @@ const signinErrors: Record<SignInError | "default", string> = {
 
 const SIGNIN_ERROR_URL = "/signin";
 
-export default async function SignInPage(props: {
-    searchParams: {
-        callbackUrl: string | undefined;
-        error: SignInError | undefined;
-    };
+export default async function SignInPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-    const callbackUrl = (await props.searchParams).callbackUrl;
-    const error = (await props.searchParams).error;
+    const { callbackUrl = null, error = null } = await searchParams
 
-    console.log("callbackUrl", callbackUrl);
     return (
         <div className="max-w-sm mx-auto mt-24">
             <div className="flex flex-col gap-y-2 text-center mb-4">
@@ -67,7 +64,7 @@ export default async function SignInPage(props: {
                             "use server";
                             try {
                                 await signIn(provider.id, {
-                                    redirectTo: callbackUrl ?? "",
+                                    redirectTo: callbackUrl as string ?? "",
                                 });
                             } catch (error) {
                                 // Signin can fail for a number of reasons, such as the user
@@ -142,7 +139,7 @@ export default async function SignInPage(props: {
                     className="block max-w-sm rounded-lg border border-gray-200 bg-white p-6 text-center shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                 >
                     <div className="font-normal text-gray-700 dark:text-gray-400">
-                        {signinErrors[error] ||
+                        {signinErrors[error as SignInError] ||
                             "Please contact us if this error persists."}
                     </div>
                 </a>
