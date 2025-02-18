@@ -7,7 +7,7 @@ export const ShareButtons = ({ url }: { url: string }) => {
                 href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}
                 target="_blank"
                 rel="noreferrer"
-                className="button-ghost text-no-wrap text-xs"
+                className="button-ghost text-no-wrap text-xs flex items-center"
             >
                 <LinkedIn />
                 Share on LinkedIn
@@ -16,7 +16,7 @@ export const ShareButtons = ({ url }: { url: string }) => {
                 href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
                 target="_blank"
                 rel="noreferrer"
-                className="button-ghost text-nowrap text-xs"
+                className="button-ghost text-nowrap text-xs flex items-center"
             >
                 <Facebook />
                 Share on Facebook
