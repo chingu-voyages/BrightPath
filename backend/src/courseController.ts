@@ -5,7 +5,11 @@ export async function getAllCourses(ctx: Context) {
         include: {
             instructor: true,
             units: {
-                include: { assignments: true },
+                include: {
+                    assignments: {
+                        orderBy: { order: "asc" },
+                    },
+                },
             },
             tags: {
                 include: { tag: true },
@@ -28,6 +32,7 @@ export async function getCourseBySlug(ctx: Context, slug: string) {
                             InteractiveAssignment: true,
                             QuizAssignment: true,
                         },
+                        orderBy: { order: "asc" },
                     },
                 },
             },
