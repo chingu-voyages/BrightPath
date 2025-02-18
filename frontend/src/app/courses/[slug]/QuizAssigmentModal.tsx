@@ -3,7 +3,6 @@ import { type Assignment } from "@/types";
 import { Progress, Steps } from "antd";
 import React, { useState } from "react";
 import { EllipsisOutlined, EnterOutlined } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
 import { Prisma } from "@prisma/client";
 
 const QuizAssigmentModal = ({
@@ -15,7 +14,6 @@ const QuizAssigmentModal = ({
     timed?: boolean;
     complete: () => Promise<void>;
 }) => {
-    const router = useRouter();
 
     const [started, setStarted] = useState(false);
     const [current, setCurrent] = useState<number>(0);
