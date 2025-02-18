@@ -19,6 +19,21 @@
     }
 }
 
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printable-certificate, #printable-certificate * {
+        visibility: visible;
+    }
+    #printable-certificate {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
 body {
     color: var(--foreground);
     background: var(--background);
@@ -119,7 +134,23 @@ Footer section {
     align-items: center;
 }
 
+input[type="text"], input[type="email"], input[type="password"] {
+    @apply px-4 py-3 text-brightpath-slate font-semibold bg-transparent rounded-lg border-2 border-brightpath-slate;
+}
+
+input:focus-visible, input:focus, input:active { 
+    @apply border-brightpath-blue;
+}
+
 /* Components */
+.button-primary {
+    @apply px-8 py-3 text-brightpath-slate font-semibold bg-transparent rounded-lg border-2 border-brightpath-slate;
+}
+
+.button-primary:hover {
+    @apply text-brightpath-blue border-brightpath-blue;
+}
+
 .button-ghost {
     @apply px-4 py-3 text-brightpath-slate font-semibold bg-gray-300 rounded-lg;
 }

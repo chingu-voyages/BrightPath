@@ -14,11 +14,11 @@ export default {
                     "72px",
                     { lineHeight: "80px", letterSpacing: "0%" },
                 ],
-                "headline-xxxl": [
+                "headline-3xl": [
                     "64px",
                     { lineHeight: "72px", letterSpacing: "0%" },
                 ],
-                "headline-xxl": [
+                "headline-2xl": [
                     "56px",
                     { lineHeight: "64px", letterSpacing: "0%" },
                 ],
