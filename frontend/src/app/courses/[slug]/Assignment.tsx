@@ -50,7 +50,12 @@ export default function AssignmentComponent({
     const handleEnroll = async () => {
         setLoading(true);
 
-        const courseURL = encodeURI(window.location.protocol + "//" + window.location.host + `/courses/${course?.id}`)
+        const courseURL = encodeURI(
+            window.location.protocol +
+                "//" +
+                window.location.host +
+                `/courses/${course?.id}`,
+        );
 
         if (!session || !session.user) {
             redirect("/signin?callbackUrl=" + courseURL);
@@ -145,12 +150,10 @@ export default function AssignmentComponent({
 
     const nextAssignment =
         nextUnit &&
-        Object.entries(nextUnit[1]).find(
-            ([id, progress]) => progress === 0,
-        );
+        Object.entries(nextUnit[1]).find(([id, progress]) => progress === 0);
 
-    const isNextAssignment = nextAssignment && Number(nextAssignment[0]) === assignment.id;
-
+    const isNextAssignment =
+        nextAssignment && Number(nextAssignment[0]) === assignment.id;
 
     const completeAssignment = async () => {
         setLoading(true);
@@ -298,12 +301,12 @@ export default function AssignmentComponent({
 
                         {assignment.type ===
                             AssignmentType.TIMED_ASSESSMENT && (
-                                <QuizAssigmentModal
-                                    complete={completeAssignment}
-                                    timed={false}
-                                    assignment={assignment}
-                                />
-                            )}
+                            <QuizAssigmentModal
+                                complete={completeAssignment}
+                                timed={false}
+                                assignment={assignment}
+                            />
+                        )}
                     </div>
                 </div>
             </Modal>
