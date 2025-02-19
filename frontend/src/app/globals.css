@@ -80,6 +80,13 @@ body.modal-open {
         );
 }
 
+.featured-courses-vector {
+    margin-top: 4%;
+    margin-left: -12%;
+}
+.testimonials-vector {
+}
+
 Footer {
     clip-path: polygon(
         0 1.25rem,
