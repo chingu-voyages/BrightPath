@@ -57,7 +57,7 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                                     className=""
                                     href={`/courses/${course.slug}`}
                                 >
-                                    <EnrollButton />
+                                    <EnrollButton compact={true} />
                                 </Link>
                             )}
                         </div>

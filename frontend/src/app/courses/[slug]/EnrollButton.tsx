@@ -8,8 +8,12 @@ import Link from "next/link";
 import { Check, KeyboardArrowRight } from "@mui/icons-material";
 import { EnrollmentStatus } from "@prisma/client";
 import { AssignmentIcon } from "./AssignmentIcon";
-
-export default function EnrollButton() {
+function truncateString(str, lim) {
+    return str.length > lim
+        ? str.slice(0, lim > 3 ? lim - 3 : lim) + "..."
+        : str;
+}
+export default function EnrollButton({ compact }: { compact?: boolean }) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string>("Start learning!");
     const { data: session } = useSession();
@@ -127,8 +131,15 @@ export default function EnrollButton() {
                             <AssignmentIcon
                                 type={actualNextAssignment?.type || "READING"}
                             />
-                            <p className="pl-2 text-lg font-bold">
-                                {actualNextAssignment?.title}
+                            <p
+                                className={`pl-2 font-bold ${compact ? "text-sm ellipsis" : "text-lg"}`}
+                            >
+                                {compact
+                                    ? truncateString(
+                                          actualNextAssignment?.title,
+                                          16,
+                                      )
+                                    : actualNextAssignment?.title}
                             </p>
                         </div>
                     </div>
