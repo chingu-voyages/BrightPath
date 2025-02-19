@@ -37,9 +37,11 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                     </div>
 
                     <div className="w-full mb-4 md:flex justify-between gap-4 lg:items-center">
-                        <div className="flex-1 md:pr-4 clip max-h-24">
+                        <div className="w-2/3 md:pr-4 clip max-h-24">
                             {course.shortDescription}
                         </div>
+
+                        <div className="w-1/3">
                         {completed ? (
                             <Link
                                 className="max-w-fit lg:w-full button"
@@ -52,12 +54,13 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                             </Link>
                         ) : (
                             <Link
-                                className="button"
+                                className=""
                                 href={`/courses/${course.slug}`}
                             >
-                                Continue learning
+                                <EnrollButton />
                             </Link>
                         )}
+                        </div>
                     </div>
 
                     {completed ? (
@@ -69,7 +72,7 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                             </span>
                         </div>
                     ) : (
-                        <div className="">
+                        <div className="mt-2">
                             <ProgressBar />
                         </div>
                     )}
