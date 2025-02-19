@@ -50,7 +50,7 @@ const OurTeam: React.FC = () => {
                             cover={
                                 <div className="flex justify-center mt-6">
                                     <Avatar
-                                        src={`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/uploads/${member.profilePicture}`}
+                                        src={`/team/${member.profilePicture}`}
                                         size={150}
                                         className="border-4 border-gray-200"
                                     />
