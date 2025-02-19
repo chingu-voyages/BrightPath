@@ -68,9 +68,12 @@ export default async function Home() {
                             Ready to take your dev journey deeper?
                         </p>
                         <p className="">
-                            Learn by doing, with hands-on, project-based
-                            exercises, and stand out from the crowd with
-                            specialized knowledge and skills.
+                            <span className="bg-brightpath-gold/[.30]">
+                                Learn by doing
+                            </span>
+                            , with hands-on, project-based exercises, and stand
+                            out from the crowd with specialized knowledge and
+                            skills.
                         </p>
                         <Link href="/courses" className="button">
                             <span className="mr-2">Start learning</span>
