@@ -51,10 +51,7 @@ export default function AssignmentComponent({
         setLoading(true);
 
         const courseURL = encodeURI(
-            window.location.protocol +
-                "//" +
-                window.location.host +
-                `/courses/${course?.id}`,
+            `https://brightpath.courses/courses/${course?.slug}`,
         );
 
         if (!session || !session.user) {
