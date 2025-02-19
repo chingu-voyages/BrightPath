@@ -50,8 +50,10 @@ export default function AssignmentComponent({
     const handleEnroll = async () => {
         setLoading(true);
 
+        const courseURL = encodeURI(window.location.protocol + "//" + window.location.host + `/courses/${course?.id}`)
+
         if (!session || !session.user) {
-            redirect("/auth/signin");
+            redirect("/signin?callbackUrl=" + courseURL);
         }
 
         try {
@@ -129,6 +131,27 @@ export default function AssignmentComponent({
 
     const isCompleted = unitProgress?.[`${assignment.id}`] === true;
 
+    const granularProgress = enrolled.granularProgress as Record<
+        string,
+        Record<string, number>
+    >;
+    const nextUnit = Object.entries(granularProgress).find(
+        ([unit, assignments]) => {
+            return Object.entries(assignments).find(
+                ([id, progress]) => progress === 0,
+            );
+        },
+    );
+
+    const nextAssignment =
+        nextUnit &&
+        Object.entries(nextUnit[1]).find(
+            ([id, progress]) => progress === 0,
+        );
+
+    const isNextAssignment = nextAssignment && Number(nextAssignment[0]) === assignment.id;
+
+
     const completeAssignment = async () => {
         setLoading(true);
 
@@ -201,7 +224,7 @@ export default function AssignmentComponent({
     return (
         <>
             <div
-                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : "border-brightpath-slate"}`}
+                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : isNextAssignment ? "border-brightpath-blue" : "border-brightpath-slate"}`}
             >
                 <div className="font-semibold">
                     <AssignmentIcon type={assignment.type} />
@@ -275,12 +298,12 @@ export default function AssignmentComponent({
 
                         {assignment.type ===
                             AssignmentType.TIMED_ASSESSMENT && (
-                            <QuizAssigmentModal
-                                complete={completeAssignment}
-                                timed={false}
-                                assignment={assignment}
-                            />
-                        )}
+                                <QuizAssigmentModal
+                                    complete={completeAssignment}
+                                    timed={false}
+                                    assignment={assignment}
+                                />
+                            )}
                     </div>
                 </div>
             </Modal>
