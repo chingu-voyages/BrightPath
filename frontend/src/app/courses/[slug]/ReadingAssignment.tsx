@@ -9,7 +9,7 @@ export const ReadingAssignmentModal = ({
     return (
         <>
             <article
-                className="prose-lg overflow-y-auto max-h-[80vh]"
+                className="prose-lg"
                 dangerouslySetInnerHTML={{
                     __html: assignment.ReadingAssignment?.content || "",
                 }}
