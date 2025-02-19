@@ -136,7 +136,7 @@ export default function EnrollButton({ compact }: { compact?: boolean }) {
                             >
                                 {compact
                                     ? truncateString(
-                                          actualNextAssignment?.title,
+                                          actualNextAssignment?.title || '',
                                           16,
                                       )
                                     : actualNextAssignment?.title}
