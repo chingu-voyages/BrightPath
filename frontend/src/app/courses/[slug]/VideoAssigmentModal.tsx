@@ -41,7 +41,10 @@ const VideoAssigmentModal = ({
     return (
         <>
             <section className="w-full flex gap-2">
-                <div dangerouslySetInnerHTML={{ __html: videoUrl }}></div>
+                <div
+                    className="w-full"
+                    dangerouslySetInnerHTML={{ __html: videoUrl }}
+                ></div>
                 {/* tooltips */}
                 <div className="p-2 py-4 flex flex-col gap-2 border rounded-md max-h-fit border-slate-300 dark:border-slate-700">
                     {videoTools.map((tool) => (
