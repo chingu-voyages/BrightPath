@@ -1,9 +1,10 @@
 "use client";
 
 import { ShareButtons } from "@/app/courses/[slug]/ShareButtons";
+import { Certificate } from "@/types";
 import { Print } from "@mui/icons-material";
 
-export default function CertificatePrinter() {
+export default function CertificatePrinter({ certificate }: { certificate: Certificate }) {
     const handlePrint = () => {
         const certificateRef = document.getElementById("printable-certificate");
 
@@ -68,7 +69,7 @@ export default function CertificatePrinter() {
                     <Print fontSize="medium" />
                     <span className="pl-1 text-xs">Print Certificate</span>
                 </button>
-                <ShareButtons url={window.location.href} />
+                <ShareButtons url={`https://brightpath.courses/certificates/${certificate.id}`} />
             </div>
         </>
     );
