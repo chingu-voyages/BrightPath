@@ -68,6 +68,7 @@ export const createPersistentCourse = async (
         data: Array.from({ length: 5 }, () => {
             return tagCreateInputFactory();
         }),
+        skipDuplicates: true,
     });
 
     const courses = await ctx.prisma.course.createManyAndReturn({
