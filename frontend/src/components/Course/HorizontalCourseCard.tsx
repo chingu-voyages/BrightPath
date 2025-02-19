@@ -42,24 +42,24 @@ const HorizontalCourseCard = ({ enrollment }: { enrollment: Enrollment }) => {
                         </div>
 
                         <div className="w-1/3">
-                        {completed ? (
-                            <Link
-                                className="max-w-fit lg:w-full button"
-                                href={
-                                    "/certificates/" +
-                                    enrollment.certificate?.id
-                                }
-                            >
-                                View certificate
-                            </Link>
-                        ) : (
-                            <Link
-                                className=""
-                                href={`/courses/${course.slug}`}
-                            >
-                                <EnrollButton />
-                            </Link>
-                        )}
+                            {completed ? (
+                                <Link
+                                    className="max-w-fit lg:w-full button"
+                                    href={
+                                        "/certificates/" +
+                                        enrollment.certificate?.id
+                                    }
+                                >
+                                    View certificate
+                                </Link>
+                            ) : (
+                                <Link
+                                    className=""
+                                    href={`/courses/${course.slug}`}
+                                >
+                                    <EnrollButton />
+                                </Link>
+                            )}
                         </div>
                     </div>
 
