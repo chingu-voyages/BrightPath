@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Check, KeyboardArrowRight } from "@mui/icons-material";
 import { EnrollmentStatus } from "@prisma/client";
 import { AssignmentIcon } from "./AssignmentIcon";
-function truncateString(str, lim) {
+function truncateString(str: string, lim: number) {
     return str.length > lim
         ? str.slice(0, lim > 3 ? lim - 3 : lim) + "..."
         : str;
@@ -136,7 +136,7 @@ export default function EnrollButton({ compact }: { compact?: boolean }) {
                             >
                                 {compact
                                     ? truncateString(
-                                          actualNextAssignment?.title,
+                                          actualNextAssignment?.title || '',
                                           16,
                                       )
                                     : actualNextAssignment?.title}
