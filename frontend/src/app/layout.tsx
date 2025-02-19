@@ -51,7 +51,7 @@ export default async function RootLayout({
                                 <AppHeader />
                                 {/* main contents */}
                                 <div className="main-section bg-brightpath text-brightpath-slate">
-                                    <main className="lg:container lg:max-w-screen-lg mx-auto px-4 lg:px-0">
+                                    <main className="lg:container lg:max-w-screen-lg px-4 sm:mx-6 lg:mx-auto lg:px-4">
                                         {children}
                                     </main>
                                 </div>
