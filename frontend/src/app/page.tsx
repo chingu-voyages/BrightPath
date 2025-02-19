@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { computeCourseDuration } from "@/lib/utils";
 import { CertificateComponent } from "./certificates/[slug]/CertificateComponent";
-import { Article, Star } from "@mui/icons-material";
+import {
+    ArrowCircleRight,
+    ArrowCircleRightOutlined,
+    Article,
+    Star,
+} from "@mui/icons-material";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -63,28 +68,44 @@ export default async function Home() {
                             Ready to take your dev journey deeper?
                         </p>
                         <p className="">
-                            Learn by doing, with hands-on, project-based
-                            exercises, and stand out from the crowd with
-                            specialized knowledge and skills.
+                            <span className="bg-brightpath-gold/[.30]">
+                                Learn by doing
+                            </span>
+                            , with hands-on, project-based exercises, and stand
+                            out from the crowd with specialized knowledge and
+                            skills.
                         </p>
                         <Link href="/courses" className="button">
-                            Start learning
+                            <span className="mr-2">Start learning</span>
+                            <ArrowCircleRightOutlined />
                         </Link>
                     </div>
                 </div>
             </section>
             <div className="h-[60vh]" />
             {/* Courses Section */}
-            <section className="mt-12">
-                <h2 className="heading font-light">Featured Courses</h2>
-                <div className="grid md:grid-cols-3 gap-6">
+            <section className="relative mt-12">
+                <div className="featured-courses-vector absolute left-0 top-0">
+                    <Image
+                        src="/featured-courses-vector.svg"
+                        alt="Vector"
+                        width={400}
+                        height={400}
+                        className="h-full"
+                    />
+                </div>
+                <h2 className="relative heading font-light">
+                    Featured Courses
+                </h2>
+                <div className="relative grid md:grid-cols-3 gap-6">
                     {popularCourses.map((course: Course) => (
                         <CourseCard key={course.id} course={course} />
                     ))}
                 </div>
                 <div className="flex items-center justify-center mt-6">
                     <Link href="/courses" className="button">
-                        View all courses
+                        <span className="mr-2">View all courses</span>
+                        <ArrowCircleRightOutlined />
                     </Link>
                 </div>
             </section>
@@ -96,15 +117,24 @@ export default async function Home() {
             </div>
 
             {/* Testimonials */}
-            <section className="mt-12">
-                <h2 className="heading font-light text-right after:bg-right">
+            <section className="relative mt-12">
+                <div className="absolute top-0 w-full flex justify-center">
+                    <Image
+                        src="/testimonials-vector.svg"
+                        alt="Vector"
+                        width={240}
+                        height={600}
+                        className="h-full ml-16"
+                    />
+                </div>
+                <h2 className="relative heading font-light text-right after:bg-right">
                     Testimonials
                 </h2>
-                <div className="flex flex-col gap-y-8 px-12">
+                <div className="relative flex flex-col gap-y-8 px-12">
                     {testimonials.map((testimonial, idx) => (
                         <div
                             key={idx}
-                            className="border shadow-md bg-white flex odd:mr-auto odd:flex-row-reverse odd:ml-16 even:ml-auto even:mr-16 w-1/2 h-32"
+                            className="border shadow-md bg-white flex odd:mr-auto odd:flex-row-reverse odd:ml-16 even:ml-auto even:mr-16 w-full md:w-1/2 h-40 md:h-32"
                         >
                             <div className="w-1/3 bg-blue-900 h-full"></div>
                             <div className="w-2/3 px-4 py-3">
@@ -120,10 +150,10 @@ export default async function Home() {
             </section>
 
             {/* Certification */}
-            <section className="mt-12">
+            <section className="mt-16">
                 <h2 className="heading font-light">Certified learning.</h2>
-                <div className="flex">
-                    <div className="w-1/5 p-5 lg:mt-24 rounded-md border-y border-l h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
+                <div className="sm:flex">
+                    <div className="sm:w-1/5 p-5 lg:mt-24 rounded-md border-y border-l h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
                         <Article fontSize="large" className="mb-2" />
                         <p>
                             Share your certificate on LinkedIn, your portfolio,
@@ -132,7 +162,7 @@ export default async function Home() {
                     </div>
                     <CertificateComponent certificate={null} />
 
-                    <div className="w-1/5 p-5 lg:mt-auto lg:mb-12 rounded-md border-y border-r h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
+                    <div className="sm:w-1/5 p-5 lg:mt-auto lg:mb-12 rounded-md border-y border-r h-fit text-brightpath-blue-xdark font-semibold bg-brightpath-blue-extra-light">
                         <Star fontSize="large" className="mb-2" />
                         <p>
                             Verified certificates highlight your specialization
