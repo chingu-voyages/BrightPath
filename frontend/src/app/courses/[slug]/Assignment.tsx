@@ -227,7 +227,7 @@ export default function AssignmentComponent({
     return (
         <>
             <div
-                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : isNextAssignment ? "border-brightpath-blue" : "border-brightpath-slate"}`}
+                className={`flex items-center mb-4 border-4  rounded-lg p-4 cursor-pointer ${isCompleted ? "bg-brightpath-gold/[.10] border-brightpath-gold" : isNextAssignment ? "bg-brightpath-blue/[.10] border-brightpath-blue" : "border-brightpath-slate"}`}
             >
                 <div className="font-semibold">
                     <AssignmentIcon type={assignment.type} />
@@ -246,7 +246,7 @@ export default function AssignmentComponent({
                                     ? onOpen
                                     : undefined
                             }
-                            className="text-lg font-semibold cursor-pointer hover:underline"
+                            className={`text-lg font-semibold cursor-pointer hover:underline ${isNextAssignment ? "text-brightpath-blue" : ""}`}
                         >
                             {assignment.title}
                         </h4>
