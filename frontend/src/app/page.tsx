@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { computeCourseDuration } from "@/lib/utils";
 import { CertificateComponent } from "./certificates/[slug]/CertificateComponent";
-import { Article, Star } from "@mui/icons-material";
+import {
+    ArrowCircleRight,
+    ArrowCircleRightOutlined,
+    Article,
+    Star,
+} from "@mui/icons-material";
 
 const getPopularCourses = async () => {
     const res = await fetch(process.env.BACKEND_API_URL + "/courses/popular");
@@ -68,7 +73,8 @@ export default async function Home() {
                             specialized knowledge and skills.
                         </p>
                         <Link href="/courses" className="button">
-                            Start learning
+                            <span className="mr-2">Start learning</span>
+                            <ArrowCircleRightOutlined />
                         </Link>
                     </div>
                 </div>
@@ -77,9 +83,17 @@ export default async function Home() {
             {/* Courses Section */}
             <section className="relative mt-12">
                 <div className="featured-courses-vector absolute left-0 top-0">
-                    <Image src="/featured-courses-vector.svg" alt="Vector" width={400} height={400}  className="h-full"/>
+                    <Image
+                        src="/featured-courses-vector.svg"
+                        alt="Vector"
+                        width={400}
+                        height={400}
+                        className="h-full"
+                    />
                 </div>
-                <h2 className="relative heading font-light">Featured Courses</h2>
+                <h2 className="relative heading font-light">
+                    Featured Courses
+                </h2>
                 <div className="relative grid md:grid-cols-3 gap-6">
                     {popularCourses.map((course: Course) => (
                         <CourseCard key={course.id} course={course} />
@@ -87,7 +101,8 @@ export default async function Home() {
                 </div>
                 <div className="flex items-center justify-center mt-6">
                     <Link href="/courses" className="button">
-                        View all courses
+                        <span className="mr-2">View all courses</span>
+                        <ArrowCircleRightOutlined />
                     </Link>
                 </div>
             </section>
@@ -100,8 +115,14 @@ export default async function Home() {
 
             {/* Testimonials */}
             <section className="relative mt-12">
-                <div className="testimonials-vector absolute top-0 w-full flex justify-center">
-                    <Image src="/testimonials-vector.svg" alt="Vector" width={240} height={600}  className="h-full ml-16"/>
+                <div className="absolute top-0 w-full flex justify-center">
+                    <Image
+                        src="/testimonials-vector.svg"
+                        alt="Vector"
+                        width={240}
+                        height={600}
+                        className="h-full ml-16"
+                    />
                 </div>
                 <h2 className="relative heading font-light text-right after:bg-right">
                     Testimonials
