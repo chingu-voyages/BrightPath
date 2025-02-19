@@ -6,7 +6,7 @@ import { CoursePageContext } from "./Course";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Check, KeyboardArrowRight } from "@mui/icons-material";
-import { AssignmentType, EnrollmentStatus } from "@prisma/client";
+import { EnrollmentStatus } from "@prisma/client";
 import { AssignmentIcon } from "./AssignmentIcon";
 
 export default function EnrollButton() {

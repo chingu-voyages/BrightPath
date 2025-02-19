@@ -110,16 +110,11 @@ export default async function Courses({
                             </p>
                         </div>
                         {!isEnrolled && (
-                            <video
-                                controls
-                                className="rounded-lg shadow-sm w-full"
-                            >
-                                <source
-                                    src={course.introVideoUrl}
-                                    type="video/mp4"
-                                />
-                                Your browser does not support the video tag.
-                            </video>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: course.introVideoUrl,
+                                }}
+                            ></div>
                         )}
                         <div className="bg-white border rounded-lg p-6">
                             {course.units?.map((unit: Unit, index: number) => (
@@ -160,17 +155,11 @@ export default async function Courses({
 
                             {isEnrolled && (
                                 <div className="">
-                                    <video
-                                        controls
-                                        className="rounded-lg shadow-sm w-full mb-4"
-                                    >
-                                        <source
-                                            src={course.introVideoUrl}
-                                            type="video/mp4"
-                                        />
-                                        Your browser does not support the video
-                                        tag.
-                                    </video>
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: course.introVideoUrl,
+                                        }}
+                                    ></div>
 
                                     {/* Course Description */}
                                     <p className="text-lg mb-2">
