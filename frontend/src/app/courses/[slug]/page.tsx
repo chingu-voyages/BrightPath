@@ -110,16 +110,7 @@ export default async function Courses({
                             </p>
                         </div>
                         {!isEnrolled && (
-                            <video
-                                controls
-                                className="rounded-lg shadow-sm w-full"
-                            >
-                                <source
-                                    src={course.introVideoUrl}
-                                    type="video/mp4"
-                                />
-                                Your browser does not support the video tag.
-                            </video>
+                            <div dangerouslySetInnerHTML={{ __html: course.introVideoUrl }}></div>
                         )}
                         <div className="bg-white border rounded-lg p-6">
                             {course.units?.map((unit: Unit, index: number) => (
@@ -149,7 +140,7 @@ export default async function Courses({
                         <div className="flex flex-col gap-y-8 border rounded-lg bg-white p-5">
                             {isEnrolled &&
                                 enrollment.status ===
-                                    EnrollmentStatus.ACTIVE && (
+                                EnrollmentStatus.ACTIVE && (
                                     <div className="">
                                         <h3 className="font-brand text-headline-s font-semibold">
                                             Your Progress
@@ -160,17 +151,7 @@ export default async function Courses({
 
                             {isEnrolled && (
                                 <div className="">
-                                    <video
-                                        controls
-                                        className="rounded-lg shadow-sm w-full mb-4"
-                                    >
-                                        <source
-                                            src={course.introVideoUrl}
-                                            type="video/mp4"
-                                        />
-                                        Your browser does not support the video
-                                        tag.
-                                    </video>
+                                    <div dangerouslySetInnerHTML={{ __html: course.introVideoUrl }}></div>
 
                                     {/* Course Description */}
                                     <p className="text-lg mb-2">
@@ -183,7 +164,7 @@ export default async function Courses({
                             <div className="">
                                 {isEnrolled &&
                                     enrollment.status ===
-                                        EnrollmentStatus.COMPLETED && (
+                                    EnrollmentStatus.COMPLETED && (
                                         <>
                                             <h3 className="font-brand text-headline-s font-semibold mb-4">
                                                 Here’s your verified certificate
@@ -207,18 +188,18 @@ export default async function Courses({
 
                                 {(!isEnrolled ||
                                     enrollment.status ===
-                                        EnrollmentStatus.ACTIVE) && (
-                                    <>
-                                        <h3 className="font-brand text-headline-s font-semibold mb-4">
-                                            Complete this course to earn your
-                                            verified certificate
-                                        </h3>
-                                        <CertificateComponent
-                                            certificate={null}
-                                            isCompact={true}
-                                        />
-                                    </>
-                                )}
+                                    EnrollmentStatus.ACTIVE) && (
+                                        <>
+                                            <h3 className="font-brand text-headline-s font-semibold mb-4">
+                                                Complete this course to earn your
+                                                verified certificate
+                                            </h3>
+                                            <CertificateComponent
+                                                certificate={null}
+                                                isCompact={true}
+                                            />
+                                        </>
+                                    )}
                             </div>
                         </div>
                     </div>
